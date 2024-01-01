@@ -7,8 +7,11 @@ import {
 } from "react";
 
 interface AuthData {
-  isAuthenticated: boolean;
-  accessToken: string;
+  isAuthenticated?: boolean;
+  blocked?: boolean;
+  id?: number;
+  authorization?: string;
+  role?: number;
 }
 
 interface AuthContextValue {
@@ -25,10 +28,7 @@ export const AuthContext = createContext<AuthContextValue | undefined>(
 );
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [auth, setAuth] = useState<AuthData>({
-    isAuthenticated: false,
-    accessToken: "",
-  });
+  const [auth, setAuth] = useState<AuthData>({});
 
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>

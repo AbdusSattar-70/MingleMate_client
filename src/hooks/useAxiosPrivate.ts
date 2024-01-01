@@ -1,4 +1,4 @@
-import { axiosPrivate } from "../api/axios";
+import { axiosPrivate } from "../utils/api";
 import { useEffect } from "react";
 import { useAuth } from "./useAuth";
 
@@ -8,8 +8,8 @@ const useAxiosPrivate = () => {
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
       (config) => {
-        if (!config.headers["authorization"]) {
-          config.headers["authorization"] = auth?.accessToken;
+        if (auth.authorization) {
+          config.headers["Authorization"] = auth?.authorization;
         }
         return config;
       },

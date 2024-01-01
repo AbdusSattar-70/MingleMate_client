@@ -1,10 +1,23 @@
 import { Link } from "react-router-dom";
 import useTheme from "../../../hooks/useTheme";
+import { useAuth } from "../../../hooks/useAuth";
 import { PICK_THEME } from "../../../utils/constant";
+import useSignOut from "../../../hooks/useSignOut";
+import { ToastContainer, toast } from "react-toastify";
 const NavbarEnd = () => {
   const { theme, toggleTheme } = useTheme();
-  const currentUser = "";
-  const isAdmin = false;
+  const { signOut, signOutError } = useSignOut();
+  const { auth, setAuth } = useAuth();
+  const isAdmin = true;
+
+  const handleSignOut = async () => {
+    await signOut();
+    if (signOutError) {
+      toast.warning(signOutError);
+    } else {
+      setAuth({});
+    }
+  };
 
   return (
     <div className="navbar-end gap-3">
@@ -38,7 +51,7 @@ const NavbarEnd = () => {
       </label>
 
       <div className="dropdown dropdown-end">
-        {currentUser ? (
+        {auth?.isAuthenticated ? (
           <>
             <div
               tabIndex={0}
@@ -69,7 +82,12 @@ const NavbarEnd = () => {
                 )}
               </li>
               <li className="sm:mx-1 md:mx-3">
-                <button className="font-bold text-blue-500">Sign Out</button>
+                <button
+                  onClick={handleSignOut}
+                  className="font-bold text-blue-500"
+                >
+                  Sign Out
+                </button>
               </li>
             </ul>
           </>
@@ -79,6 +97,11 @@ const NavbarEnd = () => {
           </Link>
         )}
       </div>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar
+      />
     </div>
   );
 };

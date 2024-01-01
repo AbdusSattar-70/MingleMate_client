@@ -2,12 +2,12 @@ import { useRef, useState, useEffect } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-
-import axios from "../../api/axios";
-const LOGIN_URL = "/signin";
+import axios from "../../utils/api";
+import { API_ENDPOINT } from "../../utils/constant";
+import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
 
 const SignIn = () => {
-  const { setAuth, auth } = useAuth();
+  const { setAuth } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,24 +21,28 @@ const SignIn = () => {
     (emailRef.current as HTMLInputElement | null)?.focus();
   }, []);
 
+  const signInData = {
+    user: {
+      email,
+      password: pwd,
+    },
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = {
-      user: {
-        email,
-        password: pwd,
-      },
-    };
+
     try {
-      const res = await axios.post(LOGIN_URL, data);
-      const accessToken = res.headers["authorization"];
-      setAuth({ isAuthenticated: true, accessToken });
-      setEmail("");
-      setPwd("");
-      navigate(from, { replace: true });
-      console.log(auth);
+      const res = await axios.post(API_ENDPOINT.SIGN_IN, signInData);
+      if (isSuccessRes(res)) {
+        const { id, role, blocked } = res.data.data;
+        const { authorization } = res.headers;
+        setAuth({ id, isAuthenticated: true, authorization, role, blocked });
+        setEmail("");
+        setPwd("");
+        navigate(from, { replace: true });
+      }
     } catch (err) {
-      console.error(err);
+      setErrorToast(err);
     }
   };
 

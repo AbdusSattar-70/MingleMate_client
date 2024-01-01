@@ -1,5 +1,36 @@
+export const BASE_URL = "http://localhost:4000";
+export const AXIOS_HEADERS = { "Content-Type": "application/json" };
+
 export const PICK_THEME = {
   THEME: "theme",
   DARK: "dark",
   LIGHT: "light",
+};
+
+export const API_ENDPOINT = {
+  SIGN_UP: "signup",
+  SIGN_IN: "signin",
+  SIGN_OUT: "signout",
+  USERS: "/users",
+};
+
+export const REGEX_PICK = {
+  USER_REGEX: /^[A-Za-z][A-Za-z0-9_ -]{0,23}$/,
+  PWD_REGEX: /.{6,}/,
+  EMAIL_REGEX: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+};
+
+export const RES_TYPE = {
+  OK: "OK",
+};
+
+export const MESSAGE = {
+  VALID_NAME_NOTE:
+    " Must begin with a letter. Letters, numbers, underscores, hyphens allowed.",
+  EMAIL_NOTE: "Please enter a valid email address.",
+  PWD_NOTE:
+    "At least six characters. Letters, numbers, underscores, hyphens allowed",
+  TRY_AGAIN:
+    "Unable to process the request at this moment, Please try again later.",
+  SUCCESS: "Congrats! Request has Succeeded",
 };

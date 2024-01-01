@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAxiosPrivate from "./useAxiosPrivate";
-
-const GET_USERS_URL = "/users";
+import { API_ENDPOINT } from "../utils/constant";
+import { setErrorToast } from "../utils/apiResponse";
 
 const useGetUserData = () => {
   const [users, setUsers] = useState([]);
@@ -12,14 +12,10 @@ const useGetUserData = () => {
 
   const getUsers = async () => {
     try {
-      const response = await axiosPrivate.get(GET_USERS_URL, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
+      const response = await axiosPrivate.get(API_ENDPOINT.USERS);
       setUsers(response.data.data);
     } catch (err) {
+      setErrorToast(err);
       navigate("/sign-in", { state: { from: location }, replace: true });
     }
   };
