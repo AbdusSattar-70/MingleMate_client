@@ -4,10 +4,10 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import axios from "../../api/axios";
-const LOGIN_URL = "/auth/signin";
+const LOGIN_URL = "/signin";
 
 const SignIn = () => {
-  const { setAuth } = useAuth();
+  const { setAuth, auth } = useAuth();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -23,21 +23,20 @@ const SignIn = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    const data = {
+      user: {
+        email,
+        password: pwd,
+      },
+    };
     try {
-      const response = await axios.post(
-        LOGIN_URL,
-        JSON.stringify({ email, password: pwd }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
-      const { accessToken } = response.data.data;
+      const res = await axios.post(LOGIN_URL, data);
+      const accessToken = res.headers["authorization"];
       setAuth({ isAuthenticated: true, accessToken });
       setEmail("");
       setPwd("");
       navigate(from, { replace: true });
+      console.log(auth);
     } catch (err) {
       console.error(err);
     }
@@ -47,16 +46,16 @@ const SignIn = () => {
     <>
       <section>
         <div className="hero hero-content">
-          <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+          <div className="card w-full max-w-sm flex-shrink-0 bg-base-100 shadow-2xl">
             <ToastContainer
               position="bottom-right"
               autoClose={5000}
               hideProgressBar
             />
-            <h1 className="text-3xl text-center mt-2 font-bold">
+            <h1 className="mt-2 text-center text-3xl font-bold">
               Sign In now!
             </h1>
-            <h2 className="text-xl text-center mt-2">Good to see you again!</h2>
+            <h2 className="mt-2 text-center text-xl">Good to see you again!</h2>
             <form onSubmit={handleSubmit} className="card-body">
               <div className="form-control">
                 <label htmlFor="email"></label>
@@ -90,11 +89,11 @@ const SignIn = () => {
                 </button>
               </div>
             </form>
-            <p className="text-center text-bold my-4">
+            <p className="text-bold my-4 text-center">
               Don&apos;t have an Account?{" "}
               <Link
                 to="/sign-up"
-                className="text-orange-500 text-bold text-1xl"
+                className="text-bold text-1xl text-orange-500"
               >
                 Sign Up
               </Link>

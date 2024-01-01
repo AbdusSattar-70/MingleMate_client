@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import useAxiosPrivate from './useAxiosPrivate';
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import useAxiosPrivate from "./useAxiosPrivate";
 
-const GET_USERS_URL = '/admin/users';
+const GET_USERS_URL = "/users";
 
 const useGetUserData = () => {
   const [users, setUsers] = useState([]);
@@ -14,14 +14,13 @@ const useGetUserData = () => {
     try {
       const response = await axiosPrivate.get(GET_USERS_URL, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
 
       setUsers(response.data.data);
-
     } catch (err) {
-      navigate('/sign-in', { state: { from: location }, replace: true });
+      navigate("/sign-in", { state: { from: location }, replace: true });
     }
   };
 
@@ -33,5 +32,3 @@ const useGetUserData = () => {
 };
 
 export default useGetUserData;
-
-

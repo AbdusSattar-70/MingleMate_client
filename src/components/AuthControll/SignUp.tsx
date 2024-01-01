@@ -12,7 +12,7 @@ import axios from "../../api/axios";
 const USER_REGEX = /^[A-Za-z][A-Za-z0-9_ -]{0,23}$/;
 const PWD_REGEX = /.{1,}/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const REGISTER_URL = "/auth/signup";
+const REGISTER_URL = "/signup";
 
 const SignUp = () => {
   const userRef = useRef(null);
@@ -60,15 +60,15 @@ const SignUp = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const data = {
+      user: {
+        user_name: user,
+        email,
+        password: pwd,
+      },
+    };
     try {
-      await axios.post(
-        REGISTER_URL,
-        JSON.stringify({ name: user, email, password: pwd }),
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      await axios.post(REGISTER_URL, data);
       setSuccess(true);
       setUser("");
       setPwd("");
@@ -82,8 +82,8 @@ const SignUp = () => {
   return (
     <>
       {success ? (
-        <section className="hero min-h-screen hero-content flex flex-col justify-start">
-          <h1 className="text-green-500 font-semibold text-3xl">
+        <section className="hero hero-content flex min-h-screen flex-col justify-start">
+          <h1 className="text-3xl font-semibold text-green-500">
             Registration Success!
           </h1>
           <Link to="/sign-in" className="btn btn-primary">
@@ -93,7 +93,7 @@ const SignUp = () => {
       ) : (
         <section>
           <div className="hero hero-content">
-            <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+            <div className="card w-full max-w-sm flex-shrink-0 bg-base-100 shadow-2xl">
               <ToastContainer
                 position="bottom-right"
                 autoClose={5000}
@@ -101,17 +101,17 @@ const SignUp = () => {
               />
               <p
                 ref={errRef}
-                className={`${errMsg ? "text-red-600 text-center" : "hidden"}`}
+                className={`${errMsg ? "text-center text-red-600" : "hidden"}`}
                 aria-live="assertive"
               >
                 {errMsg}
               </p>
-              <h1 className="text-3xl text-center mt-2 font-bold">
+              <h1 className="mt-2 text-center text-3xl font-bold">
                 Sign Up now!
               </h1>
               <form onSubmit={handleSubmit} className="card-body">
                 <div className="form-control relative">
-                  <label htmlFor="username" className="absolute top-3 right-0">
+                  <label htmlFor="username" className="absolute right-0 top-3">
                     <FontAwesomeIcon
                       icon={faCheck}
                       className={`${validName ? "text-green-500" : "hidden"}`}
@@ -152,7 +152,7 @@ const SignUp = () => {
                   </p>
                 </div>
                 <div className="form-control relative">
-                  <label htmlFor="email" className="absolute top-3 right-0">
+                  <label htmlFor="email" className="absolute right-0 top-3">
                     <FontAwesomeIcon
                       icon={faCheck}
                       className={`${validEmail ? "text-green-500" : "hidden"}`}
@@ -191,7 +191,7 @@ const SignUp = () => {
                   </p>
                 </div>
                 <div className="form-control relative">
-                  <label htmlFor="password" className="absolute top-3 right-0">
+                  <label htmlFor="password" className="absolute right-0 top-3">
                     <FontAwesomeIcon
                       icon={faCheck}
                       className={`${validPwd ? "text-green-500" : "hidden"}`}
@@ -230,7 +230,7 @@ const SignUp = () => {
                 <div className="form-control relative">
                   <label
                     htmlFor="confirm_pwd"
-                    className="absolute top-3 right-0"
+                    className="absolute right-0 top-3"
                   >
                     <FontAwesomeIcon
                       icon={faCheck}
@@ -280,11 +280,11 @@ const SignUp = () => {
                   </button>
                 </div>
               </form>
-              <p className="text-center text-bold my-4">
+              <p className="text-bold my-4 text-center">
                 Already have an Account?{" "}
                 <Link
                   to="/sign-in"
-                  className="text-orange-500 text-bold text-1xl"
+                  className="text-bold text-1xl text-orange-500"
                 >
                   Sign In
                 </Link>
