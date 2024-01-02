@@ -4,11 +4,12 @@ export type NavLinkType = {
 };
 
 export type Users = {
-  id: string;
+  id: number;
   user_name: string;
   email: string;
   created_at: string;
   updated_at: string;
   blocked: boolean;
   role: number;
+  avatar?: string | null;
 };

@@ -4,22 +4,30 @@ import { ToastContainer, toast } from "react-toastify";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useAuth } from "../../hooks/useAuth";
 import useGetUserData from "../../hooks/useFetchUserData";
-import { DASHBOARD_TABLE_CONST } from "../../utils/constant";
+import {
+  API_ENDPOINT,
+  DASHBOARD_TABLE_CONST,
+  FILTERS,
+} from "../../utils/constant";
 import UserTableHeader from "./UserTableHeader";
 import UserTableRow from "./UserTableRow";
 
 const UserTable = () => {
-  const USER_BLOCK_URL = "/admin/block";
-  const USER_UNBLOCK_URL = "/admin/active";
-  const USER_DELETE_URL = "/admin/delete";
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const axiosPrivate = useAxiosPrivate();
-  const { auth, setAuth } = useAuth();
+  const { setAuth } = useAuth();
   const { users, getUsers } = useGetUserData();
   useEffect(() => {
     getUsers();
   }, []);
+
+  const filterUserData = (value: string) => {
+    const filterOptions = FILTERS[value];
+    if (filterOptions) {
+      getUsers(filterOptions);
+    }
+  };
 
   const toggleSelectAll = (prevSelectAll: boolean) => {
     setSelectedUsers(prevSelectAll ? [] : users.map((user) => user.email));
@@ -48,7 +56,7 @@ const UserTable = () => {
   };
 
   const verifyAdminStatus = () => {
-    const admin = auth.id && selectedUsers.includes(auth.id);
+    const admin = false;
     if (admin) {
       setAuth({});
     }
@@ -63,7 +71,9 @@ const UserTable = () => {
 
       const confirmResult = window.confirm(DASHBOARD_TABLE_CONST.BLOCK.CONFIRM);
       if (confirmResult) {
-        await axiosPrivate.patch(USER_BLOCK_URL, { userIds: selectedUsers });
+        await axiosPrivate.patch(API_ENDPOINT.ADMIN.BLOCK_URL, {
+          user_emails: selectedUsers,
+        });
         getUsers();
         verifyAdminStatus();
         setSelectedUsers([]);
@@ -81,12 +91,32 @@ const UserTable = () => {
         return;
       }
 
-      await axiosPrivate.patch(USER_UNBLOCK_URL, { userIds: selectedUsers });
+      await axiosPrivate.patch(API_ENDPOINT.ADMIN.UNBLOCK_URL, {
+        user_emails: selectedUsers,
+      });
       getUsers();
       setSelectedUsers([]);
       toast.success(DASHBOARD_TABLE_CONST.UNBLOCK.SUCCESS);
     } catch (error) {
       toast.error(DASHBOARD_TABLE_CONST.UNBLOCK.ERROR);
+    }
+  };
+
+  const handleRoleToggle = async () => {
+    try {
+      if (selectedUsers.length === 0) {
+        toast.error(DASHBOARD_TABLE_CONST.ROLE.SELECT_USER);
+        return;
+      }
+
+      await axiosPrivate.patch(API_ENDPOINT.ADMIN.ROLE_TOGGLE_URL, {
+        user_emails: selectedUsers,
+      });
+      getUsers();
+      setSelectedUsers([]);
+      toast.success(DASHBOARD_TABLE_CONST.ROLE.SUCCESS);
+    } catch (error) {
+      toast.error(DASHBOARD_TABLE_CONST.ROLE.ERROR);
     }
   };
 
@@ -101,8 +131,8 @@ const UserTable = () => {
         DASHBOARD_TABLE_CONST.DELETE.CONFIRM
       );
       if (confirmResult) {
-        await axiosPrivate.delete(USER_DELETE_URL, {
-          data: { userIds: selectedUsers },
+        await axiosPrivate.delete(API_ENDPOINT.ADMIN.DELETE_URL, {
+          data: { user_emails: selectedUsers },
         });
 
         getUsers();
@@ -119,8 +149,10 @@ const UserTable = () => {
     <section className="space-y-4">
       {users?.length ? (
         <section className="space-y-4 font-sans antialiased">
-          <div className="flex flex-col items-center gap-4 sm:flex-row">
+          <div className="">
             <UserTableActions
+              filterUserData={filterUserData}
+              handleRoleToggle={handleRoleToggle}
               handleBlock={handleBlock}
               handleUnblock={handleUnblock}
               handleDelete={handleDelete}

@@ -11,7 +11,13 @@ export const API_ENDPOINT = {
   SIGN_UP: "signup",
   SIGN_IN: "signin",
   SIGN_OUT: "signout",
-  USERS: "/users",
+  ADMIN: {
+    USERS: "admin/users",
+    BLOCK_URL: "admin/users/block",
+    UNBLOCK_URL: "admin/users/unblock",
+    DELETE_URL: "admin/users/delete",
+    ROLE_TOGGLE_URL: "admin/users/role_toggle",
+  },
 };
 
 export const REGEX_PICK = {
@@ -55,4 +61,24 @@ export const DASHBOARD_TABLE_CONST = {
     SUCCESS: "Users deleted successfully.",
     ERROR: "Error deleting users. Please try again.",
   },
+  ROLE: {
+    SELECT_USER: "Please select at least one user to change role.",
+    CONFIRM: "Are you sure you want to change selected users role?",
+    SUCCESS: "Role change action  Succeeded.",
+    ERROR: "Error processing the request. Please try again.",
+  },
+};
+
+export const FILTER_BY = {
+  ADMIN: "admin",
+  BLOCKED: "blocked",
+  GENERAL: "general",
+  ACTIVE: "active",
+};
+
+export const FILTERS = {
+  [FILTER_BY.ADMIN]: { role: 2 },
+  [FILTER_BY.GENERAL]: { role: 1 },
+  [FILTER_BY.BLOCKED]: { blocked: true },
+  [FILTER_BY.ACTIVE]: { blocked: false },
 };
