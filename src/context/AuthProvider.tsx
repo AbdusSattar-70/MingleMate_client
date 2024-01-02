@@ -9,7 +9,7 @@ import {
 interface AuthData {
   isAuthenticated?: boolean;
   blocked?: boolean;
-  id?: number;
+  id?: string;
   authorization?: string;
   role?: number;
 }

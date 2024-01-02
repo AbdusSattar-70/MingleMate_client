@@ -7,7 +7,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import { API_ENDPOINT, MESSAGE, REGEX_PICK } from "../../utils/constant";
+import { API_ENDPOINT, AUTH_MESSAGES, REGEX_PICK } from "../../utils/constant";
 import axios from "../../utils/api";
 import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
 
@@ -64,7 +64,7 @@ const SignUp = () => {
     try {
       const res = await axios.post(API_ENDPOINT.SIGN_UP, userData);
       if (isSuccessRes(res)) {
-        toast.success(MESSAGE.SUCCESS);
+        toast.success(AUTH_MESSAGES.SUCCESS);
         navigate("/sign-in");
 
         setUser("");
@@ -134,7 +134,7 @@ const SignUp = () => {
                   }`}
                 >
                   <FontAwesomeIcon icon={faInfoCircle} />1 to 24 characters.
-                  {MESSAGE.VALID_NAME_NOTE}
+                  {AUTH_MESSAGES.VALID_NAME_NOTE}
                 </p>
               </div>
               <div className="form-control relative">
@@ -173,7 +173,7 @@ const SignUp = () => {
                   }`}
                 >
                   <FontAwesomeIcon icon={faInfoCircle} />
-                  {MESSAGE.EMAIL_NOTE}
+                  {AUTH_MESSAGES.EMAIL_NOTE}
                 </p>
               </div>
               <div className="form-control relative">
@@ -209,7 +209,7 @@ const SignUp = () => {
                   }`}
                 >
                   <FontAwesomeIcon icon={faInfoCircle} />
-                  {MESSAGE.PWD_NOTE}
+                  {AUTH_MESSAGES.PWD_NOTE}
                 </p>
               </div>
               <div className="form-control relative">
@@ -247,7 +247,7 @@ const SignUp = () => {
                   }`}
                 >
                   <FontAwesomeIcon icon={faInfoCircle} />
-                  Must match the first password input field.
+                  {AUTH_MESSAGES.CONFIRM_PWD}
                 </p>
               </div>
               <div className="form-control mt-6">

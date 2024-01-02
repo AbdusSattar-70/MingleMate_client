@@ -1,7 +1,16 @@
-import PropTypes from "prop-types";
 import { FaRegTrashCan, FaLockOpen, FaLock } from "react-icons/fa6";
 
-const UserTableActions = ({ handleBlock, handleUnblock, handleDelete }) => {
+interface UserTableActionProps {
+  handleBlock: () => void;
+  handleUnblock: () => void;
+  handleDelete: () => void;
+}
+
+const UserTableActions: React.FC<UserTableActionProps> = ({
+  handleBlock,
+  handleUnblock,
+  handleDelete,
+}) => {
   return (
     <div className="space-x-4">
       <button
@@ -33,12 +42,6 @@ const UserTableActions = ({ handleBlock, handleUnblock, handleDelete }) => {
       </button>
     </div>
   );
-};
-
-UserTableActions.propTypes = {
-  handleBlock: PropTypes.func.isRequired,
-  handleUnblock: PropTypes.func.isRequired,
-  handleDelete: PropTypes.func.isRequired,
 };
 
 export default UserTableActions;
