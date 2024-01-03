@@ -20,6 +20,7 @@ export const API_ENDPOINT = {
     DELETE_URL: "admin/users/delete",
     ROLE_TOGGLE_URL: "admin/users/role_toggle",
   },
+  COLLECTION: "collections",
 };
 
 export const REGEX_PICK = {
