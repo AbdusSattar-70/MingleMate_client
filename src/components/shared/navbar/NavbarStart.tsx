@@ -37,11 +37,11 @@ const NavbarStart = (): React.ReactNode => {
             className="theme-controller"
             value="synthwave"
           />
-          <RiEnglishInput className="swap-on fill-current w-5 h-5" />
+          <RiEnglishInput className="swap-on h-5 w-5 fill-current" />
           <img
             src={bnIcon}
             alt="bangla icon"
-            className="swap-off fill-current w-5 h-5"
+            className="swap-off h-5 w-5 fill-current"
           />
         </label>
       </div>

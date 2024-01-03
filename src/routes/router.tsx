@@ -10,6 +10,7 @@ import About from "../components/about/About";
 import Contact from "../components/contact/Contact";
 import Collection from "../components/collection/Collection";
 import Profile from "../components/profile/Profile";
+import CreateCollectionForm from "../components/collection/CreateCollection";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/collection",
         element: <Collection />,
+      },
+      {
+        path: "/add-collection",
+        element: <CreateCollectionForm />,
       },
       {
         path: "/contact",

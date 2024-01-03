@@ -1,5 +1,13 @@
+import CollectionMenu from "./CollectionMenu";
+import DisplayCollections from "./DisplayCollection";
+
 const Collection = () => {
-  return <div>Collection</div>;
+  return (
+    <>
+      <CollectionMenu />
+      <DisplayCollections />
+    </>
+  );
 };
 
 export default Collection;

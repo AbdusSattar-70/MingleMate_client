@@ -1,3 +1,5 @@
+import { CustomFieldKey, TopicKey } from "./types";
+
 export const BASE_URL = "http://localhost:4000";
 export const AXIOS_HEADERS = { "Content-Type": "application/json" };
 
@@ -81,4 +83,36 @@ export const FILTERS = {
   [FILTER_BY.GENERAL]: { role: 1 },
   [FILTER_BY.BLOCKED]: { blocked: true },
   [FILTER_BY.ACTIVE]: { blocked: false },
+};
+
+export const CustomFieldType: Record<CustomFieldKey, string> = {
+  string: "Single line text",
+  text: "Multi-line text or description type",
+  number: "Number",
+  boolean: "True/False",
+  date: "Date",
+};
+
+export const TOPICS: Record<TopicKey, string> = {
+  EDUCATION: "Education",
+  TECHNOLOGY: "Technology",
+  TRAVEL: "Travel",
+  HEALTH_AND_WELLNESS: "Health and Wellness",
+  PHOTOGRAPHY: "Photography",
+  FOOD_AND_COOKING: "Food and Cooking",
+  FITNESS: "Fitness",
+  HISTORY: "History",
+  SCIENCE: "Science",
+  FASHION: "Fashion",
+  ART_AND_CRAFTS: "Art and Crafts",
+  MUSIC: "Music",
+  SPORTS: "Sports",
+  NATURE_AND_WILDLIFE: "Nature and Wildlife",
+  DIY_PROJECTS: "DIY Projects",
+  HOME_DECOR: "Home Decor",
+  GAMING: "Gaming",
+  FINANCE_AND_INVESTMENT: "Finance and Investment",
+  MOVIES_AND_TV_SHOWS: "Movies and TV Shows",
+  GARDENING: "Gardening",
+  MOTIVATION_AND_SELF_HELP: "Motivation and Self-Help",
 };
