@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import UploadImage from "./ImageUpload";
 import AddCustomField from "./AddCustomField";
-import { API_ENDPOINT, TOPICS } from "../../utils/constant";
+import { API_ENDPOINT, MESSAGES, TOPICS } from "../../utils/constant";
 import { CustomField, TopicKey } from "../../utils/types";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useAuth } from "../../hooks/useAuth";
@@ -18,7 +18,12 @@ const CreateCollectionForm: React.FC = () => {
   const [field_name, setFieldName] = useState<string>("");
   const [field_type, setFieldType] = useState<string>("");
 
-  const handleCustomField = (): void => {
+  const handleCustomField = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    if (!field_type) {
+      toast.warn(MESSAGES.FILL_TYPE_FIELD);
+      return;
+    }
     setCustomFields([
       ...customFields,
       {
@@ -50,13 +55,13 @@ const CreateCollectionForm: React.FC = () => {
   const CreateNewCollection = async () => {
     try {
       if (!title && !topic && !description) {
-        toast.error("title, topic and description is required");
+        toast.error(MESSAGES.COLLECTION_FIELD);
         return;
       }
       await axiosPrivate.post(API_ENDPOINT.COLLECTION, data);
-      toast.success("SUCCESS");
+      toast.success(MESSAGES.SUCCESS);
     } catch (error) {
-      toast.error("ERROR");
+      toast.error(MESSAGES.TRY_AGAIN);
     }
   };
 
@@ -95,9 +100,9 @@ const CreateCollectionForm: React.FC = () => {
                   required
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
-                  className="select select-bordered max-w-sm"
+                  className="select select-bordered"
                 >
-                  <option disabled selected>
+                  <option value="" disabled selected>
                     Select Topic or Category
                   </option>
                   {(Object.entries(TOPICS) as [TopicKey, string][]).map(
@@ -120,20 +125,26 @@ const CreateCollectionForm: React.FC = () => {
               ></textarea>
             </div>
 
-            <p className="text-3xl font-semibold">Add Custom Fields:</p>
-            <div className=" border border-red-400 p-4">
-              <AddCustomField
-                field_name={field_name}
-                setFieldName={setFieldName}
-                setFieldType={setFieldType}
-                field_type={field_type}
-                customFields={customFields}
-                handleCustomField={handleCustomField}
-                handleDeleteField={handleDeleteField}
-              />
-            </div>
-            <div className="w-36 border border-dashed border-blue-400 p-4 ">
-              <UploadImage />
+            <AddCustomField
+              field_name={field_name}
+              setFieldName={setFieldName}
+              setFieldType={setFieldType}
+              field_type={field_type}
+              customFields={customFields}
+              handleCustomField={handleCustomField}
+              handleDeleteField={handleDeleteField}
+            />
+            <div className="flex w-72 gap-2 ">
+              <div className="w-36 border border-dashed border-blue-400 p-4 ">
+                <UploadImage />
+              </div>
+              {auth.collectImg && (
+                <img
+                  className="mx-auto w-36 border border-e-red-600"
+                  src={auth.collectImg}
+                  alt="collection image"
+                />
+              )}
             </div>
 
             <div className="form-control mt-6">

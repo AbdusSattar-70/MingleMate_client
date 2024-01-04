@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaFileImage } from "react-icons/fa6";
 import useImageUpload from "../../firebase/useImageUpload";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
+
 const UploadImage: React.FC = () => {
   const { setAuth } = useAuth();
-  const { uploadFile, downloadURL, error } = useImageUpload();
-  const inputRef = useRef<HTMLInputElement>(null);
+  const { uploadFile, uploadProgress, downloadURL, error } = useImageUpload();
   const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
@@ -19,27 +19,29 @@ const UploadImage: React.FC = () => {
           collectImg: downloadURL,
         };
       });
-
       toast.success("Image uploaded successfully!");
     }
-  }, [error, downloadURL]);
+  }, [error, downloadURL, setAuth]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    setFile(selectedFile || null);
-    if (file) {
-      uploadFile(file);
-    } else {
-      toast.warn("Please select an image to upload.");
+  useEffect(() => {
+    const UploadImagedynamically = async () => {
+      if (file) {
+        await uploadFile(file);
+        setFile(null);
+      }
+    };
+
+    if (file !== null) {
+      UploadImagedynamically();
     }
-  };
+  }, [file, uploadFile]);
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const image = e.dataTransfer.files[0];
-    setFile(image || null);
-    if (file) {
-      uploadFile(file);
+
+    if (image) {
+      setFile(image);
     } else {
       toast.warn("Please select an image to upload.");
     }
@@ -47,6 +49,13 @@ const UploadImage: React.FC = () => {
 
   return (
     <>
+      {uploadProgress && (
+        <progress
+          className="progress progress-success w-full"
+          value={uploadProgress}
+          max="100"
+        ></progress>
+      )}
       <div
         className="flex place-items-center justify-center"
         onDragOver={(e) => e.preventDefault()}
@@ -57,8 +66,13 @@ const UploadImage: React.FC = () => {
           <input
             name="imageupload"
             type="file"
-            onChange={handleChange}
-            ref={inputRef}
+            onChange={(e) => {
+              const selectedFile = e.target?.files && e.target?.files[0];
+
+              if (selectedFile) {
+                setFile(selectedFile);
+              }
+            }}
             className="absolute h-0 w-0 opacity-0"
           />
           <div className="flex flex-col items-center file:rounded-full file:px-4 file:py-2 file:text-sm file:text-violet-700 hover:file:bg-violet-100">

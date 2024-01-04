@@ -33,7 +33,7 @@ export const RES_TYPE = {
   OK: "OK",
 };
 
-export const AUTH_MESSAGES = {
+export const MESSAGES = {
   CONFIRM_PWD: " Must match the first password input field.",
   VALID_NAME_NOTE:
     " Must begin with a letter. Letters, numbers, underscores, hyphens allowed.",
@@ -43,6 +43,8 @@ export const AUTH_MESSAGES = {
   TRY_AGAIN:
     "Unable to process the request at this moment, Please try again later.",
   SUCCESS: "Congrats! Request has Succeeded",
+  FILL_TYPE_FIELD: "please fill up field type",
+  COLLECTION_FIELD: "title, topic and description is required",
 };
 
 export const DASHBOARD_TABLE_CONST = {
