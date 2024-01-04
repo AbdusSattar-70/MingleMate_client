@@ -38,3 +38,9 @@ export type TopicKey =
   | "MOTIVATION_AND_SELF_HELP";
 
 export type CustomFieldKey = "string" | "text" | "number" | "boolean" | "date";
+
+export type CustomField = {
+  id: number;
+  field_name: string;
+  field_type: string;
+};

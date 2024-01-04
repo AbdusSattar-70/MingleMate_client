@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { FaFileImage } from "react-icons/fa6";
 import useImageUpload from "../../firebase/useImageUpload";
 import { toast } from "react-toastify";
-
+import { useAuth } from "../../hooks/useAuth";
 const UploadImage: React.FC = () => {
+  const { setAuth } = useAuth();
   const { uploadFile, downloadURL, error } = useImageUpload();
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -12,6 +13,13 @@ const UploadImage: React.FC = () => {
     if (error) {
       toast.warn(error);
     } else if (downloadURL) {
+      setAuth((prev) => {
+        return {
+          ...prev,
+          collectImg: downloadURL,
+        };
+      });
+
       toast.success("Image uploaded successfully!");
     }
   }, [error, downloadURL]);

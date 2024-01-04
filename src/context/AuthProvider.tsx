@@ -12,6 +12,8 @@ interface AuthData {
   id?: number;
   authorization?: string;
   role?: number;
+  avatar?: string;
+  collectImg?: string;
 }
 
 interface AuthContextValue {
