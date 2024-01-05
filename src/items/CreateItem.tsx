@@ -1,38 +1,62 @@
-import React, { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-// import { CustomField, TopicKey } from "../utils/types";
-import { API_ENDPOINT, MESSAGES, TOPICS } from "../utils/constant";
-import { TopicKey } from "../utils/types";
+import { API_ENDPOINT, MESSAGES } from "../utils/constant";
+// import GetAndCreateTag from "./GetAndCreateTag";
+import CustomFieldsForm from "./CustomFieldsForm";
+import isSuccessRes from "../utils/apiResponse";
+import { ItemCustomFieldType } from "../utils/types";
 
 const CreateItem: React.FC = () => {
-  const { collection_id } = useParams();
+  const { id: collection_id } = useParams();
   const { auth } = useAuth();
-  const axiosPrivate = useAxiosPrivate();
   const [item_name, setItem_name] = useState<string>("");
-  const [tag, setTags] = useState<string>("");
-  // const [customFields, setCustomFields] = useState<CustomField[]>([]);
+  // const [tags, setTags] = useState<string>("");
+  const axiosPrivate = useAxiosPrivate();
+  const [itemCustomFields, setItemCustomFields] = useState<
+    ItemCustomFieldType[]
+  >([]);
 
-  // const handleCustomField = (e: React.FormEvent<HTMLFormElement>): void => {
-  //   e.preventDefault();
-  //   setItem_name("");
-  // };
+  useEffect(() => {
+    const fetchCollectionData = async (id: string) => {
+      const res = await axiosPrivate.get(`${API_ENDPOINT.COLLECTION}/${id}`);
+      if (isSuccessRes(res)) {
+        setItemCustomFields(res.data.custom_fields);
+      }
+    };
+
+    if (collection_id) {
+      fetchCollectionData(collection_id);
+    }
+  }, [collection_id, axiosPrivate]);
+
+  const handleCustomInput = (id: number, value?: any) => {
+    if (itemCustomFields.length) {
+      setItemCustomFields((prevFields) => {
+        const updatedFields = prevFields.map((field) =>
+          field.id === id ? { ...field, field_value: value } : field
+        );
+        return updatedFields;
+      });
+    }
+  };
 
   const data = {
     item: {
       item_name,
       collection_id,
       user_id: auth.id,
-      tags: tag,
-      // custom_fields:customFields,
+      custom_fields: itemCustomFields,
+      tags: "heeloo hidk",
     },
   };
 
-  const CreateNewCollection = async () => {
+  const CreateNewItem = async () => {
     try {
-      await axiosPrivate.post(API_ENDPOINT.COLLECTION, data);
+      await axiosPrivate.post(API_ENDPOINT.ITEM, data);
       toast.success(MESSAGES.SUCCESS);
     } catch (error) {
       toast.error(MESSAGES.TRY_AGAIN);
@@ -67,38 +91,18 @@ const CreateItem: React.FC = () => {
                   className="input input-bordered"
                 />
               </div>
-              <div className="form-control">
-                <label htmlFor="selectTopic"></label>
-                <select
-                  name="selectTopic"
-                  required
-                  value={tag}
-                  onChange={(e) => setTags(e.target.value)}
-                  className="select select-bordered"
-                >
-                  <option value="" disabled selected>
-                    Select or Create new Tags
-                  </option>
-                  {(Object.entries(TOPICS) as [TopicKey, string][]).map(
-                    ([topicKey, topicValue]) => (
-                      <option key={topicKey} value={topicKey}>
-                        {topicValue}
-                      </option>
-                    )
-                  )}
-                </select>
-              </div>
+              {/* <GetAndCreateTag setTags={setTags} /> */}
             </div>
 
-            {/* <AddCustomField
-              customFields={customFields}
-              handleCustomField={handleCustomField}
-            /> */}
+            <CustomFieldsForm
+              itemCustomFields={itemCustomFields}
+              handleCustomInput={handleCustomInput}
+            />
 
             <div className="form-control mt-6">
               <button
                 type="submit"
-                onClick={CreateNewCollection}
+                onClick={CreateNewItem}
                 className="btn btn-primary"
               >
                 Submit

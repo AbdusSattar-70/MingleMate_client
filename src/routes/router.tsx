@@ -11,8 +11,8 @@ import Contact from "../components/contact/Contact";
 import Collections from "../components/collection/Collections";
 import Profile from "../components/profile/Profile";
 import CreateCollectionForm from "../components/collection/CreateCollection";
-import Collection from "../components/collection/Collection";
 import CreateItem from "../items/CreateItem";
+import GetSingleCollection from "../components/collection/GetSingleCollection";
 
 const router = createBrowserRouter([
   {
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/collection/:id",
-        element: <Collection />,
+        element: <GetSingleCollection />,
         loader: ({ params }) =>
           fetch(`http://localhost:4000/collections/${params.id}`),
       },
@@ -51,7 +51,7 @@ const router = createBrowserRouter([
         element: <CreateCollectionForm />,
       },
       {
-        path: "/add-item/:id",
+        path: "/collection/:id/add-item",
         element: <CreateItem />,
       },
       {

@@ -63,3 +63,11 @@ export type CollectionType = {
   items_count: number;
   user_name: string;
 };
+
+export type ItemCustomFieldType = {
+  id: number;
+  field_name: string;
+  field_type: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  field_value: any;
+};

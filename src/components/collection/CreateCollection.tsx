@@ -107,7 +107,7 @@ const CreateCollectionForm: React.FC = () => {
                   </option>
                   {(Object.entries(TOPICS) as [TopicKey, string][]).map(
                     ([topicKey, topicValue]) => (
-                      <option key={topicKey} value={topicKey}>
+                      <option key={topicKey} value={topicValue}>
                         {topicValue}
                       </option>
                     )

@@ -101,7 +101,7 @@ const AddCustomField: React.FC<AddCustomFieldProps> = ({
             {(
               Object.entries(CustomFieldType) as [CustomFieldKey, string][]
             ).map(([Key, value]) => (
-              <option key={Key} value={value}>
+              <option key={Key} value={Key}>
                 {value}
               </option>
             ))}

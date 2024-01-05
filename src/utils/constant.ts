@@ -22,6 +22,7 @@ export const API_ENDPOINT = {
     ROLE_TOGGLE_URL: "admin/users/role_toggle",
   },
   COLLECTION: "collections",
+  ITEM: "items",
 };
 
 export const REGEX_PICK = {
