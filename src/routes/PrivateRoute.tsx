@@ -12,7 +12,9 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
 
   if (isLoading) return <p>loading</p>;
   if (isAdmin) return children;
-  return <Navigate state={{ from: location }} to="/sign-in" replace />;
+  if (!isAdmin && !isLoading) {
+    <Navigate state={{ from: location }} to="/sign-in" replace />;
+  }
 };
 
 export default PrivateRoute;

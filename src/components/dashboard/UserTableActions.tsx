@@ -64,7 +64,7 @@ const UserTableActions: React.FC<UserTableActionProps> = ({
           className="select select-bordered  w-full"
           onChange={(e) => filterUserData(e.target.value)}
         >
-          <option disabled selected>
+          <option disabled value="">
             Filter Users
           </option>
           <option value={FILTER_BY.ADMIN}>Filter all admin users</option>
