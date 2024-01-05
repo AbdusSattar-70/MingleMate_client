@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useTheme from "../../../hooks/useTheme";
 import { useAuth } from "../../../hooks/useAuth";
 import { PICK_THEME } from "../../../utils/constant";
@@ -6,10 +6,12 @@ import useSignOut from "../../../hooks/useSignOut";
 import { ToastContainer, toast } from "react-toastify";
 import useAuthentication from "../../../hooks/useAuthentication";
 const NavbarEnd = () => {
-  const [isAuthenticated, isActive, isAdmin] = useAuthentication();
+  const navigate = useNavigate();
+
+  const { isActive, isAdmin } = useAuthentication();
   const { theme, toggleTheme } = useTheme();
   const { signOut, signOutError } = useSignOut();
-  const { setAuth } = useAuth();
+  const { setAuth, auth } = useAuth();
 
   const handleSignOut = async () => {
     await signOut();
@@ -17,6 +19,7 @@ const NavbarEnd = () => {
       toast.warning(signOutError);
     } else {
       setAuth({});
+      navigate("/");
     }
   };
 
@@ -52,7 +55,7 @@ const NavbarEnd = () => {
       </label>
 
       <div className="dropdown dropdown-end">
-        {isAuthenticated && isActive ? (
+        {isActive && auth.authToken ? (
           <>
             <div
               tabIndex={0}

@@ -1,20 +1,17 @@
-import { Navigate, useLocation } from "react-router-dom";
 import { ReactNode } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+
 import useAuthentication from "../hooks/useAuthentication";
 
 interface PrivateRouteProps {
   children: ReactNode;
 }
-
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-  const [isAuthenticated, isActive, isAdmin] = useAuthentication();
-
   const location = useLocation();
+  const { isAdmin, isLoading } = useAuthentication();
 
-  if (isAuthenticated && isActive && isAdmin) {
-    return children;
-  }
-
+  if (isLoading) return <p>loading</p>;
+  if (isAdmin) return children;
   return <Navigate state={{ from: location }} to="/sign-in" replace />;
 };
 

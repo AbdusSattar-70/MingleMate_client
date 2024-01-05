@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import UserTableActions from "./UserTableActions";
 import { ToastContainer, toast } from "react-toastify";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useAuth } from "../../hooks/useAuth";
 import useGetUserData from "../../hooks/useFetchUserData";
 import {
   API_ENDPOINT,
@@ -16,7 +15,6 @@ const UserTable = () => {
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const axiosPrivate = useAxiosPrivate();
-  const { setAuth } = useAuth();
   const { users, getUsers } = useGetUserData();
   useEffect(() => {
     getUsers();
@@ -55,13 +53,6 @@ const UserTable = () => {
     });
   };
 
-  const verifyAdminStatus = () => {
-    const admin = false;
-    if (admin) {
-      setAuth({});
-    }
-  };
-
   const handleBlock = async () => {
     try {
       if (selectedUsers.length === 0) {
@@ -75,7 +66,6 @@ const UserTable = () => {
           user_emails: selectedUsers,
         });
         getUsers();
-        verifyAdminStatus();
         setSelectedUsers([]);
         toast.success(DASHBOARD_TABLE_CONST.BLOCK.SUCCESS);
       }
@@ -136,7 +126,6 @@ const UserTable = () => {
         });
 
         getUsers();
-        verifyAdminStatus();
         setSelectedUsers([]);
         toast.success(DASHBOARD_TABLE_CONST.DELETE.SUCCESS);
       }

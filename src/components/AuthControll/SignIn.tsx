@@ -34,9 +34,9 @@ const SignIn = () => {
     try {
       const res = await axios.post(API_ENDPOINT.SIGN_IN, signInData);
       if (isSuccessRes(res)) {
-        const { id, role, blocked } = res.data.data;
+        const { id } = res.data.data;
         const { authorization } = res.headers;
-        setAuth({ id, authToken: authorization, role, blocked });
+        setAuth({ id, authToken: authorization });
         setEmail("");
         setPwd("");
         navigate(from, { replace: true });
