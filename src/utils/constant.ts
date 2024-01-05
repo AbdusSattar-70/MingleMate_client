@@ -13,6 +13,7 @@ export const API_ENDPOINT = {
   SIGN_UP: "signup",
   SIGN_IN: "signin",
   SIGN_OUT: "signout",
+  CURRENT_USER: "current_user",
   ADMIN: {
     USERS: "admin/users",
     BLOCK_URL: "admin/users/block",

@@ -8,9 +8,11 @@ import Dashboard from "../components/dashboard/Dashboard";
 import PrivateRoute from "./PrivateRoute";
 import About from "../components/about/About";
 import Contact from "../components/contact/Contact";
-import Collection from "../components/collection/Collection";
+import Collections from "../components/collection/Collections";
 import Profile from "../components/profile/Profile";
 import CreateCollectionForm from "../components/collection/CreateCollection";
+import Collection from "../components/collection/Collection";
+import CreateItem from "../items/CreateItem";
 
 const router = createBrowserRouter([
   {
@@ -35,12 +37,22 @@ const router = createBrowserRouter([
         element: <About />,
       },
       {
-        path: "/collection",
+        path: "/collections",
+        element: <Collections />,
+      },
+      {
+        path: "/collection/:id",
         element: <Collection />,
+        loader: ({ params }) =>
+          fetch(`http://localhost:4000/collections/${params.id}`),
       },
       {
         path: "/add-collection",
         element: <CreateCollectionForm />,
+      },
+      {
+        path: "/add-item/:id",
+        element: <CreateItem />,
       },
       {
         path: "/contact",

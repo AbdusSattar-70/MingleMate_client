@@ -8,8 +8,8 @@ const useAxiosPrivate = () => {
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use(
       (config) => {
-        if (auth.authorization) {
-          config.headers["Authorization"] = auth?.authorization;
+        if (auth.authToken) {
+          config.headers["Authorization"] = auth?.authToken;
         }
         return config;
       },

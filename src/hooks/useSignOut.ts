@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import useAxiosPrivate from "./useAxiosPrivate";
-import { API_ENDPOINT } from "../utils/constant";
+import { API_ENDPOINT, MESSAGES } from "../utils/constant";
 import isSuccessRes from "../utils/apiResponse";
 
 interface UseSignOutResult {
@@ -18,12 +18,12 @@ const useSignOut = (): UseSignOutResult => {
       const response = await axiosPrivate.delete(API_ENDPOINT.SIGN_OUT);
 
       if (!isSuccessRes(response)) {
-        setSignOutError("Sign out failed,Please try again");
+        setSignOutError(MESSAGES.TRY_AGAIN);
       } else {
         setSignOutError("");
       }
     } catch (error: any) {
-      setSignOutError("Sign out failed,Please try again");
+      setSignOutError(MESSAGES.TRY_AGAIN);
     }
   };
 

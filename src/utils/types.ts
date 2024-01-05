@@ -14,6 +14,15 @@ export type Users = {
   avatar?: string | null;
 };
 
+export type AuthData = {
+  blocked?: boolean;
+  id?: number;
+  authToken?: string;
+  role?: number;
+  avatar?: string;
+  collectImg?: string;
+};
+
 export type TopicKey =
   | "EDUCATION"
   | "TECHNOLOGY"
@@ -43,4 +52,14 @@ export type CustomField = {
   id: number;
   field_name: string;
   field_type: string;
+};
+
+export type CollectionType = {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+  custom_fields: CustomField[];
+  items_count: number;
+  user_name: string;
 };

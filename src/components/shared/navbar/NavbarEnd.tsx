@@ -4,11 +4,12 @@ import { useAuth } from "../../../hooks/useAuth";
 import { PICK_THEME } from "../../../utils/constant";
 import useSignOut from "../../../hooks/useSignOut";
 import { ToastContainer, toast } from "react-toastify";
+import useAuthentication from "../../../hooks/useAuthentication";
 const NavbarEnd = () => {
+  const [isAuthenticated, isActive, isAdmin] = useAuthentication();
   const { theme, toggleTheme } = useTheme();
   const { signOut, signOutError } = useSignOut();
-  const { auth, setAuth } = useAuth();
-  const isAdmin = true;
+  const { setAuth } = useAuth();
 
   const handleSignOut = async () => {
     await signOut();
@@ -51,7 +52,7 @@ const NavbarEnd = () => {
       </label>
 
       <div className="dropdown dropdown-end">
-        {auth?.isAuthenticated ? (
+        {isAuthenticated && isActive ? (
           <>
             <div
               tabIndex={0}

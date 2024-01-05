@@ -1,16 +1,17 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
 import { ReactNode } from "react";
+import useAuthentication from "../hooks/useAuthentication";
 
 interface PrivateRouteProps {
   children: ReactNode;
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
-  const { auth } = useAuth();
+  const [isAuthenticated, isActive, isAdmin] = useAuthentication();
+
   const location = useLocation();
 
-  if (auth) {
+  if (isAuthenticated && isActive && isAdmin) {
     return children;
   }
 

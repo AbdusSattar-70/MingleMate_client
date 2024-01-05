@@ -6,8 +6,8 @@ export const navLinkStart: NavLinkType[] = [
     title: "Home",
   },
   {
-    path: "/collection",
-    title: "Collection",
+    path: "/collections",
+    title: "Collections",
   },
   {
     path: "/about",

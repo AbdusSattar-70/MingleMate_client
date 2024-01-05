@@ -36,7 +36,7 @@ const SignIn = () => {
       if (isSuccessRes(res)) {
         const { id, role, blocked } = res.data.data;
         const { authorization } = res.headers;
-        setAuth({ id, isAuthenticated: true, authorization, role, blocked });
+        setAuth({ id, authToken: authorization, role, blocked });
         setEmail("");
         setPwd("");
         navigate(from, { replace: true });

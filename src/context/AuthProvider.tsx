@@ -4,17 +4,9 @@ import {
   useState,
   Dispatch,
   SetStateAction,
+  useEffect,
 } from "react";
-
-interface AuthData {
-  isAuthenticated?: boolean;
-  blocked?: boolean;
-  id?: number;
-  authorization?: string;
-  role?: number;
-  avatar?: string;
-  collectImg?: string;
-}
+import { AuthData } from "../utils/types";
 
 interface AuthContextValue {
   auth: AuthData;
@@ -30,7 +22,14 @@ export const AuthContext = createContext<AuthContextValue | undefined>(
 );
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [auth, setAuth] = useState<AuthData>({});
+  const [auth, setAuth] = useState<AuthData>(() => {
+    const storedAuth = sessionStorage.getItem("mm");
+    return storedAuth ? JSON.parse(storedAuth) : {};
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem("mm", JSON.stringify(auth));
+  }, [auth]);
 
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>

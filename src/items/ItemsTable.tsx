@@ -12,7 +12,7 @@ import {
 import UserTableHeader from "./UserTableHeader";
 import UserTableRow from "./UserTableRow";
 
-const UserTable = () => {
+const ItemsTable = () => {
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const axiosPrivate = useAxiosPrivate();
@@ -149,7 +149,7 @@ const UserTable = () => {
     <section className="space-y-4">
       {users?.length ? (
         <section className="space-y-4 font-sans antialiased">
-          <div>
+          <div className="">
             <UserTableActions
               filterUserData={filterUserData}
               handleRoleToggle={handleRoleToggle}
@@ -198,4 +198,4 @@ const UserTable = () => {
   );
 };
 
-export default UserTable;
+export default ItemsTable;
