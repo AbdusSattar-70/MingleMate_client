@@ -38,7 +38,7 @@ const AddCustomField: React.FC<AddCustomFieldProps> = ({
               <label htmlFor="customFieldName"></label>
               <input
                 type="text"
-                id="customFieldName"
+                id={String(field.id)}
                 value={field.field_name}
                 readOnly
                 placeholder="Enter Custom Field Name"
@@ -50,7 +50,7 @@ const AddCustomField: React.FC<AddCustomFieldProps> = ({
               <label htmlFor="CustomFieldType"></label>
               <input
                 type="text"
-                id="CustomFieldType"
+                id={String(field.id)}
                 value={field.field_type}
                 readOnly
                 className="input input-bordered"
@@ -72,7 +72,7 @@ const AddCustomField: React.FC<AddCustomFieldProps> = ({
 
       <form
         onSubmit={handleCustomField}
-        className=" mt-2 space-y-4 border border-blue-400 p-4"
+        className="grid grid-cols-1 gap-4 border border-blue-600 p-4 sm:grid-cols-3"
       >
         <div className="form-control">
           <label htmlFor="customFieldName"></label>

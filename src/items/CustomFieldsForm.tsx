@@ -15,7 +15,6 @@ const CustomField: React.FC<CustomFieldProps> = ({
 }) => {
   const renderInput = () => {
     switch (field.field_type) {
-      case "text":
       case "string":
         return (
           <input
@@ -24,9 +23,20 @@ const CustomField: React.FC<CustomFieldProps> = ({
             required
             value={field.field_value || ""}
             onChange={(e) => handleCustomInput(field.id, e.target.value)}
-            placeholder="Enter Collection Name"
+            placeholder="write single line text here"
             className="input input-bordered"
           />
+        );
+      case "text":
+        return (
+          <textarea
+            id={`field_${field.id}`}
+            placeholder="Add multi-line text here"
+            value={field.field_value || ""}
+            onChange={(e) => handleCustomInput(field.id, e.target.value)}
+            required
+            className="textarea textarea-bordered textarea-lg w-full"
+          ></textarea>
         );
       case "number":
         return (
@@ -34,6 +44,7 @@ const CustomField: React.FC<CustomFieldProps> = ({
             type="number"
             id={`field_${field.id}`}
             value={field.field_value || ""}
+            className="input input-bordered"
             onChange={(e) =>
               handleCustomInput(field.id, parseFloat(e.target.value))
             }
@@ -45,6 +56,7 @@ const CustomField: React.FC<CustomFieldProps> = ({
             type="checkbox"
             id={`field_${field.id}`}
             checked={field.field_value || false}
+            className="checkbox-primary checkbox"
             onChange={(e) => handleCustomInput(field.id, e.target.checked)}
           />
         );
@@ -54,6 +66,7 @@ const CustomField: React.FC<CustomFieldProps> = ({
             type="date"
             id={`field_${field.id}`}
             value={field.field_value || ""}
+            className="input input-bordered"
             onChange={(e) => handleCustomInput(field.id, e.target.value)}
           />
         );
@@ -63,7 +76,7 @@ const CustomField: React.FC<CustomFieldProps> = ({
   };
 
   return (
-    <div key={field.id}>
+    <div key={field.id} className="form-control">
       <label htmlFor={`field_${field.id}`}>{field.field_name}</label>
       {renderInput()}
     </div>
@@ -83,7 +96,7 @@ const CustomFieldsForm: React.FC<CustomFieldsFormProps> = ({
   itemCustomFields,
 }) => {
   return (
-    <form>
+    <form className="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {itemCustomFields.length > 0 ? (
         itemCustomFields.map((field) => (
           <CustomField

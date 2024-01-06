@@ -14,8 +14,9 @@ const CreateItem: React.FC = () => {
   const { id: collection_id } = useParams();
   const { auth } = useAuth();
   const [item_name, setItem_name] = useState<string>("");
-  // const [tags, setTags] = useState<string>("");
+  const [tags, setTags] = useState<string>("");
   const axiosPrivate = useAxiosPrivate();
+  const [collectImg, setCollectImg] = useState("");
   const [itemCustomFields, setItemCustomFields] = useState<
     ItemCustomFieldType[]
   >([]);
@@ -24,7 +25,8 @@ const CreateItem: React.FC = () => {
     const fetchCollectionData = async (id: string) => {
       const res = await axiosPrivate.get(`${API_ENDPOINT.COLLECTION}/${id}`);
       if (isSuccessRes(res)) {
-        setItemCustomFields(res.data.custom_fields);
+        setItemCustomFields(res?.data?.custom_fields);
+        setCollectImg(res?.data?.image);
       }
     };
 
@@ -33,13 +35,12 @@ const CreateItem: React.FC = () => {
     }
   }, [collection_id, axiosPrivate]);
 
-  const handleCustomInput = (id: number, value?: any) => {
+  const handleCustomInput = (id: number, field_value?: any) => {
     if (itemCustomFields.length) {
       setItemCustomFields((prevFields) => {
-        const updatedFields = prevFields.map((field) =>
-          field.id === id ? { ...field, field_value: value } : field
+        return prevFields.map((field) =>
+          field.id === id ? { ...field, field_value } : field
         );
-        return updatedFields;
       });
     }
   };
@@ -50,7 +51,7 @@ const CreateItem: React.FC = () => {
       collection_id,
       user_id: auth.id,
       custom_fields: itemCustomFields,
-      tags: "heeloo hidk",
+      tags,
     },
   };
 
@@ -70,17 +71,20 @@ const CreateItem: React.FC = () => {
           <div className="text-center">
             <img
               className="mx-auto w-48"
-              src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
-              alt="logo"
+              src={
+                collectImg ||
+                "https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
+              }
+              alt="collection image"
             />
             <h4 className="mb-4 mt-1 pb-1 text-xl font-semibold">
               Add items to your collection.
             </h4>
           </div>
           <div className="card-body">
-            <div className="space-y-2">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="form-control">
-                <label htmlFor="item_name"></label>
+                <label htmlFor="item_name">Item Name:</label>
                 <input
                   type="text"
                   id="item_name"
@@ -91,14 +95,24 @@ const CreateItem: React.FC = () => {
                   className="input input-bordered"
                 />
               </div>
-              {/* <GetAndCreateTag setTags={setTags} /> */}
+              <div className="form-control">
+                <label htmlFor="tags">Add some Tags:</label>
+                <input
+                  type="text"
+                  id="tags"
+                  required
+                  value={tags}
+                  onChange={(e) => setTags(e.target.value)}
+                  placeholder="Add Tags Name"
+                  className="input input-bordered"
+                />
+              </div>
             </div>
-
+            {/* <GetAndCreateTag setTags={setTags} /> */}
             <CustomFieldsForm
               itemCustomFields={itemCustomFields}
               handleCustomInput={handleCustomInput}
             />
-
             <div className="form-control mt-6">
               <button
                 type="submit"

@@ -28,7 +28,8 @@ const CreateCollectionForm: React.FC = () => {
       ...customFields,
       {
         id: customFields.length + 1,
-        field_name,
+        field_name:
+          field_name.charAt(0).toUpperCase() + field_name.slice(1) + " :",
         field_type,
       },
     ]);
@@ -80,7 +81,7 @@ const CreateCollectionForm: React.FC = () => {
             </h4>
           </div>
           <div className="card-body">
-            <div className="space-y-2">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="form-control">
                 <label htmlFor="title"></label>
                 <input
