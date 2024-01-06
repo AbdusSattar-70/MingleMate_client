@@ -1,10 +1,11 @@
-import React from "react";
-import { ItemCustomFieldType } from "../utils/types";
+import { SWITCH_CASE } from "../utils/constant";
+import { CustomFieldType } from "../utils/types";
+import { UpcaseFirstChar } from "../utils/UpcaseFirstChar";
 
 interface CustomFieldProps {
-  field: ItemCustomFieldType;
+  field: CustomFieldType;
   handleCustomInput: (
-    id: number,
+    id: string,
     value: string | number | boolean | Date
   ) => void;
 }
@@ -15,7 +16,7 @@ const CustomField: React.FC<CustomFieldProps> = ({
 }) => {
   const renderInput = () => {
     switch (field.field_type) {
-      case "string":
+      case SWITCH_CASE.STRING:
         return (
           <input
             type="text"
@@ -23,22 +24,20 @@ const CustomField: React.FC<CustomFieldProps> = ({
             required
             value={field.field_value || ""}
             onChange={(e) => handleCustomInput(field.id, e.target.value)}
-            placeholder="write single line text here"
             className="input input-bordered"
           />
         );
-      case "text":
+      case SWITCH_CASE.TEXT:
         return (
           <textarea
             id={`field_${field.id}`}
-            placeholder="Add multi-line text here"
             value={field.field_value || ""}
             onChange={(e) => handleCustomInput(field.id, e.target.value)}
             required
             className="textarea textarea-bordered textarea-lg w-full"
           ></textarea>
         );
-      case "number":
+      case SWITCH_CASE.NUMBER:
         return (
           <input
             type="number"
@@ -50,7 +49,7 @@ const CustomField: React.FC<CustomFieldProps> = ({
             }
           />
         );
-      case "boolean":
+      case SWITCH_CASE.BOOLEAN:
         return (
           <input
             type="checkbox"
@@ -60,7 +59,7 @@ const CustomField: React.FC<CustomFieldProps> = ({
             onChange={(e) => handleCustomInput(field.id, e.target.checked)}
           />
         );
-      case "date":
+      case SWITCH_CASE.DATE:
         return (
           <input
             type="date"
@@ -77,16 +76,18 @@ const CustomField: React.FC<CustomFieldProps> = ({
 
   return (
     <div key={field.id} className="form-control">
-      <label htmlFor={`field_${field.id}`}>{field.field_name}</label>
+      <label htmlFor={`field_${field.id}`}>
+        {UpcaseFirstChar(field.field_name) + " :"}
+      </label>
       {renderInput()}
     </div>
   );
 };
 
 interface CustomFieldsFormProps {
-  itemCustomFields: ItemCustomFieldType[];
+  itemCustomFields: CustomFieldType[];
   handleCustomInput: (
-    id: number,
+    id: string,
     value: string | number | boolean | Date
   ) => void;
 }

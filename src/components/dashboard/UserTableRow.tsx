@@ -1,8 +1,9 @@
 import UserTableCheckbox from "./UserCheckbox";
-import { format } from "date-fns";
 import { useAuth } from "../../hooks/useAuth";
 import { Users } from "../../utils/types";
-
+import { formattedTime } from "../../utils/formattedTime";
+import { isActive } from "../../utils/isActive";
+const ACTIVE_USER = "Active";
 interface UserTableRowProps {
   user: Users;
   selectedUsers: string[];
@@ -17,17 +18,6 @@ const UserTableRow: React.FC<UserTableRowProps> = ({
 }) => {
   const { auth } = useAuth();
   const currentUser = auth.id;
-
-  // Format the date and time using date-fns
-  const formattedRegistrationTime = format(
-    new Date(created_at),
-    "yyyy-MM-dd HH:mm:ss"
-  );
-
-  // Check if lastLoginTime is not an empty string before formatting
-  const formattedLastLoginTime = updated_at
-    ? format(new Date(updated_at), "yyyy-MM-dd HH:mm:ss")
-    : "Not yet logged in";
 
   return (
     <tr
@@ -46,18 +36,18 @@ const UserTableRow: React.FC<UserTableRowProps> = ({
         {role === 1 ? "General" : "Admin"}
       </td>
       <td className="px-6 py-4 font-medium">{email}</td>
-      <td className="px-6 py-4 font-medium">{formattedRegistrationTime}</td>
-      <td className="px-6 py-4 font-medium">{formattedLastLoginTime}</td>
+      <td className="px-6 py-4 font-medium">{formattedTime(created_at)}</td>
+      <td className="px-6 py-4 font-medium">{formattedTime(updated_at)}</td>
       <td className="px-6 py-4 font-medium">
         <div className="flex items-center">
           <div
             className={`${
-              blocked === false
+              isActive(blocked) === ACTIVE_USER
                 ? "me-2 h-2.5 w-2.5 rounded-full bg-green-500"
                 : "me-2 h-2.5 w-2.5 rounded-full bg-red-500"
             }`}
           ></div>
-          {blocked === false ? "active" : "blocked"}
+          {isActive(blocked)}
         </div>
       </td>
     </tr>

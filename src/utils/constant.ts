@@ -1,4 +1,4 @@
-import { CustomFieldKey, TopicKey } from "./types";
+// import { CustomFieldKey, TopicKey } from "./types";
 
 export const BASE_URL = "http://localhost:4000";
 export const AXIOS_HEADERS = { "Content-Type": "application/json" };
@@ -29,10 +29,6 @@ export const REGEX_PICK = {
   USER_REGEX: /^[A-Za-z][A-Za-z0-9_ -]{0,23}$/,
   PWD_REGEX: /.{6,}/,
   EMAIL_REGEX: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-};
-
-export const RES_TYPE = {
-  OK: "OK",
 };
 
 export const MESSAGES = {
@@ -76,21 +72,21 @@ export const DASHBOARD_TABLE_CONST = {
   },
 };
 
-export const FILTER_BY = {
+export const FILTER_BY_USER = {
   ADMIN: "admin",
   BLOCKED: "blocked",
   GENERAL: "general",
   ACTIVE: "active",
 };
 
-export const FILTERS = {
-  [FILTER_BY.ADMIN]: { role: 2 },
-  [FILTER_BY.GENERAL]: { role: 1 },
-  [FILTER_BY.BLOCKED]: { blocked: true },
-  [FILTER_BY.ACTIVE]: { blocked: false },
+export const FILTER_USERS = {
+  [FILTER_BY_USER.ADMIN]: { role: 2 },
+  [FILTER_BY_USER.GENERAL]: { role: 1 },
+  [FILTER_BY_USER.BLOCKED]: { blocked: true },
+  [FILTER_BY_USER.ACTIVE]: { blocked: false },
 };
 
-export const CustomFieldType: Record<CustomFieldKey, string> = {
+export const FieldType = {
   string: "Single line text",
   text: "Multi-line text or description type",
   number: "Number",
@@ -98,7 +94,7 @@ export const CustomFieldType: Record<CustomFieldKey, string> = {
   date: "Date",
 };
 
-export const TOPICS: Record<TopicKey, string> = {
+export const TOPICS = {
   EDUCATION: "Education",
   TECHNOLOGY: "Technology",
   TRAVEL: "Travel",
@@ -120,4 +116,12 @@ export const TOPICS: Record<TopicKey, string> = {
   MOVIES_AND_TV_SHOWS: "Movies and TV Shows",
   GARDENING: "Gardening",
   MOTIVATION_AND_SELF_HELP: "Motivation and Self-Help",
+};
+
+export const SWITCH_CASE = {
+  STRING: "string",
+  TEXT: "text",
+  NUMBER: "number",
+  BOOLEAN: "boolean",
+  DATE: "date",
 };

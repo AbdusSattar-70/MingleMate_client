@@ -1,25 +1,29 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { API_ENDPOINT, MESSAGES } from "../utils/constant";
+import { API_ENDPOINT } from "../utils/constant";
 // import GetAndCreateTag from "./GetAndCreateTag";
 import CustomFieldsForm from "./CustomFieldsForm";
 import isSuccessRes from "../utils/apiResponse";
-import { ItemCustomFieldType } from "../utils/types";
+import { CustomFieldType } from "../utils/types";
+import { InputField } from "../components/commonComponent/InputField";
+import usePostDeletePatch from "../hooks/usePostDeletePatch";
 
 const CreateItem: React.FC = () => {
+  const { postDeletePatch } = usePostDeletePatch();
+
   const { id: collection_id } = useParams();
   const { auth } = useAuth();
   const [item_name, setItem_name] = useState<string>("");
   const [tags, setTags] = useState<string>("");
   const axiosPrivate = useAxiosPrivate();
   const [collectImg, setCollectImg] = useState("");
-  const [itemCustomFields, setItemCustomFields] = useState<
-    ItemCustomFieldType[]
-  >([]);
+  const [itemCustomFields, setItemCustomFields] = useState<CustomFieldType[]>(
+    []
+  );
 
   useEffect(() => {
     const fetchCollectionData = async (id: string) => {
@@ -35,7 +39,7 @@ const CreateItem: React.FC = () => {
     }
   }, [collection_id, axiosPrivate]);
 
-  const handleCustomInput = (id: number, field_value?: any) => {
+  const handleCustomInput = (id: string, field_value?: any) => {
     if (itemCustomFields.length) {
       setItemCustomFields((prevFields) => {
         return prevFields.map((field) =>
@@ -56,12 +60,7 @@ const CreateItem: React.FC = () => {
   };
 
   const CreateNewItem = async () => {
-    try {
-      await axiosPrivate.post(API_ENDPOINT.ITEM, data);
-      toast.success(MESSAGES.SUCCESS);
-    } catch (error) {
-      toast.error(MESSAGES.TRY_AGAIN);
-    }
+    await postDeletePatch("post", API_ENDPOINT.ITEM, data);
   };
 
   return (
@@ -83,30 +82,26 @@ const CreateItem: React.FC = () => {
           </div>
           <div className="card-body">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="form-control">
-                <label htmlFor="item_name">Item Name:</label>
-                <input
-                  type="text"
-                  id="item_name"
-                  required
-                  value={item_name}
-                  onChange={(e) => setItem_name(e.target.value)}
-                  placeholder="Enter Item Name"
-                  className="input input-bordered"
-                />
-              </div>
-              <div className="form-control">
-                <label htmlFor="tags">Add some Tags:</label>
-                <input
-                  type="text"
-                  id="tags"
-                  required
-                  value={tags}
-                  onChange={(e) => setTags(e.target.value)}
-                  placeholder="Add Tags Name"
-                  className="input input-bordered"
-                />
-              </div>
+              <InputField
+                type="text"
+                id="item_name"
+                label="Item Name"
+                value={item_name}
+                onChange={setItem_name}
+                required
+                placeholder="Enter Item Name"
+                className="input input-bordered"
+              />
+              <InputField
+                type="text"
+                id="tags"
+                label="Add some Tags"
+                value={tags}
+                onChange={setTags}
+                required
+                placeholder="Add Tags Name"
+                className="input input-bordered"
+              />
             </div>
             {/* <GetAndCreateTag setTags={setTags} /> */}
             <CustomFieldsForm

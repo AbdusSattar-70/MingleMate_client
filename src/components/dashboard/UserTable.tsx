@@ -6,7 +6,7 @@ import useGetUserData from "../../hooks/useFetchUserData";
 import {
   API_ENDPOINT,
   DASHBOARD_TABLE_CONST,
-  FILTERS,
+  FILTER_USERS,
 } from "../../utils/constant";
 import UserTableHeader from "./UserTableHeader";
 import UserTableRow from "./UserTableRow";
@@ -21,7 +21,7 @@ const UserTable = () => {
   }, []);
 
   const filterUserData = (value: string) => {
-    const filterOptions = FILTERS[value];
+    const filterOptions = FILTER_USERS[value];
     if (filterOptions) {
       getUsers(filterOptions);
     }

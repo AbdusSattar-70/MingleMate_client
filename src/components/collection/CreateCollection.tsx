@@ -1,45 +1,56 @@
 import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import UploadImage from "./ImageUpload";
-import AddCustomField from "./AddCustomField";
-import { API_ENDPOINT, MESSAGES, TOPICS } from "../../utils/constant";
-import { CustomField, TopicKey } from "../../utils/types";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { API_ENDPOINT, TOPICS } from "../../utils/constant";
+import { CustomFieldType } from "../../utils/types";
 import { useAuth } from "../../hooks/useAuth";
+import AddCmFieldIntoCollection from "./AddCmFieldIntoCollection";
+import { deleteItemById } from "../../utils/deleteItemById";
+import { SelectField } from "../commonComponent/SelectField";
+import { InputField } from "../commonComponent/InputField";
+import TextareaField from "../commonComponent/TextareaField";
+import usePostDeletePatch from "../../hooks/usePostDeletePatch";
 
 const CreateCollectionForm: React.FC = () => {
   const { auth } = useAuth();
-  const axiosPrivate = useAxiosPrivate();
+  const { postDeletePatch } = usePostDeletePatch();
+
   const [title, setTitle] = useState<string>("");
   const [topic, setTopic] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [addingField, setAddingField] = useState<CustomFieldType>({
+    id: "",
+    field_name: "",
+    field_type: "",
+  });
+  const [editableFields, setEditableFields] = useState<CustomFieldType[]>([]);
 
-  const [customFields, setCustomFields] = useState<CustomField[]>([]);
-  const [field_name, setFieldName] = useState<string>("");
-  const [field_type, setFieldType] = useState<string>("");
-
-  const handleCustomField = (e: React.FormEvent<HTMLFormElement>): void => {
+  const addCustomField = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    if (!field_type) {
-      toast.warn(MESSAGES.FILL_TYPE_FIELD);
-      return;
+    if (addingField.field_name && addingField.field_type) {
+      const newField = {
+        id: Math.floor(Math.random() * 1000 + 1).toString(),
+        field_name: addingField.field_name,
+        field_type: addingField.field_type,
+      };
+
+      setEditableFields([...editableFields, newField]);
+      setAddingField({ id: "", field_name: "", field_type: "" });
     }
-    setCustomFields([
-      ...customFields,
-      {
-        id: customFields.length + 1,
-        field_name:
-          field_name.charAt(0).toUpperCase() + field_name.slice(1) + " :",
-        field_type,
-      },
-    ]);
-    setFieldName("");
-    setFieldType("");
   };
 
-  const handleDeleteField = (id: number): void => {
-    const updatedCustomFields = customFields.filter((field) => field.id !== id);
-    setCustomFields(updatedCustomFields);
+  const handleDeleteField = (id: string): void => {
+    deleteItemById<CustomFieldType>(editableFields, id, setEditableFields);
+  };
+
+  const handleEditField = (
+    objId: string,
+    updatedField: Partial<CustomFieldType>
+  ): void => {
+    const updated = editableFields.map((field) =>
+      field.id === objId ? { ...field, ...updatedField } : field
+    );
+    setEditableFields(updated);
   };
 
   const data = {
@@ -48,22 +59,13 @@ const CreateCollectionForm: React.FC = () => {
       title,
       description,
       categories: topic,
-      custom_fields: customFields,
+      custom_fields: editableFields,
       image: auth.collectImg,
     },
   };
 
   const CreateNewCollection = async () => {
-    try {
-      if (!title && !topic && !description) {
-        toast.error(MESSAGES.COLLECTION_FIELD);
-        return;
-      }
-      await axiosPrivate.post(API_ENDPOINT.COLLECTION, data);
-      toast.success(MESSAGES.SUCCESS);
-    } catch (error) {
-      toast.error(MESSAGES.TRY_AGAIN);
-    }
+    await postDeletePatch("post", API_ENDPOINT.COLLECTION, data);
   };
 
   return (
@@ -82,58 +84,48 @@ const CreateCollectionForm: React.FC = () => {
           </div>
           <div className="card-body">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="form-control">
-                <label htmlFor="title"></label>
-                <input
-                  type="text"
-                  id="title"
-                  required
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Enter Collection Name"
-                  className="input input-bordered"
-                />
-              </div>
-              <div className="form-control">
-                <label htmlFor="selectTopic"></label>
-                <select
-                  name="selectTopic"
-                  required
-                  value={topic}
-                  onChange={(e) => setTopic(e.target.value)}
-                  className="select select-bordered"
-                >
-                  <option value="" disabled selected>
-                    Select Topic or Category
-                  </option>
-                  {(Object.entries(TOPICS) as [TopicKey, string][]).map(
-                    ([topicKey, topicValue]) => (
-                      <option key={topicKey} value={topicValue}>
-                        {topicValue}
-                      </option>
-                    )
-                  )}
-                </select>
-              </div>
-            </div>
-            <div className="form-control">
-              <textarea
-                placeholder="Add Description"
-                value={description}
+              <InputField
+                id="title"
+                label="Collection Name"
+                type="text"
+                value={title}
+                onChange={(value) => setTitle(value)}
                 required
-                onChange={(e) => setDescription(e.target.value)}
-                className="textarea textarea-bordered textarea-lg w-full"
-              ></textarea>
+                placeholder="Enter Collection Name"
+                className="input input-bordered"
+              />
+
+              <SelectField
+                id="selectTopic"
+                label="Topic or Category"
+                value={topic}
+                onChange={(selectedValue) => setTopic(selectedValue)}
+                options={Object.entries(TOPICS).map(
+                  ([topicKey, topicValue]) => ({
+                    key: topicKey,
+                    value: topicValue,
+                  })
+                )}
+              />
             </div>
 
-            <AddCustomField
-              field_name={field_name}
-              setFieldName={setFieldName}
-              setFieldType={setFieldType}
-              field_type={field_type}
-              customFields={customFields}
-              handleCustomField={handleCustomField}
+            <TextareaField
+              id="description"
+              label="Description"
+              value={description}
+              onChange={(value) => setDescription(value)}
+              required
+              placeholder="Add Description"
+              className="textarea textarea-bordered textarea-lg w-full"
+            />
+
+            <AddCmFieldIntoCollection
+              addingField={addingField}
+              addCustomField={addCustomField}
+              handleEditField={handleEditField}
               handleDeleteField={handleDeleteField}
+              editableFields={editableFields}
+              setAddingField={setAddingField}
             />
             <div className="flex w-72 gap-2 ">
               <div className="w-36 border border-dashed border-blue-400 p-4 ">

@@ -23,35 +23,37 @@ export type AuthData = {
   collectImg?: string;
 };
 
-export type TopicKey =
-  | "EDUCATION"
-  | "TECHNOLOGY"
-  | "TRAVEL"
-  | "HEALTH_AND_WELLNESS"
-  | "PHOTOGRAPHY"
-  | "FOOD_AND_COOKING"
-  | "FITNESS"
-  | "HISTORY"
-  | "SCIENCE"
-  | "FASHION"
-  | "ART_AND_CRAFTS"
-  | "MUSIC"
-  | "SPORTS"
-  | "NATURE_AND_WILDLIFE"
-  | "DIY_PROJECTS"
-  | "HOME_DECOR"
-  | "GAMING"
-  | "FINANCE_AND_INVESTMENT"
-  | "MOVIES_AND_TV_SHOWS"
-  | "GARDENING"
-  | "MOTIVATION_AND_SELF_HELP";
+// export type TopicKey =
+//   | "EDUCATION"
+//   | "TECHNOLOGY"
+//   | "TRAVEL"
+//   | "HEALTH_AND_WELLNESS"
+//   | "PHOTOGRAPHY"
+//   | "FOOD_AND_COOKING"
+//   | "FITNESS"
+//   | "HISTORY"
+//   | "SCIENCE"
+//   | "FASHION"
+//   | "ART_AND_CRAFTS"
+//   | "MUSIC"
+//   | "SPORTS"
+//   | "NATURE_AND_WILDLIFE"
+//   | "DIY_PROJECTS"
+//   | "HOME_DECOR"
+//   | "GAMING"
+//   | "FINANCE_AND_INVESTMENT"
+//   | "MOVIES_AND_TV_SHOWS"
+//   | "GARDENING"
+//   | "MOTIVATION_AND_SELF_HELP";
 
-export type CustomFieldKey = "string" | "text" | "number" | "boolean" | "date";
+// export type CustomFieldKey = "string" | "text" | "number" | "boolean" | "date";
 
-export type CustomField = {
-  id: number;
+export type CustomFieldType = {
+  id: string;
   field_name: string;
-  field_type: string;
+  field_type?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  field_value?: any;
 };
 
 export type CollectionType = {
@@ -59,15 +61,26 @@ export type CollectionType = {
   title: string;
   description: string;
   image: string;
-  custom_fields: CustomField[];
+  custom_fields: CustomFieldType[];
   items_count: number;
   user_name: string;
 };
 
-export type ItemCustomFieldType = {
-  id: number;
-  field_name: string;
-  field_type: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  field_value: any;
+export type InputFieldProps = {
+  id: string;
+  type: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  required?: boolean;
+  placeholder?: string;
+  className: string;
+};
+
+export type SelectFieldProps = {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  options: { key: string; value: string }[];
 };

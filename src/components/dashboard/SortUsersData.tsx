@@ -1,4 +1,4 @@
-import { FILTER_BY } from "../../utils/constant";
+import { FILTER_BY_USER } from "../../utils/constant";
 
 interface SortUsersDataProps {
   filterUserData: (value: string) => void;
@@ -14,10 +14,10 @@ const SortUsersData: React.FC<SortUsersDataProps> = ({ filterUserData }) => {
         <option disabled value="">
           Filter Users
         </option>
-        <option value={FILTER_BY.ADMIN}>Filter all admin users</option>
-        <option value={FILTER_BY.BLOCKED}>Filter all blocked users</option>
-        <option value={FILTER_BY.GENERAL}>Filter all general users</option>
-        <option value={FILTER_BY.ACTIVE}>Filter all active users</option>
+        <option value={FILTER_BY_USER.ADMIN}>Filter all admin users</option>
+        <option value={FILTER_BY_USER.BLOCKED}>Filter all blocked users</option>
+        <option value={FILTER_BY_USER.GENERAL}>Filter all general users</option>
+        <option value={FILTER_BY_USER.ACTIVE}>Filter all active users</option>
       </select>
 
       <button
