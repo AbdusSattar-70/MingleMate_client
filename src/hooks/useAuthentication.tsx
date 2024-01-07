@@ -3,8 +3,10 @@ import useAxiosPrivate from "./useAxiosPrivate";
 import { API_ENDPOINT } from "../utils/constant";
 import isSuccessRes from "../utils/apiResponse";
 import { useAuth } from "./useAuth";
-import { AuthData } from "../utils/types";
-
+type UserProps = {
+  role: number;
+  blocked: boolean;
+};
 /*
 This hook is designed to ensure the integrity of sessionStorage data
 and provides information about the user's authentication status,
@@ -21,7 +23,7 @@ const useAuthentication = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const handleTrue = ({ role, blocked }: AuthData) => {
+    const handleTrue = ({ role, blocked }: UserProps) => {
       if (blocked === false) {
         setIsActive(true);
       }
