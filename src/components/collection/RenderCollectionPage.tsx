@@ -7,6 +7,7 @@ interface RenderCollectionPageProps {
   title: string;
   items_count: number;
   image?: string;
+  category: string;
 }
 const RenderCollectionPage: React.FC<RenderCollectionPageProps> = ({
   id,
@@ -14,6 +15,7 @@ const RenderCollectionPage: React.FC<RenderCollectionPageProps> = ({
   title,
   image,
   items_count,
+  category,
 }) => {
   return (
     <div>
@@ -28,6 +30,8 @@ const RenderCollectionPage: React.FC<RenderCollectionPageProps> = ({
         <div className="card-body">
           <h2 className="card-title">{title.split(" ")[0]}</h2>
           <p>items_count: {items_count}</p>
+          <p>Category: {category}</p>
+
           <p>Created by: {user_name.split(" ")[0]}</p>
           <div className="join">
             <button className="btn join-item">Delete</button>

@@ -1,17 +1,40 @@
 import { Link, useLoaderData } from "react-router-dom";
 import { CollectionType } from "../../utils/types";
-const dummyImg =
-  "https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp";
+import { useEffect, useState } from "react";
+import CollectionTable from "./CollectionTable";
+import { fetchItems } from "../../utils/fetchItems";
+import { dummyImg } from "../../utils/constant";
+
 const GetSingleCollection = () => {
   const collection: CollectionType = useLoaderData() as CollectionType;
+  const {
+    id: collection_id,
+    title,
+    image,
+    description,
+    category,
+    items_count,
+  } = collection;
+
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const loadItems = async () => {
+      const data = await fetchItems(collection_id);
+      setItems(data);
+    };
+
+    loadItems();
+  }, [collection_id]);
+
   return (
-    <div className="">
+    <>
       <div className=" flex-1 bg-base-200">
         <div className="mx-auto flex max-w-[80rem] flex-col items-center gap-8 p-8 lg:flex-row lg:gap-16 lg:p-16">
           <div className="h-[400px] w-full lg:w-1/2">
             <div className="h-full max-w-full">
               <img
-                src={collection.image ? collection.image : dummyImg}
+                src={image ? image : dummyImg}
                 className="h-full w-full rounded-lg object-cover shadow-2xl"
                 alt="Collection Image"
               />
@@ -19,18 +42,16 @@ const GetSingleCollection = () => {
           </div>
           <div className="w-full lg:w-1/2">
             <h1 className="text-xl font-bold sm:text-5xl lg:text-6xl">
-              {collection.title}
+              {title}
             </h1>
             <p className="py-6">
-              {collection.description}
+              {description}
               Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Accusamus molestiae recusandae dignissimos, officiis, quibusdam
-              nulla eligendi tempore pariatur autem harum totam corporis aliquam
-              aut doloribus aliquid soluta eum beatae dolor.
             </p>
-            <p>Items: {collection.items_count}</p>
+            <p>Items: {items_count}</p>
+            <p>Category: {category}</p>
             <Link
-              to={`/collection/${collection.id}/add-item`}
+              to={`/collection/${collection_id}/add-item`}
               className="btn btn-primary"
             >
               Add Item
@@ -38,40 +59,8 @@ const GetSingleCollection = () => {
           </div>
         </div>
       </div>
-
-      <section className=" space-y-4 font-sans antialiased">
-        <div className="relative max-h-screen overflow-x-auto shadow-md sm:rounded-lg">
-          <table className="w-full text-left text-sm text-blue-100 rtl:text-right dark:text-blue-100">
-            <thead className="border-b border-blue-400 bg-blue-600 text-xs uppercase text-white dark:text-white">
-              <tr>
-                <th scope="col" className="px-6 py-3">
-                  ID
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Name
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Role
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Email
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Registration Time
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Last Login Time
-                </th>
-                <th scope="col" className="px-6 py-3">
-                  Status
-                </th>
-              </tr>
-            </thead>
-            <tbody>{/*  */}</tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+      {items.length ? <CollectionTable items={items} /> : null}
+    </>
   );
 };
 

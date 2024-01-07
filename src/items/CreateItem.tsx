@@ -5,32 +5,39 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { API_ENDPOINT } from "../utils/constant";
-// import GetAndCreateTag from "./GetAndCreateTag";
 import CustomFieldsForm from "./CustomFieldsForm";
 import isSuccessRes from "../utils/apiResponse";
-import { CustomFieldType } from "../utils/types";
+import { CollectionType, CustomFieldType, TagOption } from "../utils/types";
 import { InputField } from "../components/commonComponent/InputField";
 import usePostDeletePatch from "../hooks/usePostDeletePatch";
+import GetAndCreateTag from "./GetAndCreateTag";
 
 const CreateItem: React.FC = () => {
   const { postDeletePatch } = usePostDeletePatch();
-
   const { id: collection_id } = useParams();
   const { auth } = useAuth();
   const [item_name, setItem_name] = useState<string>("");
-  const [tags, setTags] = useState<string>("");
+  const [tags, setTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<TagOption[]>([]);
   const axiosPrivate = useAxiosPrivate();
-  const [collectImg, setCollectImg] = useState("");
+  const [collection, setCollection] = useState<CollectionType>();
   const [itemCustomFields, setItemCustomFields] = useState<CustomFieldType[]>(
     []
   );
 
+  const handleTagChange = (newValue: TagOption[]) => {
+    setSelectedTags(newValue);
+  };
+
   useEffect(() => {
     const fetchCollectionData = async (id: string) => {
-      const res = await axiosPrivate.get(`${API_ENDPOINT.COLLECTION}/${id}`);
+      const res = await axiosPrivate.get(
+        `${API_ENDPOINT.COLLECTION_CUSTOM_FIELDS}/${id}`
+      );
       if (isSuccessRes(res)) {
         setItemCustomFields(res?.data?.custom_fields);
-        setCollectImg(res?.data?.image);
+        setCollection(res?.data);
+        setTags(res?.data?.tags);
       }
     };
 
@@ -55,7 +62,7 @@ const CreateItem: React.FC = () => {
       collection_id,
       user_id: auth.id,
       custom_fields: itemCustomFields,
-      tags,
+      tags: selectedTags.map((tag) => tag.value).join(" "),
     },
   };
 
@@ -71,13 +78,14 @@ const CreateItem: React.FC = () => {
             <img
               className="mx-auto w-48"
               src={
-                collectImg ||
+                collection?.image ||
                 "https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
               }
               alt="collection image"
             />
             <h4 className="mb-4 mt-1 pb-1 text-xl font-semibold">
-              Add items to your collection.
+              Add items to your <strong>{collection?.title}'s</strong>{" "}
+              collection.
             </h4>
           </div>
           <div className="card-body">
@@ -92,18 +100,12 @@ const CreateItem: React.FC = () => {
                 placeholder="Enter Item Name"
                 className="input input-bordered"
               />
-              <InputField
-                type="text"
-                id="tags"
-                label="Add some Tags"
-                value={tags}
-                onChange={setTags}
-                required
-                placeholder="Add Tags Name"
-                className="input input-bordered"
+              <GetAndCreateTag
+                handleTagChange={handleTagChange}
+                selectedTags={selectedTags}
+                tags={tags}
               />
             </div>
-            {/* <GetAndCreateTag setTags={setTags} /> */}
             <CustomFieldsForm
               itemCustomFields={itemCustomFields}
               handleCustomInput={handleCustomInput}

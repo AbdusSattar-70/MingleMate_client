@@ -22,7 +22,10 @@ export const API_ENDPOINT = {
     ROLE_TOGGLE_URL: "admin/users/role_toggle",
   },
   COLLECTION: "collections",
+  COLLECTION_CUSTOM_FIELDS: "collection/custom_fields",
+  COLLECTION_ITEMS: "collection_items",
   ITEM: "items",
+  TAG: "tags",
 };
 
 export const REGEX_PICK = {
@@ -125,3 +128,6 @@ export const SWITCH_CASE = {
   BOOLEAN: "boolean",
   DATE: "date",
 };
+
+export const dummyImg =
+  "https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp";

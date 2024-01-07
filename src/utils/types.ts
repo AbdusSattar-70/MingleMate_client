@@ -15,38 +15,11 @@ export type Users = {
 };
 
 export type AuthData = {
-  blocked?: boolean;
   id?: number;
   authToken?: string;
-  role?: number;
   avatar?: string;
   collectImg?: string;
 };
-
-// export type TopicKey =
-//   | "EDUCATION"
-//   | "TECHNOLOGY"
-//   | "TRAVEL"
-//   | "HEALTH_AND_WELLNESS"
-//   | "PHOTOGRAPHY"
-//   | "FOOD_AND_COOKING"
-//   | "FITNESS"
-//   | "HISTORY"
-//   | "SCIENCE"
-//   | "FASHION"
-//   | "ART_AND_CRAFTS"
-//   | "MUSIC"
-//   | "SPORTS"
-//   | "NATURE_AND_WILDLIFE"
-//   | "DIY_PROJECTS"
-//   | "HOME_DECOR"
-//   | "GAMING"
-//   | "FINANCE_AND_INVESTMENT"
-//   | "MOVIES_AND_TV_SHOWS"
-//   | "GARDENING"
-//   | "MOTIVATION_AND_SELF_HELP";
-
-// export type CustomFieldKey = "string" | "text" | "number" | "boolean" | "date";
 
 export type CustomFieldType = {
   id: string;
@@ -57,12 +30,32 @@ export type CustomFieldType = {
 };
 
 export type CollectionType = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   image: string;
+  category: string;
+  user_name: string;
   custom_fields: CustomFieldType[];
   items_count: number;
+  items: ItemType[];
+};
+
+export type ItemType = {
+  id: string;
+  item_name: string;
+  item_author: string;
+  collection_id: string;
+  item_custom_fields: CustomFieldType[];
+  tags: string[];
+  likes: number;
+  comments: CommentType[];
+  comments_count: number;
+};
+
+export type CommentType = {
+  id: string;
+  content: string;
   user_name: string;
 };
 
@@ -83,4 +76,9 @@ export type SelectFieldProps = {
   value: string;
   onChange: (value: string) => void;
   options: { key: string; value: string }[];
+};
+
+export type TagOption = {
+  value: string;
+  label: string;
 };
