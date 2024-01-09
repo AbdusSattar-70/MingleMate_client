@@ -1,7 +1,24 @@
-import { CustomFieldKey, TopicKey } from "./types";
+// import { CustomFieldKey, TopicKey } from "./types";
 
 export const BASE_URL = "http://localhost:4000";
 export const AXIOS_HEADERS = { "Content-Type": "application/json" };
+
+export const ROUTES = {
+  HOME: "/",
+  SIGNIN: "/sign-in",
+  SIGNUP: "/sign-up",
+  MY_PROFILE: "/my-profile",
+  PROFILE_EDIT: "/profile/edit",
+  ADMIN_DASHBOARD: "/admin/dashboard",
+  CREATE_COLLECTION: "/create-collection",
+  EDIT_COLLECTION: "/edit-collection",
+  DIESPLAY_SINGLE_COLLECTION: "/my-collection",
+  DISPLAY_ALL_COLLECTIONS: "/my-all-collections",
+  CREATE_ITEM: "/collection",
+  EDIT_ITEM: "edit-item",
+  DISPLAY_SIGNLE_ITEM: "/item",
+  DISPLAY_ALL_ITEMS: "/all-items",
+};
 
 export const PICK_THEME = {
   THEME: "theme",
@@ -9,10 +26,14 @@ export const PICK_THEME = {
   LIGHT: "light",
 };
 
+export const COLLECT_IMG = "collectImg";
+export const AVATAR = "avatar";
+
 export const API_ENDPOINT = {
   SIGN_UP: "signup",
   SIGN_IN: "signin",
   SIGN_OUT: "signout",
+  UPDATE_DELETE_USER: "users",
   CURRENT_USER: "current_user",
   ADMIN: {
     USERS: "admin/users",
@@ -22,17 +43,16 @@ export const API_ENDPOINT = {
     ROLE_TOGGLE_URL: "admin/users/role_toggle",
   },
   COLLECTION: "collections",
+  COLLECTION_CUSTOM_FIELDS: "collection/custom_fields",
+  COLLECTION_ITEMS: "collection_items",
   ITEM: "items",
+  TAG: "tags",
 };
 
 export const REGEX_PICK = {
   USER_REGEX: /^[A-Za-z][A-Za-z0-9_ -]{0,23}$/,
   PWD_REGEX: /.{6,}/,
   EMAIL_REGEX: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-};
-
-export const RES_TYPE = {
-  OK: "OK",
 };
 
 export const MESSAGES = {
@@ -76,21 +96,21 @@ export const DASHBOARD_TABLE_CONST = {
   },
 };
 
-export const FILTER_BY = {
+export const FILTER_BY_USER = {
   ADMIN: "admin",
   BLOCKED: "blocked",
   GENERAL: "general",
   ACTIVE: "active",
 };
 
-export const FILTERS = {
-  [FILTER_BY.ADMIN]: { role: 2 },
-  [FILTER_BY.GENERAL]: { role: 1 },
-  [FILTER_BY.BLOCKED]: { blocked: true },
-  [FILTER_BY.ACTIVE]: { blocked: false },
+export const FILTER_USERS = {
+  [FILTER_BY_USER.ADMIN]: { role: 2 },
+  [FILTER_BY_USER.GENERAL]: { role: 1 },
+  [FILTER_BY_USER.BLOCKED]: { blocked: true },
+  [FILTER_BY_USER.ACTIVE]: { blocked: false },
 };
 
-export const CustomFieldType: Record<CustomFieldKey, string> = {
+export const FieldType = {
   string: "Single line text",
   text: "Multi-line text or description type",
   number: "Number",
@@ -98,7 +118,7 @@ export const CustomFieldType: Record<CustomFieldKey, string> = {
   date: "Date",
 };
 
-export const TOPICS: Record<TopicKey, string> = {
+export const TOPICS = {
   EDUCATION: "Education",
   TECHNOLOGY: "Technology",
   TRAVEL: "Travel",
@@ -121,3 +141,14 @@ export const TOPICS: Record<TopicKey, string> = {
   GARDENING: "Gardening",
   MOTIVATION_AND_SELF_HELP: "Motivation and Self-Help",
 };
+
+export const SWITCH_CASE = {
+  STRING: "string",
+  TEXT: "text",
+  NUMBER: "number",
+  BOOLEAN: "boolean",
+  DATE: "date",
+};
+
+export const dummyImg =
+  "https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp";
