@@ -1,3 +1,4 @@
-export const UpcaseFirstChar = (str: string): string => {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+export const UpcaseFirstChar = (str: string | undefined): string => {
+  if (str) return str.charAt(0).toUpperCase() + str.slice(1);
+  return "";
 };

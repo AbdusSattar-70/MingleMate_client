@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import useAxiosPrivate from "./useAxiosPrivate";
 import { API_ENDPOINT } from "../utils/constant";
 import isSuccessRes from "../utils/apiResponse";
@@ -7,13 +7,6 @@ type UserProps = {
   role: number;
   blocked: boolean;
 };
-/*
-This hook is designed to ensure the integrity of sessionStorage data
-and provides information about the user's authentication status,
-admin privileges, and active state throughout the application.
-It verifies the stored authentication data against the server response,
- updating state variables accordingly. In case of a mismatch or error,
-it clears auth provider Data to prevent the use of potentially tampered data. */
 
 const useAuthentication = () => {
   const { auth, setAuth } = useAuth();
@@ -22,44 +15,43 @@ const useAuthentication = () => {
   const [isActive, setIsActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const handleTrue = ({ role, blocked }: UserProps) => {
-      if (blocked === false) {
-        setIsActive(true);
-      }
+  const handleTrue = useCallback(({ role, blocked }: UserProps) => {
+    if (blocked === false) {
+      setIsActive(true);
+    }
+    setIsAdmin(role === 2 && blocked === false);
+  }, []);
 
-      setIsAdmin(role === 2 && blocked == false);
-    };
+  const handleFalse = useCallback(() => {
+    setIsAdmin(false);
+    setIsActive(false);
+    setAuth({});
+  }, [setAuth]);
 
-    const handleFalse = () => {
-      setIsAdmin(false);
-      setIsActive(false);
-      setAuth({});
-    };
+  const checkAuth = useCallback(async () => {
+    setIsLoading(true);
 
-    const checkAuth = async () => {
-      setIsLoading(true);
+    try {
+      const response = await axiosPrivate.get(API_ENDPOINT.CURRENT_USER);
 
-      try {
-        const response = await axiosPrivate.get(API_ENDPOINT.CURRENT_USER);
-
-        if (!isSuccessRes(response)) {
-          handleFalse();
-        } else if (response.status !== 401) {
-          handleTrue(response.data);
-        }
-      } catch (error) {
-        console.error("Error checking authentication:", error);
+      if (!isSuccessRes(response)) {
         handleFalse();
-      } finally {
-        setIsLoading(false);
+      } else if (response.status !== 401) {
+        handleTrue(response.data);
       }
-    };
+    } catch (error) {
+      console.error("Error checking authentication:", error);
+      handleFalse();
+    } finally {
+      setIsLoading(false);
+    }
+  }, [axiosPrivate, handleFalse, handleTrue]);
 
+  useEffect(() => {
     if (auth.authToken) {
       checkAuth();
     }
-  }, [axiosPrivate, setAuth, auth]);
+  }, [auth.authToken, checkAuth]);
 
   return { isActive, isAdmin, isLoading };
 };

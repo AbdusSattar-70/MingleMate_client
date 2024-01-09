@@ -3,16 +3,37 @@
 export const BASE_URL = "http://localhost:4000";
 export const AXIOS_HEADERS = { "Content-Type": "application/json" };
 
+export const ROUTES = {
+  HOME: "/",
+  SIGNIN: "/sign-in",
+  SIGNUP: "/sign-up",
+  MY_PROFILE: "/my-profile",
+  PROFILE_EDIT: "/profile/edit",
+  ADMIN_DASHBOARD: "/admin/dashboard",
+  CREATE_COLLECTION: "/create-collection",
+  EDIT_COLLECTION: "/edit-collection",
+  DIESPLAY_SINGLE_COLLECTION: "/my-collection",
+  DISPLAY_ALL_COLLECTIONS: "/my-all-collections",
+  CREATE_ITEM: "/collection",
+  EDIT_ITEM: "edit-item",
+  DISPLAY_SIGNLE_ITEM: "/item",
+  DISPLAY_ALL_ITEMS: "/all-items",
+};
+
 export const PICK_THEME = {
   THEME: "theme",
   DARK: "dark",
   LIGHT: "light",
 };
 
+export const COLLECT_IMG = "collectImg";
+export const AVATAR = "avatar";
+
 export const API_ENDPOINT = {
   SIGN_UP: "signup",
   SIGN_IN: "signin",
   SIGN_OUT: "signout",
+  UPDATE_DELETE_USER: "users",
   CURRENT_USER: "current_user",
   ADMIN: {
     USERS: "admin/users",

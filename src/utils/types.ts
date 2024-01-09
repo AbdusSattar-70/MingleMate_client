@@ -5,13 +5,18 @@ export type NavLinkType = {
 
 export type Users = {
   id: number;
+  authToken: string;
+  avatar: string;
   user_name: string;
   email: string;
-  created_at: string;
   updated_at: string;
   blocked: boolean;
   role: number;
-  avatar?: string | null;
+  bio: string;
+  created_at: string;
+  items_count: number;
+  collections_count: number;
+  profession: string;
 };
 
 export type AuthData = {
@@ -19,6 +24,15 @@ export type AuthData = {
   authToken?: string;
   avatar?: string;
   collectImg?: string;
+  user_name?: string;
+  email?: string;
+  updated_at?: string;
+  blocked?: boolean;
+  role?: number;
+  bio?: string;
+  items_count?: number;
+  collections_count?: number;
+  profession?: string;
 };
 
 export type CustomFieldType = {

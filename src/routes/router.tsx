@@ -1,31 +1,33 @@
 import { createBrowserRouter } from "react-router-dom";
-import Root from "../layout/Root";
-import ErrorPage from "../components/errorPage/ErrorPage";
-import Home from "../components/home/home/Home";
-import SignIn from "../components/AuthControll/SignIn";
-import SignUp from "../components/AuthControll/SignUp";
-import Dashboard from "../components/dashboard/Dashboard";
+import ErrorPage from "../pages/errorPage/ErrorPage";
 import PrivateRoute from "./PrivateRoute";
-import About from "../components/about/About";
-import Contact from "../components/contact/Contact";
-import Collections from "../components/collection/Collections";
-import Profile from "../components/profile/Profile";
-import CreateCollectionForm from "../components/collection/CreateCollection";
-import CreateItem from "../items/CreateItem";
-import GetSingleCollection from "../components/collection/GetSingleCollection";
+import { BASE_URL, ROUTES } from "../utils/constant";
+import DefaultLayout from "../layout/DefaultLayout";
+import {
+  CreateCollectionForm,
+  CreateItem,
+  Dashboard,
+  DisplayItemsAll,
+  EditProfile,
+  GetSingleCollection,
+  Home,
+  Profile,
+  SignIn,
+  SignUp,
+} from "./LazyComponents";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Root />,
+    path: ROUTES.HOME,
+    element: <DefaultLayout />,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/",
+        path: ROUTES.HOME,
         element: <Home />,
       },
       {
-        path: "/dashboard",
+        path: ROUTES.ADMIN_DASHBOARD,
         element: (
           <PrivateRoute>
             <Dashboard />
@@ -33,42 +35,37 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/about",
-        element: <About />,
+        path: ROUTES.DISPLAY_ALL_ITEMS,
+        element: <DisplayItemsAll />,
       },
       {
-        path: "/collections",
-        element: <Collections />,
-      },
-      {
-        path: "/collection/:id",
+        path: `${ROUTES.DIESPLAY_SINGLE_COLLECTION}/:id`,
         element: <GetSingleCollection />,
-        loader: ({ params }) =>
-          fetch(`http://localhost:4000/collections/${params.id}`),
+        loader: ({ params }) => fetch(`${BASE_URL}/collections/${params.id}`),
       },
       {
-        path: "/add-collection",
+        path: ROUTES.CREATE_COLLECTION,
         element: <CreateCollectionForm />,
       },
       {
-        path: "/collection/:id/add-item",
+        path: `${ROUTES.CREATE_ITEM}/:id/create-item`,
         element: <CreateItem />,
       },
       {
-        path: "/contact",
-        element: <Contact />,
-      },
-      {
-        path: "/sign-in",
+        path: ROUTES.SIGNIN,
         element: <SignIn />,
       },
       {
-        path: "/profile",
+        path: ROUTES.MY_PROFILE,
         element: <Profile />,
       },
       {
-        path: "/sign-up",
+        path: ROUTES.SIGNUP,
         element: <SignUp />,
+      },
+      {
+        path: ROUTES.PROFILE_EDIT,
+        element: <EditProfile />,
       },
     ],
   },
