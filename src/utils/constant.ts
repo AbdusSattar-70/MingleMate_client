@@ -12,11 +12,12 @@ export const ROUTES = {
   ADMIN_DASHBOARD: "/admin/dashboard",
   CREATE_COLLECTION: "/create-collection",
   EDIT_COLLECTION: "/edit-collection",
-  DIESPLAY_SINGLE_COLLECTION: "/my-collection",
-  DISPLAY_ALL_COLLECTIONS: "/my-all-collections",
+  DIESPLAY_SINGLE_COLLECTION: "/collection",
+  MY_ALL_COLLECTIONS: "/my-all-collections",
+  MY_ITEMS_ALL: "/my-all-items",
   CREATE_ITEM: "/collection",
-  EDIT_ITEM: "edit-item",
-  DISPLAY_SIGNLE_ITEM: "/item",
+  EDIT_ITEM: "/edit-item",
+  GET_SIGNLE_ITEM: "/item",
   DISPLAY_ALL_ITEMS: "/all-items",
 };
 
@@ -42,10 +43,13 @@ export const API_ENDPOINT = {
     DELETE_URL: "admin/users/delete",
     ROLE_TOGGLE_URL: "admin/users/role_toggle",
   },
+  USER_COLLECTIONS: "user_collections",
   COLLECTION: "collections",
   COLLECTION_CUSTOM_FIELDS: "collection/custom_fields",
   COLLECTION_ITEMS: "collection_items",
+  USER_ITEMS: "user_items",
   ITEM: "items",
+  COMMENT: "comments",
   TAG: "tags",
 };
 

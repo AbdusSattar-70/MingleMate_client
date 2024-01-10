@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
+import { ROUTES } from "../../../utils/constant";
 
-const CollectionMenu = () => {
+const MyCollectionTop = () => {
   return (
     <div className="navbar bg-base-100">
       <div className="navbar-start">
@@ -9,7 +10,10 @@ const CollectionMenu = () => {
         </Link>
       </div>
       <div className="navbar-center">
-        <Link to="/add-collection" className="btn btn-outline btn-success">
+        <Link
+          to={ROUTES.CREATE_COLLECTION}
+          className="btn btn-outline btn-success"
+        >
           Create
         </Link>
       </div>
@@ -20,4 +24,4 @@ const CollectionMenu = () => {
   );
 };
 
-export default CollectionMenu;
+export default MyCollectionTop;

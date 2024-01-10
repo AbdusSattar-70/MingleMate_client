@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import dummyImg from "../../images/cards/cards-01.png";
+import { ROUTES } from "../../utils/constant";
 
-interface RenderCollectionPageProps {
+interface RenderCollectionsProps {
   id: number;
   user_name: string;
   title: string;
@@ -9,7 +10,7 @@ interface RenderCollectionPageProps {
   image?: string;
   category: string;
 }
-const RenderCollectionPage: React.FC<RenderCollectionPageProps> = ({
+const RenderCollections: React.FC<RenderCollectionsProps> = ({
   id,
   user_name,
   title,
@@ -38,8 +39,8 @@ const RenderCollectionPage: React.FC<RenderCollectionPageProps> = ({
             <button className="btn join-item">Edit</button>
           </div>
           <Link
-            to={`/collection/${id}`}
-            aria-label="create board link"
+            to={`${ROUTES.DIESPLAY_SINGLE_COLLECTION}/${id}`}
+            aria-label="see details link"
             className="btn btn-outline btn-secondary"
           >
             see details
@@ -50,4 +51,4 @@ const RenderCollectionPage: React.FC<RenderCollectionPageProps> = ({
   );
 };
 
-export default RenderCollectionPage;
+export default RenderCollections;

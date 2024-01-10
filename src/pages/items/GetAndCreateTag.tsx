@@ -19,6 +19,7 @@ const GetAndCreateTag: React.FC<GetAndCreateTagProps> = ({
 
   return (
     <CreatableSelect
+      // className="dark:bg-form-input"
       isMulti
       value={selectedTags}
       onChange={(newValue) => handleTagChange(newValue as TagOption[])}

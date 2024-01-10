@@ -31,6 +31,7 @@ const DefaultLayout = () => {
                 sidebarOpen={sidebarOpen}
                 setSidebarOpen={setSidebarOpen}
               />
+
               <main>
                 <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
                   <Suspense fallback={<div>Loading...</div>}>

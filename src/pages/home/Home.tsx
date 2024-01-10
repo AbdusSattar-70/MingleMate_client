@@ -1,11 +1,11 @@
+import GetLargestCollections from "../collection/GetLargestCollections";
 import HomeDecorator from "./HomeDecorator";
 
 const Home = () => {
   return (
     <section>
-      <div className="mx-auto flex max-w-6xl flex-col gap-6">
-        <HomeDecorator />
-      </div>
+      <HomeDecorator />
+      <GetLargestCollections />
     </section>
   );
 };

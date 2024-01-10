@@ -24,7 +24,7 @@ const CustomField: React.FC<CustomFieldProps> = ({
             required
             value={field.field_value || ""}
             onChange={(e) => handleCustomInput(field.id, e.target.value)}
-            className="input input-bordered"
+            className="input input-bordered  dark:bg-form-input"
           />
         );
       case SWITCH_CASE.TEXT:
@@ -34,7 +34,7 @@ const CustomField: React.FC<CustomFieldProps> = ({
             value={field.field_value || ""}
             onChange={(e) => handleCustomInput(field.id, e.target.value)}
             required
-            className="textarea textarea-bordered textarea-lg w-full"
+            className="textarea textarea-bordered textarea-lg w-full  dark:bg-form-input"
           ></textarea>
         );
       case SWITCH_CASE.NUMBER:
@@ -43,7 +43,7 @@ const CustomField: React.FC<CustomFieldProps> = ({
             type="number"
             id={`field_${field.id}`}
             value={field.field_value || ""}
-            className="input input-bordered"
+            className="input input-bordered  dark:bg-form-input"
             onChange={(e) =>
               handleCustomInput(field.id, parseFloat(e.target.value))
             }
@@ -55,7 +55,7 @@ const CustomField: React.FC<CustomFieldProps> = ({
             type="checkbox"
             id={`field_${field.id}`}
             checked={field.field_value || false}
-            className="checkbox-primary checkbox"
+            className="checkbox-primary checkbox  dark:bg-form-input"
             onChange={(e) => handleCustomInput(field.id, e.target.checked)}
           />
         );
@@ -65,7 +65,7 @@ const CustomField: React.FC<CustomFieldProps> = ({
             type="date"
             id={`field_${field.id}`}
             value={field.field_value || ""}
-            className="input input-bordered"
+            className="input input-bordered  dark:bg-form-input"
             onChange={(e) => handleCustomInput(field.id, e.target.value)}
           />
         );

@@ -260,7 +260,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             </li>
                             <li>
                               <NavLink
-                                to={ROUTES.DISPLAY_ALL_COLLECTIONS}
+                                to={ROUTES.MY_ALL_COLLECTIONS}
                                 className={({ isActive }) =>
                                   "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
                                   (isActive && "!text-white")
@@ -272,7 +272,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             </li>
                             <li>
                               <NavLink
-                                to={ROUTES.DISPLAY_ALL_COLLECTIONS}
+                                to={ROUTES.MY_ITEMS_ALL}
                                 className={({ isActive }) =>
                                   "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
                                   (isActive && "!text-white")
@@ -303,7 +303,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </li>
               )}
 
-              <li>
+              {/* <li>
                 <NavLink
                   to={ROUTES.CREATE_ITEM}
                   className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
@@ -337,7 +337,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   </svg>
                   Add Item
                 </NavLink>
-              </li>
+              </li> */}
             </ul>
           </div>
         </nav>

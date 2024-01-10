@@ -2,12 +2,16 @@ import DarkModeSwitcher from "../../components/DarkModeSwitcher";
 import DropdownUser from "./DropdownUser";
 import { RiEnglishInput } from "react-icons/ri";
 import bnIcon from "../../images/bn.png";
+import SearchInput from "./SearchInput";
+import { useState } from "react";
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
-    <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
+    <header className=" sticky top-0 z-999 flex w-full bg-base-300 drop-shadow-xl dark:bg-boxdark dark:drop-shadow-none">
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">
         <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
           {/* <!-- Hamburger Toggle BTN --> */}
@@ -54,36 +58,30 @@ const Header = (props: {
           {/* <!-- Hamburger Toggle BTN --> */}
         </div>
         {/* search bar */}
-        <div className="navbar-center">
-          <div className="form-control relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="input input-bordered w-24 dark:bg-form-input md:w-auto"
-            />
-          </div>
-        </div>
+        <SearchInput isFocused={isFocused} setIsFocused={setIsFocused} />
         {/* search bar */}
 
-        <div className="flex items-center gap-3 2xsm:gap-7">
-          <ul className="flex items-center gap-2 2xsm:gap-4">
-            <DarkModeSwitcher />
-            {/* language toggle */}
-            <label className="swap swap-rotate hover:text-meta-5">
-              <input
-                type="checkbox"
-                className="theme-controller"
-                value="synthwave"
-              />
-              <RiEnglishInput className="swap-on h-5 w-5 fill-current" />
-              <img
-                src={bnIcon}
-                alt="bangla icon"
-                className="swap-off h-5 w-5 fill-current"
-              />
-            </label>
-          </ul>
-          <DropdownUser />
+        {/* hide right side if search input focused */}
+        <div className={`${isFocused && "hidden"}`}>
+          <div className="flex items-center gap-3  2xsm:gap-7">
+            <ul className="flex items-center gap-2 2xsm:gap-4">
+              <DarkModeSwitcher />
+              <label className="swap swap-rotate hover:text-meta-5">
+                <input
+                  type="checkbox"
+                  className="theme-controller"
+                  value="synthwave"
+                />
+                <RiEnglishInput className="swap-on h-5 w-5 fill-current" />
+                <img
+                  src={bnIcon}
+                  alt="bangla icon"
+                  className="swap-off h-5 w-5 fill-current"
+                />
+              </label>
+            </ul>
+            <DropdownUser />
+          </div>
         </div>
       </div>
     </header>

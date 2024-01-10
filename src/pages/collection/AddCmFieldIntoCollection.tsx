@@ -37,7 +37,7 @@ const AddCmFieldIntoCollection: React.FC<AddCmFieldIntoCollectionProps> = ({
             <InputField
               type="text"
               id={`editableFieldName-${field.id}`}
-              className="input input-bordered"
+              className="input input-bordered dark:bg-form-input"
               label="Field Name"
               value={field.field_name || ""}
               onChange={(value) =>
@@ -78,7 +78,7 @@ const AddCmFieldIntoCollection: React.FC<AddCmFieldIntoCollectionProps> = ({
         <InputField
           type="text"
           id="customFieldName"
-          className="input input-bordered"
+          className="input input-bordered dark:bg-form-input"
           label="Custom Field Name"
           value={addingField.field_name || ""}
           onChange={(value) =>

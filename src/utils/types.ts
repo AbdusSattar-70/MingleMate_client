@@ -60,17 +60,29 @@ export type ItemType = {
   item_name: string;
   item_author: string;
   collection_id: string;
+  collection_name: string;
   item_custom_fields: CustomFieldType[];
   tags: string[];
-  likes: number;
+  likes: LikeType[];
   comments: CommentType[];
   comments_count: number;
+  image?: string;
 };
 
 export type CommentType = {
-  id: string;
+  comment_id: string;
   content: string;
-  user_name: string;
+  commenter_name: string;
+  commenter_avatar: string;
+  commenter_id: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type LikeType = {
+  id: string;
+  user_id: string;
+  user_photo: string;
 };
 
 export type InputFieldProps = {
@@ -95,4 +107,9 @@ export type SelectFieldProps = {
 export type TagOption = {
   value: string;
   label: string;
+};
+
+export type SearchInputProps = {
+  setIsFocused: React.Dispatch<React.SetStateAction<boolean>>;
+  isFocused: boolean;
 };

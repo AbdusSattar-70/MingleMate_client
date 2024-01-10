@@ -7,7 +7,6 @@ import {
   CreateCollectionForm,
   CreateItem,
   Dashboard,
-  DisplayItemsAll,
   EditProfile,
   GetSingleCollection,
   Home,
@@ -15,6 +14,9 @@ import {
   SignIn,
   SignUp,
 } from "./LazyComponents";
+import MyCollections from "../pages/collection/MyCollections/MyCollections";
+import MyItemsAll from "../pages/items/MyItems/MyItemsAll";
+import GetSingleItem from "../pages/items/GetSingleItem";
 
 const router = createBrowserRouter([
   {
@@ -26,17 +28,10 @@ const router = createBrowserRouter([
         path: ROUTES.HOME,
         element: <Home />,
       },
+      // collections related routes
       {
-        path: ROUTES.ADMIN_DASHBOARD,
-        element: (
-          <PrivateRoute>
-            <Dashboard />
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: ROUTES.DISPLAY_ALL_ITEMS,
-        element: <DisplayItemsAll />,
+        path: ROUTES.MY_ALL_COLLECTIONS,
+        element: <MyCollections />,
       },
       {
         path: `${ROUTES.DIESPLAY_SINGLE_COLLECTION}/:id`,
@@ -47,9 +42,23 @@ const router = createBrowserRouter([
         path: ROUTES.CREATE_COLLECTION,
         element: <CreateCollectionForm />,
       },
+      // item related routes
       {
         path: `${ROUTES.CREATE_ITEM}/:id/create-item`,
         element: <CreateItem />,
+      },
+      {
+        path: ROUTES.MY_ITEMS_ALL,
+        element: <MyItemsAll />,
+      },
+      {
+        path: `${ROUTES.GET_SIGNLE_ITEM}/:id`,
+        element: <GetSingleItem />,
+      },
+      // authentication and authorization related routes
+      {
+        path: ROUTES.SIGNUP,
+        element: <SignUp />,
       },
       {
         path: ROUTES.SIGNIN,
@@ -60,12 +69,16 @@ const router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: ROUTES.SIGNUP,
-        element: <SignUp />,
-      },
-      {
         path: ROUTES.PROFILE_EDIT,
         element: <EditProfile />,
+      },
+      {
+        path: ROUTES.ADMIN_DASHBOARD,
+        element: (
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        ),
       },
     ],
   },

@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CustomFieldsForm from "./CustomFieldsForm";
 import { CollectionType, CustomFieldType, TagOption } from "../../utils/types";
 import { InputField } from "../../components/InputField";
 import GetAndCreateTag from "./GetAndCreateTag";
 import { useAuth } from "../../hooks/useAuth";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { API_ENDPOINT } from "../../utils/constant";
+import { API_ENDPOINT, MESSAGES, ROUTES } from "../../utils/constant";
 import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
 import { toast } from "react-toastify";
 
 const CreateItem: React.FC = () => {
+  const navigate = useNavigate();
   const { id: collection_id } = useParams();
   const { auth } = useAuth();
   const [item_name, setItem_name] = useState<string>("");
@@ -66,10 +67,11 @@ const CreateItem: React.FC = () => {
 
   const CreateNewItem = async () => {
     try {
-      const res = await axiosPrivate.post(API_ENDPOINT.COLLECTION, data);
+      const res = await axiosPrivate.post(API_ENDPOINT.ITEM, data);
 
       if (isSuccessRes(res)) {
-        toast.success("Success");
+        toast.success(MESSAGES.SUCCESS);
+        navigate(ROUTES.MY_ITEMS_ALL);
       }
     } catch (error) {
       setErrorToast(error);
@@ -79,7 +81,7 @@ const CreateItem: React.FC = () => {
   return (
     <section>
       <div className="hero hero-content">
-        <div className="card w-full flex-shrink-0 bg-base-100 shadow-2xl">
+        <div className="card w-full flex-shrink-0 bg-base-100 shadow-2xl dark:bg-meta-4">
           <div className="text-center">
             <img
               className="mx-auto w-48"
@@ -90,7 +92,7 @@ const CreateItem: React.FC = () => {
               alt="collection image"
             />
             <h4 className="mb-4 mt-1 pb-1 text-xl font-semibold">
-              Add items to your <strong>{collection?.title}'s</strong>{" "}
+              Add items to your <strong>{collection?.title} </strong>{" "}
               collection.
             </h4>
           </div>
@@ -104,7 +106,7 @@ const CreateItem: React.FC = () => {
                 onChange={setItem_name}
                 required
                 placeholder="Enter Item Name"
-                className="input input-bordered"
+                className="input input-bordered dark:bg-form-input"
               />
               <GetAndCreateTag
                 handleTagChange={handleTagChange}

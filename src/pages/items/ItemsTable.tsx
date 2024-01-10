@@ -1,201 +1,94 @@
-// import { useState, useEffect } from "react";
-// import UserTableActions from "./UserTableActions";
-// import { ToastContainer, toast } from "react-toastify";
-// import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-// import { useAuth } from "../../hooks/useAuth";
-// import useGetUserData from "../../hooks/useFetchUserData";
-// import {
-//   API_ENDPOINT,
-//   DASHBOARD_TABLE_CONST,
-//   FILTERS,
-// } from "../../utils/constant";
-// import UserTableHeader from "./UserTableHeader";
-// import UserTableRow from "./UserTableRow";
+import React from "react";
+import { ItemType } from "../../utils/types";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { GrUpdate } from "react-icons/gr";
+import { FcViewDetails } from "react-icons/fc";
+interface CollectionTableProps {
+  items: ItemType[];
+}
 
-// const ItemsTable = () => {
-//   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
-//   const [selectAll, setSelectAll] = useState(false);
-//   const axiosPrivate = useAxiosPrivate();
-//   const { setAuth } = useAuth();
-//   const { users, getUsers } = useGetUserData();
-//   useEffect(() => {
-//     getUsers();
-//   }, []);
+const ItemsTable: React.FC<CollectionTableProps> = ({ items }) => {
+  return (
+    <section className="space-y-4 font-sans antialiased">
+      <div className="relative max-h-screen overflow-x-auto shadow-md sm:rounded-lg">
+        <table className="text-blue-100 dark:text-blue-100 w-full text-left text-sm rtl:text-right">
+          <thead className="border-blue-400 bg-blue-600 border-b text-xs uppercase text-white dark:text-white">
+            <tr>
+              <th scope="col" className="px-6 py-3">
+                Item ID
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Item Name
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Item Author
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Likes
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Comments
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Tags
+              </th>
+              {items[0]?.item_custom_fields
+                .filter((field) => field.field_type === "string")
+                .map((field) => (
+                  <th key={field.id} scope="col" className="px-6 py-3">
+                    {field.field_name}
+                  </th>
+                ))}
+              <th scope="col" className="px-6 py-3">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((item) => (
+              <tr
+                key={item.id}
+                className="border-blue-400 bg-blue-600 hover:bg-blue-500 border-b"
+              >
+                <td className="px-6 py-4">{item.id}</td>
+                <td className="px-6 py-4">{item.item_name}</td>
+                <td className="px-6 py-4">{item.item_author}</td>
+                <td className="px-6 py-4">{item.likes}</td>
+                <td className="px-6 py-4">{item.comments_count}</td>
+                <td className="px-6 py-4">{item.tags.join(", ")}</td>
+                {item.item_custom_fields
+                  .filter((field) => field.field_type === "string")
+                  .map((field) => (
+                    <td key={field.id} className="px-6 py-4">
+                      {field.field_value.slice(0, 20)}
+                    </td>
+                  ))}
+                <td className="px-6 py-4">
+                  <div className="join join-vertical lg:join-horizontal">
+                    <button className="btn join-item">
+                      <span className="tooltip" data-tip="Details">
+                        <FcViewDetails className="text-xl" />
+                      </span>
+                    </button>
+                    <button className="btn join-item">
+                      <span className="tooltip" data-tip="Edit">
+                        <GrUpdate />
+                      </span>
+                    </button>
+                    <button className="btn join-item">
+                      <span className="tooltip" data-tip="Delete">
+                        <FaRegTrashCan />
+                      </span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+};
 
-//   const filterUserData = (value: string) => {
-//     const filterOptions = FILTERS[value];
-//     if (filterOptions) {
-//       getUsers(filterOptions);
-//     }
-//   };
-
-//   const toggleSelectAll = (prevSelectAll: boolean) => {
-//     setSelectedUsers(prevSelectAll ? [] : users.map((user) => user.email));
-//     return !prevSelectAll;
-//   };
-
-//   const toggleSelectsingle = (userEmail: string) => {
-//     setSelectedUsers((prevSelectedUsers) => {
-//       if (prevSelectedUsers.includes(userEmail)) {
-//         return prevSelectedUsers.filter((email) => email !== userEmail);
-//       } else {
-//         return [...prevSelectedUsers, userEmail];
-//       }
-//     });
-//     return false;
-//   };
-
-//   const handleCheckboxChange = (userEmail: string) => {
-//     setSelectAll((prevSelectAll) => {
-//       if (userEmail === DASHBOARD_TABLE_CONST.ALL_USER) {
-//         return toggleSelectAll(prevSelectAll);
-//       } else {
-//         return toggleSelectsingle(userEmail);
-//       }
-//     });
-//   };
-
-//   const verifyAdminStatus = () => {
-//     const admin = false;
-//     if (admin) {
-//       setAuth({});
-//     }
-//   };
-
-//   const handleBlock = async () => {
-//     try {
-//       if (selectedUsers.length === 0) {
-//         toast.error(DASHBOARD_TABLE_CONST.BLOCK.SELECT_USER);
-//         return;
-//       }
-
-//       const confirmResult = window.confirm(DASHBOARD_TABLE_CONST.BLOCK.CONFIRM);
-//       if (confirmResult) {
-//         await axiosPrivate.patch(API_ENDPOINT.ADMIN.BLOCK_URL, {
-//           user_emails: selectedUsers,
-//         });
-//         getUsers();
-//         verifyAdminStatus();
-//         setSelectedUsers([]);
-//         toast.success(DASHBOARD_TABLE_CONST.BLOCK.SUCCESS);
-//       }
-//     } catch (error) {
-//       toast.error(DASHBOARD_TABLE_CONST.BLOCK.ERROR);
-//     }
-//   };
-
-//   const handleUnblock = async () => {
-//     try {
-//       if (selectedUsers.length === 0) {
-//         toast.error(DASHBOARD_TABLE_CONST.UNBLOCK.SELECT_USER);
-//         return;
-//       }
-
-//       await axiosPrivate.patch(API_ENDPOINT.ADMIN.UNBLOCK_URL, {
-//         user_emails: selectedUsers,
-//       });
-//       getUsers();
-//       setSelectedUsers([]);
-//       toast.success(DASHBOARD_TABLE_CONST.UNBLOCK.SUCCESS);
-//     } catch (error) {
-//       toast.error(DASHBOARD_TABLE_CONST.UNBLOCK.ERROR);
-//     }
-//   };
-
-//   const handleRoleToggle = async () => {
-//     try {
-//       if (selectedUsers.length === 0) {
-//         toast.error(DASHBOARD_TABLE_CONST.ROLE.SELECT_USER);
-//         return;
-//       }
-
-//       await axiosPrivate.patch(API_ENDPOINT.ADMIN.ROLE_TOGGLE_URL, {
-//         user_emails: selectedUsers,
-//       });
-//       getUsers();
-//       setSelectedUsers([]);
-//       toast.success(DASHBOARD_TABLE_CONST.ROLE.SUCCESS);
-//     } catch (error) {
-//       toast.error(DASHBOARD_TABLE_CONST.ROLE.ERROR);
-//     }
-//   };
-
-//   const handleDelete = async () => {
-//     try {
-//       if (selectedUsers.length === 0) {
-//         toast.error(DASHBOARD_TABLE_CONST.DELETE.SELECT_USER);
-//         return;
-//       }
-
-//       const confirmResult = window.confirm(
-//         DASHBOARD_TABLE_CONST.DELETE.CONFIRM
-//       );
-//       if (confirmResult) {
-//         await axiosPrivate.delete(API_ENDPOINT.ADMIN.DELETE_URL, {
-//           data: { user_emails: selectedUsers },
-//         });
-
-//         getUsers();
-//         verifyAdminStatus();
-//         setSelectedUsers([]);
-//         toast.success(DASHBOARD_TABLE_CONST.DELETE.SUCCESS);
-//       }
-//     } catch (error) {
-//       toast.error(DASHBOARD_TABLE_CONST.DELETE.ERROR);
-//     }
-//   };
-
-//   return (
-//     <section className="space-y-4">
-//       {users?.length ? (
-//         <section className="space-y-4 font-sans antialiased">
-//           <div className="">
-//             <UserTableActions
-//               filterUserData={filterUserData}
-//               handleRoleToggle={handleRoleToggle}
-//               handleBlock={handleBlock}
-//               handleUnblock={handleUnblock}
-//               handleDelete={handleDelete}
-//             />
-//             {selectedUsers.length > 0 && (
-//               <p className="text-center text-xl uppercase text-blue-500">
-//                 Selected: {selectedUsers.length}
-//               </p>
-//             )}
-//           </div>
-//           <div className="relative max-h-screen overflow-x-auto shadow-md sm:rounded-lg">
-//             <table className="w-full text-left text-sm text-blue-100 rtl:text-right dark:text-blue-100">
-//               <UserTableHeader
-//                 selectAll={selectAll}
-//                 handleCheckboxChange={handleCheckboxChange}
-//               />
-//               <tbody>
-//                 {users.map((user) => (
-//                   <UserTableRow
-//                     key={user.email}
-//                     user={user}
-//                     selectedUsers={selectedUsers}
-//                     selectAll={selectAll}
-//                     handleCheckboxChange={() =>
-//                       handleCheckboxChange(user.email)
-//                     }
-//                   />
-//                 ))}
-//               </tbody>
-//             </table>
-//           </div>
-//         </section>
-//       ) : (
-//         <p>No users to display</p>
-//       )}
-
-//       <ToastContainer
-//         position="bottom-right"
-//         autoClose={5000}
-//         hideProgressBar
-//       />
-//     </section>
-//   );
-// };
-
-// export default ItemsTable;
+export default ItemsTable;

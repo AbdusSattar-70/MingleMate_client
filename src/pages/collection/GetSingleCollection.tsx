@@ -1,9 +1,9 @@
 import { Link, useLoaderData } from "react-router-dom";
 import { CollectionType } from "../../utils/types";
 import { useEffect, useState } from "react";
-import CollectionTable from "./CollectionTable";
 import { fetchItems } from "../../utils/fetchItems";
-import { dummyImg } from "../../utils/constant";
+import { ROUTES, dummyImg } from "../../utils/constant";
+import ItemsTable from "../items/ItemsTable";
 
 const GetSingleCollection = () => {
   const collection: CollectionType = useLoaderData() as CollectionType;
@@ -45,13 +45,12 @@ const GetSingleCollection = () => {
               {title}
             </h1>
             <p className="py-6">
-              {description}
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+              {description || "Collection description goes here"}
             </p>
             <p>Items: {items_count}</p>
             <p>Category: {category}</p>
             <Link
-              to={`/collection/${collection_id}/add-item`}
+              to={`${ROUTES.CREATE_ITEM}/${collection_id}/create-item`}
               className="btn btn-primary"
             >
               Add Item
@@ -59,7 +58,11 @@ const GetSingleCollection = () => {
           </div>
         </div>
       </div>
-      {items.length ? <CollectionTable items={items} /> : null}
+      {items.length ? (
+        <ItemsTable items={items} />
+      ) : (
+        <div>No Items to Display</div>
+      )}
     </>
   );
 };

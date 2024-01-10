@@ -14,7 +14,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
         name={id}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="select select-bordered"
+        className="select select-bordered dark:bg-form-input"
       >
         <option value="" disabled>
           Select {label}

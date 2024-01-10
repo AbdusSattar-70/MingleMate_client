@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { API_ENDPOINT, COLLECT_IMG, TOPICS } from "../../utils/constant";
+import {
+  API_ENDPOINT,
+  COLLECT_IMG,
+  MESSAGES,
+  ROUTES,
+  TOPICS,
+} from "../../utils/constant";
 import { CustomFieldType } from "../../utils/types";
 import { useAuth } from "../../hooks/useAuth";
 import AddCmFieldIntoCollection from "./AddCmFieldIntoCollection";
@@ -11,8 +17,10 @@ import PhotoUpload from "../../components/PhotoUpload";
 import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
 import { toast } from "react-toastify";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useNavigate } from "react-router-dom";
 
 const CreateCollectionForm: React.FC = () => {
+  const navigate = useNavigate();
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
   const [title, setTitle] = useState<string>("");
@@ -69,7 +77,8 @@ const CreateCollectionForm: React.FC = () => {
       const res = await axiosPrivate.post(API_ENDPOINT.COLLECTION, data);
 
       if (isSuccessRes(res)) {
-        toast.success("Success");
+        toast.success(MESSAGES.SUCCESS);
+        navigate(ROUTES.MY_ALL_COLLECTIONS);
       }
     } catch (error) {
       setErrorToast(error);
@@ -79,7 +88,7 @@ const CreateCollectionForm: React.FC = () => {
   return (
     <section>
       <div className="hero hero-content">
-        <div className="card w-full flex-shrink-0 bg-base-100 shadow-2xl">
+        <div className="card w-full flex-shrink-0 bg-base-100 shadow-2xl dark:bg-meta-4">
           <div className="text-center">
             <img
               className="mx-auto w-48"
@@ -100,7 +109,7 @@ const CreateCollectionForm: React.FC = () => {
                 onChange={(value) => setTitle(value)}
                 required
                 placeholder="Enter Collection Name"
-                className="input input-bordered"
+                className="input input-bordered dark:bg-form-input"
               />
 
               <SelectField
@@ -124,7 +133,7 @@ const CreateCollectionForm: React.FC = () => {
               onChange={(value) => setDescription(value)}
               required
               placeholder="Add Description"
-              className="textarea textarea-bordered textarea-lg w-full"
+              className="textarea textarea-bordered textarea-lg w-full dark:bg-form-input"
             />
 
             <AddCmFieldIntoCollection
