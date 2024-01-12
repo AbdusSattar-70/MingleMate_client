@@ -43,11 +43,12 @@ const UserTableHeader: React.FC<TableHeaderProps> = ({
         <th scope="col" className="px-6 py-3">
           Registration Time
         </th>
-        <th scope="col" className="px-6 py-3">
-          Last Login Time
-        </th>
+
         <th scope="col" className="px-6 py-3">
           Status
+        </th>
+        <th scope="col" className="px-6 py-3">
+          See Details
         </th>
       </tr>
     </thead>

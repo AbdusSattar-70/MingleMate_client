@@ -1,8 +1,10 @@
-import { useAuth } from "../../hooks/useAuth";
+import { FcViewDetails } from "react-icons/fc";
 import { formattedTime } from "../../utils/formattedTime";
 import { isActive } from "../../utils/isActive";
 import { Users } from "../../utils/types";
 import UserTableCheckbox from "./UserCheckbox";
+import { Link } from "react-router-dom";
+import { ROUTES } from "../../utils/constant";
 const ACTIVE_USER = "Active";
 interface UserTableRowProps {
   user: Users;
@@ -12,19 +14,12 @@ interface UserTableRowProps {
 }
 
 const UserTableRow: React.FC<UserTableRowProps> = ({
-  user: { id, email, user_name, role, blocked, created_at, updated_at },
+  user: { id, email, user_name, role, blocked, created_at },
   selectedUsers,
   handleCheckboxChange,
 }) => {
-  const { auth } = useAuth();
-  const currentUser = auth.id;
-
   return (
-    <tr
-      className={`${
-        currentUser === id ? "border-red-blink" : ""
-      }  border-b border-stroke text-black-2 hover:bg-meta-3 dark:border-strokedark dark:bg-boxdark-2 dark:text-whiten dark:hover:bg-meta-1`}
-    >
+    <tr className="border-b border-stroke text-black-2 hover:bg-meta-3 dark:border-strokedark dark:bg-boxdark-2 dark:text-whiten dark:hover:bg-meta-1">
       <UserTableCheckbox
         email={email}
         selectedUsers={selectedUsers}
@@ -37,7 +32,6 @@ const UserTableRow: React.FC<UserTableRowProps> = ({
       </td>
       <td className="px-6 py-4 font-medium">{email}</td>
       <td className="px-6 py-4 font-medium">{formattedTime(created_at)}</td>
-      <td className="px-6 py-4 font-medium">{formattedTime(updated_at)}</td>
       <td className="px-6 py-4 font-medium">
         <div className="flex items-center">
           <div
@@ -48,6 +42,13 @@ const UserTableRow: React.FC<UserTableRowProps> = ({
             }`}
           ></div>
           {isActive(blocked)}
+        </div>
+      </td>
+      <td className="px-6 py-4 font-medium">
+        <div className="flex gap-2 text-sm">
+          <Link to={`${ROUTES.USER_PROFILE}/${id}`} className="btn btn-xs">
+            <FcViewDetails />
+          </Link>
         </div>
       </td>
     </tr>

@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import useAxiosPrivate from "./useAxiosPrivate";
-import { API_ENDPOINT } from "../utils/constant";
+import { API_ENDPOINT, INITIAL_AUTH_STATE } from "../utils/constant";
 import isSuccessRes from "../utils/apiResponse";
 import { useAuth } from "./useAuth";
 type UserProps = {
@@ -25,7 +25,7 @@ const useAuthentication = () => {
   const handleFalse = useCallback(() => {
     setIsAdmin(false);
     setIsActive(false);
-    setAuth({});
+    setAuth(INITIAL_AUTH_STATE);
   }, [setAuth]);
 
   const checkAuth = useCallback(async () => {

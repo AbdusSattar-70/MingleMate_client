@@ -11,6 +11,7 @@ import { FaRegUser } from "react-icons/fa6";
 import { FcViewDetails } from "react-icons/fc";
 import { GrUpdate } from "react-icons/gr";
 import { MdWorkHistory } from "react-icons/md";
+
 const EditProfile = () => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();

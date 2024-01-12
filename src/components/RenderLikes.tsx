@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { LikeType } from "../utils/types";
 import { ROUTES } from "../utils/constant";
-import DropdownLikes from "./DropdownLikes";
 
 interface likesProps {
   likes: LikeType[];
@@ -44,9 +43,6 @@ const RenderLikes: React.FC<likesProps> = ({ likes }) => {
           </div>
         </div>
       )}
-      <button>
-        <DropdownLikes />
-      </button>
     </>
   );
 };

@@ -3,6 +3,8 @@ import { ItemType } from "../../utils/types";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { GrUpdate } from "react-icons/gr";
 import { FcViewDetails } from "react-icons/fc";
+import { Link } from "react-router-dom";
+import { ROUTES } from "../../utils/constant";
 interface CollectionTableProps {
   items: ItemType[];
 }
@@ -33,7 +35,7 @@ const ItemsTable: React.FC<CollectionTableProps> = ({ items }) => {
                 Tags
               </th>
               {items[0]?.item_custom_fields
-                .filter((field) => field.field_type === "string")
+                ?.filter((field) => field.field_type === "string")
                 .map((field) => (
                   <th key={field.id} scope="col" className="px-6 py-3">
                     {field.field_name}
@@ -45,45 +47,50 @@ const ItemsTable: React.FC<CollectionTableProps> = ({ items }) => {
             </tr>
           </thead>
           <tbody>
-            {items.map((item) => (
-              <tr
-                key={item.id}
-                className="border-blue-400 bg-blue-600 hover:bg-blue-500 border-b"
-              >
-                <td className="px-6 py-4">{item.id}</td>
-                <td className="px-6 py-4">{item.item_name}</td>
-                <td className="px-6 py-4">{item.item_author}</td>
-                <td className="px-6 py-4">{item.likes}</td>
-                <td className="px-6 py-4">{item.comments_count}</td>
-                <td className="px-6 py-4">{item.tags.join(", ")}</td>
-                {item.item_custom_fields
-                  .filter((field) => field.field_type === "string")
-                  .map((field) => (
-                    <td key={field.id} className="px-6 py-4">
-                      {field.field_value.slice(0, 20)}
-                    </td>
-                  ))}
-                <td className="px-6 py-4">
-                  <div className="join join-vertical lg:join-horizontal">
-                    <button className="btn join-item">
-                      <span className="tooltip" data-tip="Details">
-                        <FcViewDetails className="text-xl" />
-                      </span>
-                    </button>
-                    <button className="btn join-item">
-                      <span className="tooltip" data-tip="Edit">
+            {items.map(
+              ({
+                item_id,
+                item_name,
+                item_author,
+                item_custom_fields,
+                tags,
+                comments_count,
+              }) => (
+                <tr
+                  key={item_id}
+                  className="border-blue-400 bg-blue-600 hover:bg-blue-500 border-b"
+                >
+                  <td className="px-6 py-4">{item_id}</td>
+                  <td className="px-6 py-4">{item_name}</td>
+                  <td className="px-6 py-4">{item_author}</td>
+                  <td className="px-6 py-4">{comments_count}</td>
+                  <td className="px-6 py-4">{tags?.join(", ")}</td>
+                  {item_custom_fields
+                    ?.filter((field) => field.field_type === "string")
+                    .map((field) => (
+                      <td key={field.id} className="px-6 py-4">
+                        {field.field_value.slice(0, 20)}
+                      </td>
+                    ))}
+                  <td className="px-6 py-4">
+                    <div className="flex gap-2 text-sm">
+                      <Link
+                        to={`${ROUTES.GET_SIGNLE_ITEM}/${item_id}`}
+                        className="btn btn-xs"
+                      >
+                        <FcViewDetails />
+                      </Link>
+                      <button className="btn btn-xs">
                         <GrUpdate />
-                      </span>
-                    </button>
-                    <button className="btn join-item">
-                      <span className="tooltip" data-tip="Delete">
+                      </button>
+                      <button className="btn btn-xs">
                         <FaRegTrashCan />
-                      </span>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              )
+            )}
           </tbody>
         </table>
       </div>

@@ -8,7 +8,7 @@ import {
 } from "../../utils/constant";
 import { CustomFieldType } from "../../utils/types";
 import { useAuth } from "../../hooks/useAuth";
-import AddCmFieldIntoCollection from "./AddCmFieldIntoCollection";
+import AddCmFieldIntoCollection from "../collection/AddCmFieldIntoCollection";
 import { deleteItemById } from "../../utils/deleteItemById";
 import { SelectField } from "../../components/SelectField";
 import { InputField } from "../../components/InputField";

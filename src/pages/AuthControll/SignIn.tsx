@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "../../utils/api";
 import { API_ENDPOINT, ROUTES } from "../../utils/constant";
 import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
+import { AuthData } from "../../utils/types";
 
 const SignIn = () => {
   const { setAuth } = useAuth();
@@ -33,28 +34,9 @@ const SignIn = () => {
     try {
       const res = await axios.post(API_ENDPOINT.SIGN_IN, signInData);
       if (isSuccessRes(res)) {
-        const {
-          id,
-          user_name,
-          email,
-          bio,
-          profession,
-          avatar,
-          items_count,
-          collections_count,
-          updated_at,
-        } = res.data.data;
         const { authorization } = res.headers;
         setAuth({
-          id,
-          user_name,
-          email,
-          bio,
-          profession,
-          avatar,
-          items_count,
-          collections_count,
-          updated_at,
+          ...(res.data.data as AuthData),
           authToken: authorization,
         });
         setEmail("");

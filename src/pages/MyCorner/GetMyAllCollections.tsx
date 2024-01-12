@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
-import { API_ENDPOINT, MESSAGES } from "../../../utils/constant";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { API_ENDPOINT, MESSAGES } from "../../utils/constant";
 import { toast } from "react-toastify";
-import isSuccessRes from "../../../utils/apiResponse";
-import Spinner from "../../../components/Spinner";
-import RenderCollections from "../RenderCollections";
-import { useAuth } from "../../../hooks/useAuth";
+import isSuccessRes from "../../utils/apiResponse";
+import Spinner from "../../components/Spinner";
+import RenderCollections from "../collection/RenderCollections";
+import { useAuth } from "../../hooks/useAuth";
 
 const GetMyAllCollections = () => {
   const axiosPrivate = useAxiosPrivate();

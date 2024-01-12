@@ -5,11 +5,11 @@ import { toast } from "react-toastify";
 import useAuthentication from "../../hooks/useAuthentication";
 import useSignOut from "../../hooks/useSignOut";
 import { useAuth } from "../../hooks/useAuth";
-import UserOne from "../../images/user/user-01.png";
+import dummyAvatar from "../../images/avatar.jpg";
 import { FaUserPen } from "react-icons/fa6";
 import { IoSettingsOutline } from "react-icons/io5";
 import { LuLogOut } from "react-icons/lu";
-import { ROUTES } from "../../utils/constant";
+import { INITIAL_AUTH_STATE, ROUTES } from "../../utils/constant";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -25,7 +25,7 @@ const DropdownUser = () => {
     if (signOutError) {
       toast.warning(signOutError);
     } else {
-      setAuth({});
+      setAuth(INITIAL_AUTH_STATE);
       navigate(ROUTES.SIGNIN);
     }
   };
@@ -67,7 +67,7 @@ const DropdownUser = () => {
             <span className="h-12 w-12 rounded-full">
               <div className="avatar online">
                 <div className=" rounded-full">
-                  <img src={auth.avatar || UserOne} alt="User" />
+                  <img src={auth.avatar || dummyAvatar} alt="User" />
                 </div>
               </div>
             </span>

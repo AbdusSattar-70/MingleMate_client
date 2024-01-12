@@ -7,6 +7,7 @@ import ItemsTable from "../items/ItemsTable";
 
 const GetSingleCollection = () => {
   const collection: CollectionType = useLoaderData() as CollectionType;
+
   const {
     id: collection_id,
     title,

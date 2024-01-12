@@ -9,12 +9,15 @@ export const ROUTES = {
   SIGNUP: "/sign-up",
   MY_PROFILE: "/my-profile",
   PROFILE_EDIT: "/profile/edit",
+  USER_PROFILE: "/user-profile",
   ADMIN_DASHBOARD: "/admin/dashboard",
   CREATE_COLLECTION: "/create-collection",
   EDIT_COLLECTION: "/edit-collection",
   DIESPLAY_SINGLE_COLLECTION: "/collection",
   MY_ALL_COLLECTIONS: "/my-all-collections",
   MY_ITEMS_ALL: "/my-all-items",
+  USER_ITEMS: "/user-items/user-id",
+  USER_COLLECTIONS: "/user-collections/user-id",
   CREATE_ITEM: "/collection",
   EDIT_ITEM: "/edit-item",
   GET_SIGNLE_ITEM: "/item",
@@ -35,6 +38,7 @@ export const API_ENDPOINT = {
   SIGN_IN: "signin",
   SIGN_OUT: "signout",
   UPDATE_DELETE_USER: "users",
+  USER_PROFILE: "users",
   CURRENT_USER: "current_user",
   ADMIN: {
     USERS: "admin/users",
@@ -51,6 +55,7 @@ export const API_ENDPOINT = {
   ITEM: "items",
   COMMENT: "comments",
   TAG: "tags",
+  TAG_RELATED_ITEMS: "tag_related_items?search=",
 };
 
 export const REGEX_PICK = {
@@ -156,3 +161,20 @@ export const SWITCH_CASE = {
 
 export const dummyImg =
   "https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp";
+
+export const INITIAL_AUTH_STATE = {
+  id: "",
+  authToken: "",
+  avatar: "",
+  collectImg: "",
+  user_name: "",
+  email: "",
+  created_at: "",
+  updated_at: "",
+  blocked: false,
+  role: 0,
+  bio: "",
+  items_count: 0,
+  collections_count: 0,
+  profession: "",
+};

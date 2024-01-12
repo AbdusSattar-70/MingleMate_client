@@ -1,20 +1,19 @@
 import { useEffect, useState } from "react";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { API_ENDPOINT, MESSAGES } from "../../utils/constant";
 import { toast } from "react-toastify";
 import isSuccessRes from "../../utils/apiResponse";
 import Spinner from "../../components/Spinner";
 import RenderCollections from "./RenderCollections";
+import axios from "../../utils/api";
 
 const GetLargestCollections = () => {
-  const axiosPrivate = useAxiosPrivate();
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCollections = async () => {
       try {
-        const response = await axiosPrivate.get(API_ENDPOINT.COLLECTION);
+        const response = await axios.get(API_ENDPOINT.COLLECTION);
         console.log(response);
         if (isSuccessRes(response)) {
           setLoading(false);
@@ -26,7 +25,7 @@ const GetLargestCollections = () => {
       }
     };
     fetchCollections();
-  }, [axiosPrivate]);
+  }, []);
 
   return (
     <>

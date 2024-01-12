@@ -4,35 +4,36 @@ export type NavLinkType = {
 };
 
 export type Users = {
-  id: number;
+  id: string;
   authToken: string;
   avatar: string;
   user_name: string;
   email: string;
+  created_at: string;
   updated_at: string;
   blocked: boolean;
   role: number;
   bio: string;
-  created_at: string;
   items_count: number;
   collections_count: number;
   profession: string;
 };
 
 export type AuthData = {
-  id?: number;
-  authToken?: string;
-  avatar?: string;
+  id: string;
+  authToken: string;
+  avatar: string;
   collectImg?: string;
-  user_name?: string;
-  email?: string;
-  updated_at?: string;
-  blocked?: boolean;
-  role?: number;
-  bio?: string;
-  items_count?: number;
-  collections_count?: number;
-  profession?: string;
+  user_name: string;
+  email: string;
+  created_at: string;
+  updated_at: string;
+  blocked: boolean;
+  role: number;
+  bio: string;
+  items_count: number;
+  collections_count: number;
+  profession: string;
 };
 
 export type CustomFieldType = {
@@ -56,7 +57,7 @@ export type CollectionType = {
 };
 
 export type ItemType = {
-  id: string;
+  item_id: string;
   item_name: string;
   item_author: string;
   collection_id: string;
@@ -67,6 +68,17 @@ export type ItemType = {
   comments: CommentType[];
   comments_count: number;
   image?: string;
+};
+
+export type TAGRelatedItemType = {
+  item_id: string;
+  item_name: string;
+  collection_name: string;
+  item_author: string;
+  likes: number;
+  comments: number;
+  created_at: string;
+  updated_at: string;
 };
 
 export type CommentType = {
