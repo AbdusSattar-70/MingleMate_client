@@ -1,20 +1,22 @@
 import { lazy } from "react";
 
-export const Home = lazy(() => import("../pages/home/Home"));
-export const Dashboard = lazy(() => import("../pages/Dashboard/Dashboard"));
-export const DisplayItemsAll = lazy(
-  () => import("../pages/items/DisplayItemsAll")
+export const Home = lazy(() => import("../components/home/Home"));
+export const Dashboard = lazy(
+  () => import("../components/Dashboard/Dashboard")
 );
-export const GetSingleCollection = lazy(
-  () => import("../pages/collection/GetSingleCollection")
+export const GetAllItems = lazy(
+  () => import("../components/items/GetAllItems")
 );
-export const CreateCollectionForm = lazy(
-  () => import("../pages/collection/CreateCollection")
+export const CollectionWithItemTable = lazy(
+  () => import("../components/RouteFetch/CollectionWithItemTable")
 );
-export const CreateItem = lazy(() => import("../pages/items/CreateItem"));
-export const SignIn = lazy(() => import("../pages/AuthControll/SignIn"));
-export const SignUp = lazy(() => import("../pages/AuthControll/SignUp"));
-export const Profile = lazy(() => import("../pages/AuthControll/Profile"));
+export const CreateCollection = lazy(
+  () => import("../components/collection/CreateCollection")
+);
+export const CreateItem = lazy(() => import("../components/items/CreateItem"));
+export const SignIn = lazy(() => import("../components/AuthControll/SignIn"));
+export const SignUp = lazy(() => import("../components/AuthControll/SignUp"));
+export const MyProfile = lazy(() => import("../components/MyCorner/MyProfile"));
 export const EditProfile = lazy(
-  () => import("../pages/AuthControll/EditProfile")
+  () => import("../components/MyCorner/EditProfile")
 );
