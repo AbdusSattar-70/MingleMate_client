@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
-import { API_ENDPOINT, MESSAGES } from "../../utils/constant";
+import { API_ENDPOINT, MESSAGES, ROUTES } from "../../utils/constant";
 import { toast } from "react-toastify";
+import dummyImg from "../../images/avatar.jpg";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { MdOutlineSend } from "react-icons/md";
 interface CreateCommentProps {
@@ -12,11 +13,13 @@ interface CreateCommentProps {
 }
 import { FcViewDetails } from "react-icons/fc";
 import { CommentType } from "../../utils/types";
+import { useNavigate } from "react-router-dom";
 
 const CreateComment: React.FC<CreateCommentProps> = ({
   item_id,
   updateComments,
 }) => {
+  const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
   const [comment, setComment] = useState<string>("");
@@ -32,11 +35,15 @@ const CreateComment: React.FC<CreateCommentProps> = ({
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
+    if (!auth.authToken) {
+      navigate(ROUTES.SIGNIN, { state: { from: location.pathname } });
+    }
 
     try {
       const res = await axiosPrivate.post(API_ENDPOINT.COMMENT, data);
       if (isSuccessRes(res)) {
         updateComments(res.data);
+        setComment("");
         toast.success(MESSAGES.SUCCESS);
       }
     } catch (error) {
@@ -46,6 +53,11 @@ const CreateComment: React.FC<CreateCommentProps> = ({
 
   return (
     <form onSubmit={(e) => CreateCommentHandler(e)}>
+      <div className="avatar online">
+        <div className="h-8 w-8 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
+          <img src={auth.avatar || dummyImg} alt="User" />
+        </div>
+      </div>
       <div className="mb-2">
         <label
           className="mb-3 block text-sm font-medium text-black dark:text-white"

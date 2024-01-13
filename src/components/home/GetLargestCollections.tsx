@@ -42,15 +42,16 @@ const GetLargestCollections = () => {
                 items_count,
                 category,
               }) => (
-                <RenderCollections
-                  key={collection_id}
-                  collection_id={collection_id}
-                  user_name={user_name}
-                  title={title}
-                  image={image}
-                  items_count={items_count}
-                  category={category}
-                />
+                <div key={collection_id}>
+                  <RenderCollections
+                    collection_id={collection_id}
+                    user_name={user_name}
+                    title={title}
+                    image={image}
+                    items_count={items_count}
+                    category={category}
+                  />
+                </div>
               )
             )
           ) : (

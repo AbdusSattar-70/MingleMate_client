@@ -10,7 +10,6 @@ import { FaRegCommentDots } from "react-icons/fa";
 import Heart from "react-animated-heart";
 import DropdownTagsItem from "../Tags/DropdownTagsItem";
 import RenderItemCustomFields from "./RenderItemCustomFields";
-// need to dispay item custom fields data
 const DisplaySingleItem = ({ itemData }: { itemData: ItemType }) => {
   const {
     item_id,
@@ -74,6 +73,8 @@ const DisplaySingleItem = ({ itemData }: { itemData: ItemType }) => {
 
             <p>Comments: {commentsData?.length}</p>
           </div>
+        </div>
+        <div className="mx-auto mb-5.5 mt-4.5 max-w-3xl overflow-y-auto rounded-md border border-stroke py-2.5 shadow-lg drop-shadow-1 dark:border-strokedark dark:bg-[#37404F] dark:drop-shadow-none">
           <RenderItemCustomFields item_custom_fields={item_custom_fields} />
         </div>
 
@@ -118,16 +119,17 @@ const DisplaySingleItem = ({ itemData }: { itemData: ItemType }) => {
           </div>
         )}
 
-        <div className="flex gap-16">
-          {tags?.length > 0
-            ? tags.map((tag) => {
-                return (
-                  <ul key={tag}>
+        <div className="mx-auto mb-5.5 mt-4.5 h-auto max-w-3xl p-4 pb-20">
+          <h6 className="mb-4 p-1 text-3xl font-semibold">Related Tags:</h6>
+          <div className="flex flex-wrap gap-4">
+            {tags?.length > 0
+              ? tags.map((tag) => (
+                  <ul key={tag} className="">
                     <DropdownTagsItem tag={tag} />
                   </ul>
-                );
-              })
-            : null}
+                ))
+              : null}
+          </div>
         </div>
       </div>
     </>
