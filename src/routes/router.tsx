@@ -1,24 +1,27 @@
 import { createBrowserRouter } from "react-router-dom";
-import ErrorPage from "../pages/errorPage/ErrorPage";
 import PrivateRoute from "./PrivateRoute";
 import { API_ENDPOINT, BASE_URL, ROUTES } from "../utils/constant";
 import DefaultLayout from "../layout/DefaultLayout";
 import {
-  CreateCollectionForm,
+  CreateCollection,
   CreateItem,
   Dashboard,
   EditProfile,
-  GetSingleCollection,
+  CollectionWithItemTable,
   Home,
   SignIn,
   SignUp,
+  GetAllItems,
+  MyProfile,
 } from "./LazyComponents";
-import MyCollections from "../pages/MyCorner/MyCollections";
-import GetSingleItemDataFromRoute from "../pages/RouteFetch/GetSingleItemDataFromRoute";
-import GetUserItemsAllFromRoute from "../pages/RouteFetch/GetUserItemsAllFromRoute";
-import MyProfile from "../pages/MyCorner/MyProfile";
-import UserProfileFromRoute from "../pages/RouteFetch/UserProfileFromRoute";
-import MyItemsAll from "../pages/MyCorner/MyItemsAll";
+import ErrorPage from "../components/errorPage/ErrorPage";
+import UserProfileFromRoute from "../components/RouteFetch/UserProfileFromRoute";
+import MyCollections from "../components/MyCorner/MyCollections";
+import GetAllCollections from "../components/home/GetAllCollections";
+import UserColletionsFromRoute from "../components/RouteFetch/UserColletionsFromRoute";
+import GetUserItemsAllFromRoute from "../components/RouteFetch/GetUserItemsAllFromRoute";
+import MyItemsAll from "../components/MyCorner/MyItemsAll";
+import GetSingleItemDataFromRoute from "../components/RouteFetch/GetSingleItemDataFromRoute";
 
 const router = createBrowserRouter([
   {
@@ -42,14 +45,24 @@ const router = createBrowserRouter([
         element: <MyCollections />,
       },
       {
+        path: ROUTES.ALL_COLLECTIONS,
+        element: <GetAllCollections />,
+      },
+
+      {
+        path: `${ROUTES.USER_COLLECTIONS}/:userId`,
+        element: <UserColletionsFromRoute />,
+      },
+
+      {
         path: `${ROUTES.DIESPLAY_SINGLE_COLLECTION}/:id`,
-        element: <GetSingleCollection />,
+        element: <CollectionWithItemTable />,
         loader: ({ params }) =>
           fetch(`${BASE_URL}/${API_ENDPOINT.COLLECTION}/${params.id}`),
       },
       {
         path: ROUTES.CREATE_COLLECTION,
-        element: <CreateCollectionForm />,
+        element: <CreateCollection />,
       },
       // item related routes
       {
@@ -65,6 +78,10 @@ const router = createBrowserRouter([
       {
         path: ROUTES.MY_ITEMS_ALL,
         element: <MyItemsAll />,
+      },
+      {
+        path: ROUTES.GET_ITEMS_ALL,
+        element: <GetAllItems />,
       },
       {
         path: `/item/:id`,

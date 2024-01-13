@@ -15,12 +15,14 @@ export const ROUTES = {
   EDIT_COLLECTION: "/edit-collection",
   DIESPLAY_SINGLE_COLLECTION: "/collection",
   MY_ALL_COLLECTIONS: "/my-all-collections",
+  ALL_COLLECTIONS: "/all-collections",
   MY_ITEMS_ALL: "/my-all-items",
   USER_ITEMS: "/user-items/user-id",
   USER_COLLECTIONS: "/user-collections/user-id",
   CREATE_ITEM: "/collection",
   EDIT_ITEM: "/edit-item",
   GET_SIGNLE_ITEM: "/item",
+  GET_ITEMS_ALL: "/items",
   DISPLAY_ALL_ITEMS: "/all-items",
 };
 
@@ -48,6 +50,7 @@ export const API_ENDPOINT = {
     ROLE_TOGGLE_URL: "admin/users/role_toggle",
   },
   USER_COLLECTIONS: "user_collections",
+  TOP_FIVE_COLLECTIONS: "top_five_collections",
   COLLECTION: "collections",
   COLLECTION_CUSTOM_FIELDS: "collection/custom_fields",
   COLLECTION_ITEMS: "collection_items",

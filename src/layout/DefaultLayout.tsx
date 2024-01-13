@@ -1,8 +1,8 @@
 import { Suspense, useEffect, useState } from "react";
-import Header from "../pages/navbarSideBar/Header";
-import Sidebar from "../pages/navbarSideBar/Sidebar";
 import { Outlet } from "react-router-dom";
-import Spinner from "../components/Spinner";
+import Spinner from "../components/common/Spinner";
+import Sidebar from "../components/navbarSideBar/Sidebar";
+import Header from "../components/navbarSideBar/Header";
 
 const DefaultLayout = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -34,7 +34,7 @@ const DefaultLayout = () => {
 
               <main>
                 <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={<Spinner />}>
                     <Outlet />
                   </Suspense>
                 </div>
