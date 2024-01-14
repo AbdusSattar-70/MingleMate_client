@@ -75,7 +75,6 @@ const CreateCollection: React.FC = () => {
   const CreateNewCollection = async () => {
     try {
       const res = await axiosPrivate.post(API_ENDPOINT.COLLECTION, data);
-
       if (isSuccessRes(res)) {
         toast.success(MESSAGES.SUCCESS);
         navigate(ROUTES.MY_ALL_COLLECTIONS);

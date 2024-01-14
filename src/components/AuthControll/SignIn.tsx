@@ -11,8 +11,8 @@ const SignIn = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname;
-
+  const from = location?.state?.from || "/";
+  console.log(from);
   const emailRef = useRef(null);
   const [email, setEmail] = useState("");
   const [pwd, setPwd] = useState("");

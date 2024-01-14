@@ -34,6 +34,7 @@ export const PICK_THEME = {
 
 export const COLLECT_IMG = "collectImg";
 export const AVATAR = "avatar";
+export const ITEM_IMG = "ItemImg";
 
 export const API_ENDPOINT = {
   SIGN_UP: "signup",
@@ -57,6 +58,8 @@ export const API_ENDPOINT = {
   USER_ITEMS: "user_items",
   ITEM: "items",
   COMMENT: "comments",
+  LIKE: "likes",
+  ITEM_LIKES_COUNT: "item_likes_count",
   TAG: "tags",
   TAG_RELATED_ITEMS: "tag_related_items?search=",
 };
@@ -79,6 +82,7 @@ export const MESSAGES = {
   SUCCESS: "Congrats! Request has Succeeded",
   FILL_TYPE_FIELD: "please fill up field type",
   COLLECTION_FIELD: "title, topic and description is required",
+  SERVER_OFFLINE: "server is offline, please try again",
 };
 
 export const DASHBOARD_TABLE_CONST = {
@@ -170,11 +174,12 @@ export const INITIAL_AUTH_STATE = {
   authToken: "",
   avatar: "",
   collectImg: "",
+  ItemImg: "",
   user_name: "",
   email: "",
   created_at: "",
   updated_at: "",
-  blocked: false,
+  blocked: true,
   role: 0,
   bio: "",
   items_count: 0,

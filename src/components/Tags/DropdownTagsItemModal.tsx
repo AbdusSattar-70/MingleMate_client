@@ -2,6 +2,7 @@
 import { TAGRelatedItemType } from "../../utils/types";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../utils/constant";
+import keyId from "../../utils/keyId";
 import { calculateTimeElapsed } from "../../utils/formattedTime";
 interface DropdownTagsItemModalProps {
   tagRef: any;
@@ -43,7 +44,7 @@ const DropdownTagsItemModal: React.FC<DropdownTagsItemModalProps> = ({
                     created_at,
                     updated_at,
                   }) => (
-                    <li key={item_id}>
+                    <li key={keyId() + created_at}>
                       <div
                         role="button"
                         className="link link-success flex cursor-pointer flex-col gap-1 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"

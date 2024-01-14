@@ -5,6 +5,7 @@ import { GrUpdate } from "react-icons/gr";
 import { FcViewDetails } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../utils/constant";
+import keyId from "../../utils/keyId";
 interface CollectionTableProps {
   items: ItemType[];
 }
@@ -37,7 +38,7 @@ const ItemsTable: React.FC<CollectionTableProps> = ({ items }) => {
               {items[0]?.item_custom_fields
                 ?.filter((field) => field.field_type === "string")
                 .map((field) => (
-                  <th key={field.id} scope="col" className="px-6 py-3">
+                  <th key={keyId()} scope="col" className="px-6 py-3">
                     {field.field_name}
                   </th>
                 ))}
@@ -57,7 +58,7 @@ const ItemsTable: React.FC<CollectionTableProps> = ({ items }) => {
                 comments_count,
               }) => (
                 <tr
-                  key={item_id}
+                  key={keyId()}
                   className="border-blue-400 bg-blue-600 hover:bg-blue-500 border-b"
                 >
                   <td className="px-6 py-4">{item_id}</td>
@@ -68,8 +69,8 @@ const ItemsTable: React.FC<CollectionTableProps> = ({ items }) => {
                   {item_custom_fields
                     ?.filter((field) => field.field_type === "string")
                     .map((field) => (
-                      <td key={field.id} className="px-6 py-4">
-                        {field.field_value.slice(0, 20)}
+                      <td key={keyId()} className="px-6 py-4">
+                        {field.field_value}
                       </td>
                     ))}
                   <td className="px-6 py-4">

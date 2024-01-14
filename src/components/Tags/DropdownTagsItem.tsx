@@ -8,11 +8,14 @@ import { HiOutlineStatusOnline } from "react-icons/hi";
 const DropdownTagsItem = ({ tag }: { tag: string }) => {
   const tagRef = useRef<HTMLDialogElement | null>(null);
   const [items, setItems] = useState<TAGRelatedItemType[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const handleFetchTagsRelatedItems = async () => {
+    setLoading(true);
     const res = await axios.get(`${API_ENDPOINT.TAG_RELATED_ITEMS}${tag}`);
     if (isSuccessRes(res) && tagRef.current) {
       setItems(res.data);
+      setLoading(false);
       tagRef.current.showModal();
     }
   };
@@ -24,7 +27,7 @@ const DropdownTagsItem = ({ tag }: { tag: string }) => {
         onClick={handleFetchTagsRelatedItems}
       >
         <HiOutlineStatusOnline className="text-meta-5" />
-        {tag}
+        {loading ? "loading..." : tag}
       </button>
       <DropdownTagsItemModal tagRef={tagRef} items={items} />
     </>

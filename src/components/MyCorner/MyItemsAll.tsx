@@ -7,7 +7,7 @@ import isSuccessRes from "../../utils/apiResponse";
 import { toast } from "react-toastify";
 import Spinner from "../common/Spinner";
 import { useAuth } from "../../hooks/useAuth";
-
+import keyId from "../../utils/keyId";
 const MyItemsAll = () => {
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
@@ -42,7 +42,7 @@ const MyItemsAll = () => {
           {items.length > 0 ? (
             items.map((itemData) => (
               <section
-                key={itemData.item_id}
+                key={keyId()}
                 className="mb-10 bg-white shadow-xl drop-shadow-xl"
               >
                 <DisplaySingleItem itemData={itemData} />

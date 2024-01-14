@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import UserTableActions from "./UserTableActions";
 import { toast } from "react-toastify";
-
+import keyId from "../../utils/keyId";
 import UserTableHeader from "./UserTableHeader";
 import UserTableRow from "./UserTableRow";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -162,7 +162,7 @@ const UserTable = () => {
               <tbody>
                 {users.map((user) => (
                   <UserTableRow
-                    key={user.email}
+                    key={keyId()}
                     user={user}
                     selectedUsers={selectedUsers}
                     selectAll={selectAll}

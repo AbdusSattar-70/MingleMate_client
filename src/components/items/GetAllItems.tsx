@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import DisplaySingleItem from "./DisplaySingleItem";
 import Spinner from "../common/Spinner";
 import { ItemType } from "../../utils/types";
+import keyId from "../../utils/keyId";
 
 const GetAllItems = () => {
   const [items, setItems] = useState<ItemType[]>([]);
@@ -40,23 +41,23 @@ const GetAllItems = () => {
       {loading ? (
         <Spinner />
       ) : (
-        <>
-          {items.length > 0 ? (
-            items.map((itemData) => (
-              <section
-                key={itemData.item_id}
-                className="mb-10 bg-white shadow-xl drop-shadow-xl"
-              >
-                <DisplaySingleItem itemData={itemData} />
-                <button onClick={handleSeeMore} className="btn btn-primary">
-                  see More
-                </button>
-              </section>
-            ))
-          ) : (
-            <div>No Item Data found</div>
-          )}
-        </>
+        <section>
+          {items.length > 0
+            ? items.map((itemData) => (
+                <DisplaySingleItem
+                  key={keyId() + itemData.item_id}
+                  itemData={itemData}
+                />
+              ))
+            : null}
+          <div className="flex items-center justify-center">
+            {items.length && (
+              <button onClick={handleSeeMore} className="btn btn-primary">
+                see More
+              </button>
+            )}
+          </div>
+        </section>
       )}
     </>
   );

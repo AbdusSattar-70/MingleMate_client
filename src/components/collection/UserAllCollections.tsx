@@ -4,7 +4,7 @@ import isSuccessRes from "../../utils/apiResponse";
 import Spinner from "../common/Spinner";
 import RenderCollections from "./RenderCollections";
 import axios from "../../utils/api";
-
+import keyId from "../../utils/keyId";
 const UserAllCollections = ({ userId }: { userId: string }) => {
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,7 +45,7 @@ const UserAllCollections = ({ userId }: { userId: string }) => {
                 category,
               }) => (
                 <RenderCollections
-                  key={collection_id}
+                  key={keyId()}
                   collection_id={collection_id}
                   user_name={user_name}
                   title={title}

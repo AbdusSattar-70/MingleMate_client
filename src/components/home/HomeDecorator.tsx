@@ -1,8 +1,18 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import bgImg from "../../images/bg.jpg";
 import { ROUTES } from "../../utils/constant";
+import { useAuth } from "../../hooks/useAuth";
 
 const HomeDecorator = () => {
+  const navigate = useNavigate();
+  const { auth } = useAuth();
+  const handleNavigate = () => {
+    if (auth.authToken) {
+      navigate(ROUTES.CREATE_COLLECTION);
+    } else {
+      navigate(ROUTES.SIGNIN, { state: { from: location.pathname } });
+    }
+  };
   return (
     <div
       className="hero max-h-[65vh]"
@@ -26,9 +36,9 @@ const HomeDecorator = () => {
             empowers you to Explore, Create, and Connect with Your Treasured
             Items, Your Way.
           </p>
-          <Link to={ROUTES.CREATE_COLLECTION} className="btn btn-primary mt-4">
+          <button onClick={handleNavigate} className="btn btn-primary mt-4">
             Get Started
-          </Link>
+          </button>
         </div>
       </div>
     </div>

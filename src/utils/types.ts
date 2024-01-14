@@ -24,6 +24,7 @@ export type AuthData = {
   authToken: string;
   avatar: string;
   collectImg?: string;
+  ItemImg?: string;
   user_name: string;
   email: string;
   created_at: string;
@@ -95,6 +96,7 @@ export type LikeType = {
   id: string;
   user_id: string;
   user_photo: string;
+  user_name: string;
 };
 
 export type InputFieldProps = {

@@ -4,7 +4,7 @@ import { API_ENDPOINT } from "../../utils/constant";
 import RenderCollections from "../collection/RenderCollections";
 import isSuccessRes from "../../utils/apiResponse";
 import { useEffect, useState } from "react";
-
+import keyId from "../../utils/keyId";
 const GetAllCollections = () => {
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -52,7 +52,7 @@ const GetAllCollections = () => {
                 category,
               }) => (
                 <RenderCollections
-                  key={collection_id}
+                  key={keyId() + collection_id}
                   collection_id={collection_id}
                   user_name={user_name}
                   title={title}

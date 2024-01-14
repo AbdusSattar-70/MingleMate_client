@@ -1,7 +1,7 @@
 import { UpcaseFirstChar } from "../../utils/UpcaseFirstChar";
 import { SWITCH_CASE } from "../../utils/constant";
 import { CustomFieldType } from "../../utils/types";
-
+import keyId from "../../utils/keyId";
 interface CustomFieldProps {
   field: CustomFieldType;
   handleCustomInput: (
@@ -75,7 +75,7 @@ const CustomField: React.FC<CustomFieldProps> = ({
   };
 
   return (
-    <div key={field.id} className="form-control gap-1">
+    <div key={keyId()} className="form-control gap-1">
       <label htmlFor={`field_${field.id}`}>
         {UpcaseFirstChar(field.field_name) + " :"}
       </label>
@@ -101,7 +101,7 @@ const CustomFieldsForm: React.FC<CustomFieldsFormProps> = ({
       {itemCustomFields.length > 0 ? (
         itemCustomFields.map((field) => (
           <CustomField
-            key={field.id}
+            key={keyId() + field.id}
             field={field}
             handleCustomInput={handleCustomInput}
           />

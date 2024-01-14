@@ -5,7 +5,7 @@ import Spinner from "../common/Spinner";
 import RenderCollections from "../collection/RenderCollections";
 import axios from "../../utils/api";
 import { Link } from "react-router-dom";
-
+import keyId from "../../utils/keyId";
 const GetLargestCollections = () => {
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -42,7 +42,7 @@ const GetLargestCollections = () => {
                 items_count,
                 category,
               }) => (
-                <div key={collection_id}>
+                <div key={keyId()}>
                   <RenderCollections
                     collection_id={collection_id}
                     user_name={user_name}
