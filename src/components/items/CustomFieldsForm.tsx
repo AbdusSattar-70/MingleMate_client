@@ -1,7 +1,6 @@
 import { UpcaseFirstChar } from "../../utils/UpcaseFirstChar";
 import { SWITCH_CASE } from "../../utils/constant";
 import { CustomFieldType } from "../../utils/types";
-
 interface CustomFieldProps {
   field: CustomFieldType;
   handleCustomInput: (

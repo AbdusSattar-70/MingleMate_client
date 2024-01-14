@@ -4,7 +4,7 @@ import isSuccessRes from "../../utils/apiResponse";
 import Spinner from "../common/Spinner";
 import RenderCollections from "./RenderCollections";
 import axios from "../../utils/api";
-
+import keyId from "../../utils/keyId";
 const UserAllCollections = ({ userId }: { userId: string }) => {
   const [collections, setCollections] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,7 +33,7 @@ const UserAllCollections = ({ userId }: { userId: string }) => {
       {loading ? (
         <Spinner />
       ) : (
-        <section className="mx-4 my-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mx-8 md:my-10 md:grid-cols-3 md:gap-8 lg:mx-16 lg:grid-cols-4 xl:mx-24 2xl:mx-32">
+        <section className="grid grid-cols-1 gap-4 pb-8 sm:grid-cols-2 lg:grid-cols-3">
           {collections.length ? (
             collections.map(
               ({
@@ -45,7 +45,7 @@ const UserAllCollections = ({ userId }: { userId: string }) => {
                 category,
               }) => (
                 <RenderCollections
-                  key={collection_id}
+                  key={keyId()}
                   collection_id={collection_id}
                   user_name={user_name}
                   title={title}

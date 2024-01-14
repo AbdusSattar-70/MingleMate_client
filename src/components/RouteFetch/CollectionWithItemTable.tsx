@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { fetchItems } from "../../utils/fetchItems";
 import { ROUTES, dummyImg } from "../../utils/constant";
 import ItemsTable from "../items/ItemsTable";
+import useAuthorization from "../../hooks/useAuthorization";
 
 const CollectionWithItemTable = () => {
   const collection: CollectionType = useLoaderData() as CollectionType;
-
+  console.log(collection);
   const {
     id: collection_id,
     title,
@@ -15,8 +16,11 @@ const CollectionWithItemTable = () => {
     description,
     category,
     items_count,
+    user_name,
+    author_id,
   } = collection;
 
+  const { canManageAll } = useAuthorization();
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -43,19 +47,21 @@ const CollectionWithItemTable = () => {
           </div>
           <div className="w-full lg:w-1/2">
             <h1 className="text-xl font-bold sm:text-5xl lg:text-6xl">
-              {title}
+              {title} by <span>{user_name}</span>
             </h1>
             <p className="py-6">
               {description || "Collection description goes here"}
             </p>
             <p>Items: {items_count}</p>
             <p>Category: {category}</p>
-            <Link
-              to={`${ROUTES.CREATE_ITEM}/${collection_id}/create-item`}
-              className="btn btn-primary"
-            >
-              Add Item
-            </Link>
+            {canManageAll(author_id) && (
+              <Link
+                to={`${ROUTES.CREATE_ITEM}/${collection_id}/create-item`}
+                className="btn btn-primary"
+              >
+                Add new Item
+              </Link>
+            )}
           </div>
         </div>
       </div>

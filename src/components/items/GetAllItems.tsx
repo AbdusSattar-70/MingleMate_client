@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import DisplaySingleItem from "./DisplaySingleItem";
 import Spinner from "../common/Spinner";
 import { ItemType } from "../../utils/types";
+import keyId from "../../utils/keyId";
 
 const GetAllItems = () => {
   const [items, setItems] = useState<ItemType[]>([]);
@@ -40,23 +41,28 @@ const GetAllItems = () => {
       {loading ? (
         <Spinner />
       ) : (
-        <>
-          {items.length > 0 ? (
-            items.map((itemData) => (
-              <section
-                key={itemData.item_id}
-                className="mb-10 bg-white shadow-xl drop-shadow-xl"
-              >
-                <DisplaySingleItem itemData={itemData} />
-                <button onClick={handleSeeMore} className="btn btn-primary">
-                  see More
-                </button>
-              </section>
-            ))
-          ) : (
-            <div>No Item Data found</div>
-          )}
-        </>
+        <section>
+          {items.length > 0
+            ? items.map((itemData) => (
+                <DisplaySingleItem
+                  key={keyId() + itemData.item_id}
+                  itemData={itemData}
+                />
+              ))
+            : null}
+
+          <div className="mx-auto mb-8 h-20 w-full rounded border border-stroke bg-gray py-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary">
+            <div className="mx-auto flex max-w-[15rem] items-center justify-center gap-4">
+              <div className="card w-full flex-shrink-0 bg-base-100 shadow-2xl dark:bg-meta-4">
+                {items.length && (
+                  <button onClick={handleSeeMore} className="btn btn-primary">
+                    Find More
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
       )}
     </>
   );

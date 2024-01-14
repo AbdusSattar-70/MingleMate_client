@@ -20,7 +20,7 @@ const RenderCollections: React.FC<RenderCollectionsProps> = ({
 }) => {
   return (
     <div>
-      <div className="card card-compact bg-base-100 shadow-xl">
+      <div className="card card-compact rounded border border-stroke bg-gray text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary">
         <figure style={{ width: "100%", height: "150px", overflow: "hidden" }}>
           <img
             src={image ? image : dummyImg}
@@ -34,14 +34,14 @@ const RenderCollections: React.FC<RenderCollectionsProps> = ({
           <p>Category: {category}</p>
 
           <p>Created by: {user_name.split(" ")[0]}</p>
-          <div className="join">
-            <button className="btn join-item">Delete</button>
-            <button className="btn join-item">Edit</button>
+          <div className="flex gap-4">
+            <button className="btn  btn-sm">Delete</button>
+            <button className="btn  btn-sm">Edit</button>
           </div>
           <Link
             to={`${ROUTES.DIESPLAY_SINGLE_COLLECTION}/${collection_id}`}
             aria-label="see details link"
-            className="btn btn-outline btn-secondary"
+            className="btn  btn-primary"
           >
             see details
           </Link>

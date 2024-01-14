@@ -24,6 +24,7 @@ export type AuthData = {
   authToken: string;
   avatar: string;
   collectImg?: string;
+  ItemImg?: string;
   user_name: string;
   email: string;
   created_at: string;
@@ -51,6 +52,7 @@ export type CollectionType = {
   image: string;
   category: string;
   user_name: string;
+  author_id: string;
   custom_fields: CustomFieldType[];
   items_count: number;
   items: ItemType[];
@@ -95,6 +97,7 @@ export type LikeType = {
   id: string;
   user_id: string;
   user_photo: string;
+  user_name: string;
 };
 
 export type InputFieldProps = {

@@ -1,5 +1,5 @@
 import { useAuth } from "../../hooks/useAuth";
-import { AVATAR } from "../../utils/constant";
+import { AVATAR, COLLECT_IMG } from "../../utils/constant";
 import { detectPhoto } from "../../utils/detectPhoto";
 import dummyAvatar from "../../images/avatar.jpg";
 import coverImg from "../../images/cover/cover-01.png";
@@ -23,10 +23,15 @@ const PhotoUploadForm: React.FC<PhotoUploadFormProps> = ({
         <div className="h-30 w-30 rounded-full">
           <div className="avatar">
             <div className="rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
-              {detectPhoto(usage) == AVATAR ? (
+              {detectPhoto(usage) === AVATAR ? (
                 <img src={auth?.avatar || dummyAvatar} alt="User Photo" />
+              ) : detectPhoto(usage) === COLLECT_IMG ? (
+                <img
+                  src={auth?.collectImg || coverImg}
+                  alt="Collection Photo"
+                />
               ) : (
-                <img src={auth?.collectImg || coverImg} alt="User Photo" />
+                <img src={auth?.ItemImg || coverImg} alt="item Photo" />
               )}
             </div>
           </div>

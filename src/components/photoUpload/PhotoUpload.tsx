@@ -3,13 +3,15 @@ import useImageUpload from "../../firebase/useImageUpload";
 import { useAuth } from "../../hooks/useAuth";
 import { toast } from "react-toastify";
 import { detectPhoto } from "../../utils/detectPhoto";
-import { AVATAR, COLLECT_IMG } from "../../utils/constant";
+import { COLLECT_IMG, ITEM_IMG } from "../../utils/constant";
 import ProgressBar from "./ProgressBar";
 import PhotoUploadForm from "./PhotoUploadForm";
+import Spinner from "../common/Spinner";
 
 const PhotoUpload = ({ usage }: { usage: string }) => {
   const { setAuth } = useAuth();
-  const { uploadFile, downloadURL, error, uploadProgress } = useImageUpload();
+  const { uploadFile, downloadURL, error, uploadProgress, loading } =
+    useImageUpload();
   const [file, setFile] = useState<File | null>(null);
   useEffect(() => {
     if (error) {
@@ -22,7 +24,14 @@ const PhotoUpload = ({ usage }: { usage: string }) => {
             collectImg: downloadURL,
           };
         });
-      } else if (detectPhoto(usage) === AVATAR) {
+      } else if (detectPhoto(usage) === ITEM_IMG) {
+        setAuth((prev) => {
+          return {
+            ...prev,
+            ItemImg: downloadURL,
+          };
+        });
+      } else {
         setAuth((prev) => {
           return {
             ...prev,
@@ -58,22 +67,27 @@ const PhotoUpload = ({ usage }: { usage: string }) => {
     }
   };
   return (
-    <div className="col-span-5 xl:col-span-2">
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
-          <h3 className="font-medium text-black dark:text-white">
-            Upload Image
-          </h3>
+    <div className="col-span-5 xl:col-span-2 ">
+      <ProgressBar uploadProgress={uploadProgress} />
+
+      {loading ? (
+        <Spinner />
+      ) : (
+        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
+            <h3 className="font-medium text-black dark:text-white">
+              Upload Image
+            </h3>
+          </div>
+          <div className="p-7">
+            <PhotoUploadForm
+              handleDrop={handleDrop}
+              setFile={setFile}
+              usage={usage}
+            />
+          </div>
         </div>
-        <div className="p-7">
-          <ProgressBar uploadProgress={uploadProgress} />
-          <PhotoUploadForm
-            handleDrop={handleDrop}
-            setFile={setFile}
-            usage={usage}
-          />
-        </div>
-      </div>
+      )}
     </div>
   );
 };

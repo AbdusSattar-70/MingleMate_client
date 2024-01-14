@@ -4,7 +4,7 @@ import { InputField } from "../common/InputField";
 import { SelectField } from "../common/SelectField";
 import { CustomFieldType } from "../../utils/types";
 import { FieldType } from "../../utils/constant";
-
+import keyId from "../../utils/keyId";
 interface AddCmFieldIntoCollectionProps {
   addingField: CustomFieldType;
   editableFields: CustomFieldType[];
@@ -30,7 +30,7 @@ const AddCmFieldIntoCollection: React.FC<AddCmFieldIntoCollectionProps> = ({
       <ul className="space-y-2" id="dynamicUl">
         {editableFields.map((field, i) => (
           <div
-            key={field.id}
+            key={keyId()}
             className="bg-slate-200 flex flex-col items-center justify-center gap-2 overflow-auto p-2 md:flex-row md:justify-between"
           >
             <h3 className="btn btn-circle text-xl font-semibold dark:bg-form-input dark:text-white">

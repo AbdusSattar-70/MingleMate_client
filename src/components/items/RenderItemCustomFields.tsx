@@ -1,5 +1,5 @@
 import { CustomFieldType } from "../../utils/types";
-
+import keyId from "../../utils/keyId";
 const RenderItemCustomFields = ({
   item_custom_fields,
 }: {
@@ -14,7 +14,13 @@ const RenderItemCustomFields = ({
               <thead className=" border-b text-xs uppercase">
                 <tr>
                   {item_custom_fields.map((field) => (
-                    <th key={field.id} scope="col" className="px-6 py-3">
+                    <th
+                      key={
+                        keyId() + field.field_type + field.id + field.field_name
+                      }
+                      scope="col"
+                      className="px-6 py-3"
+                    >
                       {field?.field_name}
                     </th>
                   ))}
@@ -23,7 +29,10 @@ const RenderItemCustomFields = ({
               <tbody>
                 <tr className="">
                   {item_custom_fields.map((field) => (
-                    <td key={field.id} className="px-6 py-4">
+                    <td
+                      key={keyId() + field.id + field.field_type}
+                      className="px-6 py-4"
+                    >
                       {field?.field_value}
                     </td>
                   ))}
