@@ -22,12 +22,15 @@ const DropdownTagsItem = ({ tag }: { tag: string }) => {
 
   return (
     <>
-      <button
-        className="btn  btn-primary btn-sm"
-        onClick={handleFetchTagsRelatedItems}
-      >
+      <button className="btn  btn-xs" onClick={handleFetchTagsRelatedItems}>
         <HiOutlineStatusOnline className="text-meta-5" />
-        {loading ? "loading..." : tag}
+        {loading ? (
+          <span className="btn btn-sm text-whiten">
+            <span className="loading loading-spinner"></span>
+          </span>
+        ) : (
+          tag
+        )}
       </button>
       <DropdownTagsItemModal tagRef={tagRef} items={items} />
     </>

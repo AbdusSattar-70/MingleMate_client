@@ -15,7 +15,7 @@ const HomeDecorator = () => {
   };
   return (
     <div
-      className="hero max-h-[65vh]"
+      className="hero mb-4 max-h-[85vh]"
       style={{
         backgroundImage: `url(${bgImg})`,
       }}

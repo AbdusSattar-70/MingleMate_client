@@ -32,7 +32,9 @@ const RenderLikes: React.FC<likesProps> = ({ likes, item_id }) => {
       <div key={keyId()} role="button" onClick={handleFetchLikedUsers}>
         <div className="avatar-group -space-x-6 rtl:space-x-reverse">
           {loading ? (
-            "loading..."
+            <span className="btn btn-sm text-whiten">
+              <span className="loading loading-spinner"></span>
+            </span>
           ) : (
             <>
               <div className="avatar">

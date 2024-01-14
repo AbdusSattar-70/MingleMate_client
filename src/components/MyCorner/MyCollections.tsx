@@ -1,25 +1,30 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import UserAllCollections from "../collection/UserAllCollections";
 import { ROUTES } from "../../utils/constant";
 import { useAuth } from "../../hooks/useAuth";
-import useAuthorization from "../../hooks/useAuthorization";
 
 const MyCollections = () => {
   const { auth } = useAuth();
-  const { canManageAll } = useAuthorization();
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    if (!auth.authToken) {
+      navigate(ROUTES.SIGNIN, { state: { from: location.pathname } });
+      return;
+    } else {
+      navigate(ROUTES.CREATE_COLLECTION);
+    }
+  };
   return (
     <>
       <div className="navbar bg-base-100">
-        {canManageAll() && (
-          <div className="navbar-center">
-            <Link
-              to={ROUTES.CREATE_COLLECTION}
-              className="btn btn-outline btn-success"
-            >
-              Create
-            </Link>
-          </div>
-        )}
+        <div className="navbar-center">
+          <button
+            onClick={handleNavigate}
+            className="btn btn-outline btn-success"
+          >
+            Create
+          </button>
+        </div>
 
         <div className="navbar-end">
           <select

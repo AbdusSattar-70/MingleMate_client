@@ -23,7 +23,7 @@ const LikeUsersModal: React.FC<LikeUsersModalProps> = ({
     <dialog ref={likeRef} className="modal">
       <div className="max-w-70">
         <div className="mt-2.5 flex max-h-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark  sm:w-80">
-          <div className="flex items-center justify-between border-b px-4.5 py-3">
+          <div className="flex items-center justify-between gap-30 border-b px-4.5 py-3">
             <h5 className="border-b text-sm font-medium text-bodydark2">
               Liked Users List
             </h5>
@@ -32,26 +32,28 @@ const LikeUsersModal: React.FC<LikeUsersModalProps> = ({
             </p>
           </div>
           <ul className="flex flex-col overflow-y-auto">
-            {likesData.length > 0
-              ? likesData.map(({ id, user_id, user_photo, user_name }) => (
-                  <li key={keyId() + id}>
-                    <div
-                      role="button"
-                      className="link link-success flex cursor-pointer flex-col gap-1 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                      onClick={() => handleNavigateToUserProfile(user_id)}
-                    >
-                      <p className=" flex items-center justify-center text-sm text-black dark:text-white">
-                        <div className="avatar">
-                          <div className=" rounded-full">
-                            <img src={user_photo || avatar} alt="profile" />
-                          </div>
+            {likesData.length > 0 ? (
+              likesData.map(({ id, user_id, user_photo, user_name }) => (
+                <li key={keyId() + id}>
+                  <div
+                    role="button"
+                    className="link link-success flex cursor-pointer flex-col gap-1 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                    onClick={() => handleNavigateToUserProfile(user_id)}
+                  >
+                    <div className=" flex items-center justify-center text-sm text-black dark:text-white">
+                      <div className="avatar">
+                        <div className=" rounded-full">
+                          <img src={user_photo || avatar} alt="profile" />
                         </div>
-                        <span className="font-semibold">{user_name}</span>
-                      </p>
+                      </div>
+                      <span className="font-semibold">{user_name}</span>
                     </div>
-                  </li>
-                ))
-              : null}
+                  </div>
+                </li>
+              ))
+            ) : (
+              <p>No User Found</p>
+            )}
           </ul>
         </div>
       </div>

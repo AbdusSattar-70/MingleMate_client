@@ -1,5 +1,5 @@
 import { CommentType, ItemType } from "../../utils/types";
-import { API_ENDPOINT } from "../../utils/constant";
+import { API_ENDPOINT, ROUTES } from "../../utils/constant";
 import RenderLikes from "../Like/RenderLikes";
 import CreateComment from "../comment/CreateComment";
 import RenderComment from "../comment/RenderComment";
@@ -12,6 +12,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useAuth } from "../../hooks/useAuth";
 import SingleItemTop from "./SingleItemTop";
 import { FaRegCommentDots } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 interface DisplaySingleItemProps {
   itemData: ItemType;
 }
@@ -37,6 +38,7 @@ const DisplaySingleItem: React.FC<DisplaySingleItemProps> = ({ itemData }) => {
   const [like, setLike] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
+  const navigate = useNavigate();
 
   const handleDeleteComment = (commentId: string) => {
     const updatedComments = comments?.filter(
@@ -60,6 +62,10 @@ const DisplaySingleItem: React.FC<DisplaySingleItemProps> = ({ itemData }) => {
 
   const postLikeHandlar = async () => {
     try {
+      if (!auth.authToken) {
+        navigate(ROUTES.SIGNIN, { state: { from: location.pathname } });
+        return;
+      }
       setLoading(true);
       const res = await axiosPrivate.post(API_ENDPOINT.LIKE, {
         like: {
@@ -83,7 +89,7 @@ const DisplaySingleItem: React.FC<DisplaySingleItemProps> = ({ itemData }) => {
 
   return (
     <>
-      <div className="hero hero-content">
+      <div className="hero flex max-w-[80rem] items-center justify-center gap-4 pb-8">
         <div className="card w-full flex-shrink-0 bg-base-100 shadow-2xl dark:bg-meta-4">
           <SingleItemTop
             item_custom_fields={item_custom_fields}
@@ -100,16 +106,14 @@ const DisplaySingleItem: React.FC<DisplaySingleItemProps> = ({ itemData }) => {
                 <span>
                   <FaRegCommentDots className="text-2xl" />
                 </span>
-                <span>
-                  <RenderLikes likes={likes} item_id={item_id} />
-                </span>
+                <span>{comments.length}</span>
               </p>
-              <p className="relative flex justify-end">
+              <div className="relative flex justify-end">
                 <div className="absolute -top-8 right-5">
                   <Heart isClick={isClick} onClick={() => postLikeHandlar()} />
                 </div>
                 <RenderLikes likes={likes} item_id={item_id} />
-              </p>
+              </div>
             </div>
 
             <div className="flex h-15 items-center justify-between rounded-md border border-stroke py-3.5 shadow-lg drop-shadow-1 dark:border-strokedark dark:bg-[#37404F] dark:drop-shadow-none">
@@ -121,12 +125,18 @@ const DisplaySingleItem: React.FC<DisplaySingleItemProps> = ({ itemData }) => {
                 <p>Comment</p>
               </div>
 
-              <p className="flex items-center justify-end gap-1 px-4 font-semibold text-black hover:text-meta-5  dark:text-white dark:hover:text-neutral-400">
+              <p className="flex items-center justify-end gap-1 px-4 font-semibold text-black  dark:text-white">
                 <span>
                   {loading ? (
-                    "loading"
+                    <button className="btn btn-square">
+                      <span className="loading loading-spinner"></span>
+                    </button>
                   ) : (
-                    <div onClick={postLikeHandlar} role="button">
+                    <div
+                      onClick={postLikeHandlar}
+                      role="button"
+                      className=" hover:text-meta-5  dark:text-white dark:hover:text-neutral-400"
+                    >
                       {like ? (
                         <p className=" text-meta-5">Liked</p>
                       ) : (

@@ -33,7 +33,7 @@ const UserAllCollections = ({ userId }: { userId: string }) => {
       {loading ? (
         <Spinner />
       ) : (
-        <section className="mx-4 my-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:mx-8 md:my-10 md:grid-cols-3 md:gap-8 lg:mx-16 lg:grid-cols-4 xl:mx-24 2xl:mx-32">
+        <section className="grid grid-cols-1 gap-4 pb-8 sm:grid-cols-2 lg:grid-cols-3">
           {collections.length ? (
             collections.map(
               ({

@@ -52,6 +52,7 @@ export type CollectionType = {
   image: string;
   category: string;
   user_name: string;
+  author_id: string;
   custom_fields: CustomFieldType[];
   items_count: number;
   items: ItemType[];
