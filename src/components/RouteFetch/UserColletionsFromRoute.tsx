@@ -1,30 +1,35 @@
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import UserAllCollections from "../collection/UserAllCollections";
 import { ROUTES } from "../../utils/constant";
-import useAuthorization from "../../hooks/useAuthorization";
+import { useAuth } from "../../hooks/useAuth";
 
 const UserColletionsFromRoute = () => {
+  const { auth } = useAuth();
   const { userId } = useParams<string>();
-  const { canManageAll } = useAuthorization();
-
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    if (!auth.authToken) {
+      navigate(ROUTES.SIGNIN, { state: { from: location.pathname } });
+      return;
+    } else {
+      navigate(ROUTES.CREATE_COLLECTION);
+    }
+  };
   if (!userId) {
-    return <div>User ID is not available</div>;
+    return <p>No user ID found</p>;
   }
 
   return (
     <>
       <div className="navbar bg-base-100">
-        {canManageAll() && (
-          <div className="navbar-center">
-            <Link
-              to={ROUTES.CREATE_COLLECTION}
-              className="btn btn-outline btn-success"
-            >
-              Create
-            </Link>
-          </div>
-        )}
-
+        <div className="navbar-center">
+          <button
+            onClick={handleNavigate}
+            className="btn btn-outline btn-success"
+          >
+            Create
+          </button>
+        </div>
         <div className="navbar-end">
           <select
             name="Filter users"
