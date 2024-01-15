@@ -12,7 +12,7 @@ export const ROUTES = {
   USER_PROFILE: "/user-profile",
   ADMIN_DASHBOARD: "/admin/dashboard",
   CREATE_COLLECTION: "/create-collection",
-  EDIT_COLLECTION: "/edit-collection",
+  EDIT_COLLECTION: "/edit-collection/collection-id",
   DIESPLAY_SINGLE_COLLECTION: "/collection",
   MY_ALL_COLLECTIONS: "/my-all-collections",
   ALL_COLLECTIONS: "/all-collections",
@@ -186,3 +186,14 @@ export const INITIAL_AUTH_STATE = {
   collections_count: 0,
   profession: "",
 };
+
+export const INSTRUCTION_COLLECTION_CREATION = `
+  When creating a new collection, you have the option to enhance its
+  functionality by adding custom fields. These fields will be essential when
+  you later add items to this collection. Feel free to choose any field names
+  and specify their data types from the provided dropdown menu. For example,
+  you might add a 'Price' field with the data type 'Number' or a 'Release
+  Date' field with the data type 'Date'. You can add as many custom fields as
+  needed for your collection. Don't worry; you can always edit or modify them
+  later according to your preferences.
+`;

@@ -3,8 +3,13 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { InputField } from "../common/InputField";
 import { SelectField } from "../common/SelectField";
 import { CustomFieldType } from "../../utils/types";
-import { FieldType } from "../../utils/constant";
+import {
+  FieldType,
+  INSTRUCTION_COLLECTION_CREATION,
+} from "../../utils/constant";
 import keyId from "../../utils/keyId";
+import { FaCircleInfo } from "react-icons/fa6";
+import { Tooltip } from "../common/ToolTip";
 interface AddCmFieldIntoCollectionProps {
   addingField: CustomFieldType;
   editableFields: CustomFieldType[];
@@ -71,7 +76,14 @@ const AddCmFieldIntoCollection: React.FC<AddCmFieldIntoCollectionProps> = ({
         ))}
       </ul>
 
-      <p className="text-xl font-semibold">Add Custom Field:</p>
+      <div className="flex items-center justify-start gap-1 p-4 text-xl font-semibold">
+        <span>Add Custom Field:</span>
+        <Tooltip html={<p>{INSTRUCTION_COLLECTION_CREATION}</p>}>
+          <span>
+            <FaCircleInfo className="cursor-pointer text-3xl text-meta-5 hover:text-meta-9" />
+          </span>
+        </Tooltip>
+      </div>
 
       <form
         onSubmit={addCustomField}

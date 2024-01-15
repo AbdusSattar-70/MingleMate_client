@@ -5,10 +5,11 @@ import RenderCollections from "../collection/RenderCollections";
 import isSuccessRes from "../../utils/apiResponse";
 import { useEffect, useState } from "react";
 import keyId from "../../utils/keyId";
+import { CollectionType } from "../../utils/types";
 const GetAllCollections = () => {
-  const [collections, setCollections] = useState([]);
+  const [collections, setCollections] = useState<CollectionType[]>([]);
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(1);
   const perPageCount = 5;
 
   const handleSeeMore = () => {
@@ -25,7 +26,7 @@ const GetAllCollections = () => {
         if (isSuccessRes(response)) {
           setLoading(false);
           setCollections((prevCollections) =>
-            page === 2 ? response.data : [...prevCollections, ...response.data]
+            page === 1 ? response.data : [...prevCollections, ...response.data]
           );
         }
       } catch (error) {
@@ -34,6 +35,13 @@ const GetAllCollections = () => {
     };
     fetchCollections();
   }, [page]);
+
+  const updateDeletedCollection = (collectionId: string) => {
+    const updated = collections.filter(
+      (collection) => collection.id !== collectionId
+    );
+    setCollections(updated);
+  };
 
   return (
     <>
@@ -46,15 +54,18 @@ const GetAllCollections = () => {
               ({
                 id: collection_id,
                 user_name,
+                author_id,
                 title,
                 image,
                 items_count,
                 category,
               }) => (
                 <RenderCollections
+                  updateDeletedCollection={updateDeletedCollection}
                   key={keyId() + collection_id}
                   collection_id={collection_id}
                   user_name={user_name}
+                  author_id={author_id}
                   title={title}
                   image={image}
                   items_count={items_count}

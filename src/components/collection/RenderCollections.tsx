@@ -1,23 +1,52 @@
 import { Link } from "react-router-dom";
 import dummyImg from "../../images/cards/cards-01.png";
-import { ROUTES } from "../../utils/constant";
+import { API_ENDPOINT, MESSAGES, ROUTES } from "../../utils/constant";
+import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { toast } from "react-toastify";
+import { useAuth } from "../../hooks/useAuth";
+import { canManageAll } from "../../utils/canManageAll";
 
 interface RenderCollectionsProps {
   collection_id: string;
   user_name: string;
+  author_id: string;
   title: string;
   items_count: number;
   image?: string;
   category: string;
+  updateDeletedCollection: (collectionId: string) => void;
 }
 const RenderCollections: React.FC<RenderCollectionsProps> = ({
   collection_id,
   user_name,
+  author_id,
   title,
   image,
   items_count,
   category,
+  updateDeletedCollection,
 }) => {
+  const { auth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
+
+  const handleDeleteCollection = async (id: string) => {
+    try {
+      const response = await axiosPrivate.delete(
+        `${API_ENDPOINT.COLLECTION}/${id}`
+      );
+
+      if (isSuccessRes(response)) {
+        updateDeletedCollection(response.data.data.id);
+        toast.success(MESSAGES.SUCCESS);
+      } else {
+        toast.warn(MESSAGES.TRY_AGAIN);
+      }
+    } catch (error) {
+      setErrorToast(error);
+    }
+  };
+
   return (
     <div>
       <div className="card card-compact rounded border border-stroke bg-gray text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary">
@@ -34,10 +63,22 @@ const RenderCollections: React.FC<RenderCollectionsProps> = ({
           <p>Category: {category}</p>
 
           <p>Created by: {user_name.split(" ")[0]}</p>
-          <div className="flex gap-4">
-            <button className="btn  btn-sm">Delete</button>
-            <button className="btn  btn-sm">Edit</button>
-          </div>
+          {canManageAll(auth.id, auth.role, author_id) && (
+            <div className="flex gap-4">
+              <button
+                className="btn  btn-sm"
+                onClick={() => handleDeleteCollection(collection_id)}
+              >
+                Delete
+              </button>
+              <Link
+                to={`${ROUTES.EDIT_COLLECTION}/${collection_id}`}
+                className="btn  btn-sm"
+              >
+                Edit
+              </Link>
+            </div>
+          )}
           <Link
             to={`${ROUTES.DIESPLAY_SINGLE_COLLECTION}/${collection_id}`}
             aria-label="see details link"

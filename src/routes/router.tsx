@@ -22,6 +22,7 @@ import UserColletionsFromRoute from "../components/RouteFetch/UserColletionsFrom
 import GetUserItemsAllFromRoute from "../components/RouteFetch/GetUserItemsAllFromRoute";
 import MyItemsAll from "../components/MyCorner/MyItemsAll";
 import GetSingleItemDataFromRoute from "../components/RouteFetch/GetSingleItemDataFromRoute";
+import EditCollectionForm from "../components/collection/EditCollectionForm";
 
 const router = createBrowserRouter([
   {
@@ -64,6 +65,16 @@ const router = createBrowserRouter([
         path: ROUTES.CREATE_COLLECTION,
         element: <CreateCollection />,
       },
+
+      {
+        path: `${ROUTES.EDIT_COLLECTION}/:collection_id`,
+        element: <EditCollectionForm />,
+        loader: ({ params }) =>
+          fetch(
+            `${BASE_URL}/${API_ENDPOINT.COLLECTION}/${params.collection_id}`
+          ),
+      },
+
       // item related routes
       {
         path: `${ROUTES.CREATE_ITEM}/:id/create-item`,

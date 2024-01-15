@@ -2,22 +2,21 @@ import DisplaySingleItem from "../items/DisplaySingleItem";
 import { ItemType } from "../../utils/types";
 import { useEffect, useState } from "react";
 import { API_ENDPOINT, MESSAGES } from "../../utils/constant";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import isSuccessRes from "../../utils/apiResponse";
 import { toast } from "react-toastify";
 import Spinner from "../common/Spinner";
 import { useAuth } from "../../hooks/useAuth";
 import keyId from "../../utils/keyId";
+import axios from "../../utils/api";
 const MyItemsAll = () => {
   const { auth } = useAuth();
-  const axiosPrivate = useAxiosPrivate();
   const [items, setItems] = useState<ItemType[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchMyItems = async () => {
       try {
-        const response = await axiosPrivate.get(
+        const response = await axios.get(
           `${API_ENDPOINT.USER_ITEMS}/${auth.id}`
         );
         if (isSuccessRes(response)) {
@@ -31,7 +30,7 @@ const MyItemsAll = () => {
     };
 
     fetchMyItems();
-  }, [axiosPrivate, auth.id]);
+  }, [auth.id]);
 
   return (
     <>

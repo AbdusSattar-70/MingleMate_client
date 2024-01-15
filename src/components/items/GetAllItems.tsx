@@ -56,7 +56,13 @@ const GetAllItems = () => {
               <div className="card w-full flex-shrink-0 bg-base-100 shadow-2xl dark:bg-meta-4">
                 {items.length && (
                   <button onClick={handleSeeMore} className="btn btn-primary">
-                    Find More
+                    {loading ? (
+                      <span className="btn btn-sm text-meta-7">
+                        <span className="loading loading-spinner"></span>
+                      </span>
+                    ) : (
+                      "Find More Items"
+                    )}
                   </button>
                 )}
               </div>

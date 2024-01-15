@@ -125,7 +125,7 @@ const DisplaySingleItem: React.FC<DisplaySingleItemProps> = ({ itemData }) => {
                 <p>Comment</p>
               </div>
 
-              <p className="flex items-center justify-end gap-1 px-4 font-semibold text-black  dark:text-white">
+              <div className="flex items-center justify-end gap-1 px-4 font-semibold text-black  dark:text-white">
                 <span>
                   {loading ? (
                     <button className="btn btn-square">
@@ -145,7 +145,7 @@ const DisplaySingleItem: React.FC<DisplaySingleItemProps> = ({ itemData }) => {
                     </div>
                   )}
                 </span>
-              </p>
+              </div>
             </div>
 
             {dropdownOpen && (

@@ -6,22 +6,22 @@ import { CollectionType, CustomFieldType, TagOption } from "../../utils/types";
 import { InputField } from "../common/InputField";
 import GetAndCreateTag from "./GetAndCreateTag";
 import { useAuth } from "../../hooks/useAuth";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { API_ENDPOINT, ITEM_IMG, MESSAGES, ROUTES } from "../../utils/constant";
 import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
 import { toast } from "react-toastify";
 import PhotoUpload from "../photoUpload/PhotoUpload";
 import Spinner from "../common/Spinner";
-
+import axios from "../../utils/api";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 const CreateItem: React.FC = () => {
   const navigate = useNavigate();
   const { id: collection_id } = useParams();
+  const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
   const [loading, setLoading] = useState(false);
   const [item_name, setItem_name] = useState<string>("");
   const [tags, setTags] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<TagOption[]>([]);
-  const axiosPrivate = useAxiosPrivate();
   const [collection, setCollection] = useState<CollectionType>();
   const [itemCustomFields, setItemCustomFields] = useState<CustomFieldType[]>(
     []
@@ -34,7 +34,7 @@ const CreateItem: React.FC = () => {
   useEffect(() => {
     const fetchCollectionData = async (id: string) => {
       setLoading(true);
-      const res = await axiosPrivate.get(
+      const res = await axios.get(
         `${API_ENDPOINT.COLLECTION_CUSTOM_FIELDS}/${id}`
       );
       if (isSuccessRes(res)) {
@@ -48,7 +48,7 @@ const CreateItem: React.FC = () => {
     if (collection_id) {
       fetchCollectionData(collection_id);
     }
-  }, [collection_id, axiosPrivate]);
+  }, [collection_id]);
 
   const handleCustomInput = (id: string, field_value?: any) => {
     if (itemCustomFields.length) {

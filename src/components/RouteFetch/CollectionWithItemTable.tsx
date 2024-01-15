@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import { fetchItems } from "../../utils/fetchItems";
 import { ROUTES, dummyImg } from "../../utils/constant";
 import ItemsTable from "../items/ItemsTable";
-import useAuthorization from "../../hooks/useAuthorization";
+import { canManageAll } from "../../utils/canManageAll";
+import { useAuth } from "../../hooks/useAuth";
 
 const CollectionWithItemTable = () => {
   const collection: CollectionType = useLoaderData() as CollectionType;
-  console.log(collection);
+
   const {
     id: collection_id,
     title,
@@ -20,8 +21,8 @@ const CollectionWithItemTable = () => {
     author_id,
   } = collection;
 
-  const { canManageAll } = useAuthorization();
   const [items, setItems] = useState([]);
+  const { auth } = useAuth();
 
   useEffect(() => {
     const loadItems = async () => {
@@ -54,7 +55,7 @@ const CollectionWithItemTable = () => {
             </p>
             <p>Items: {items_count}</p>
             <p>Category: {category}</p>
-            {canManageAll(author_id) && (
+            {canManageAll(auth.id, auth.role, author_id) && (
               <Link
                 to={`${ROUTES.CREATE_ITEM}/${collection_id}/create-item`}
                 className="btn btn-primary"
