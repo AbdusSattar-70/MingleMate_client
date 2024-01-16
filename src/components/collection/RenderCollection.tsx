@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
 import { canManageAll } from "../../utils/canManageAll";
 
-interface RenderCollectionsProps {
+interface RenderCollectionProps {
   collection_id: string;
   user_name: string;
   author_id: string;
@@ -17,7 +17,7 @@ interface RenderCollectionsProps {
   category: string;
   updateDeletedCollection: (collectionId: string) => void;
 }
-const RenderCollections: React.FC<RenderCollectionsProps> = ({
+const RenderCollection: React.FC<RenderCollectionProps> = ({
   collection_id,
   user_name,
   author_id,
@@ -77,6 +77,12 @@ const RenderCollections: React.FC<RenderCollectionsProps> = ({
               >
                 Edit
               </Link>
+              <Link
+                to={`${ROUTES.CREATE_ITEM}/${collection_id}/create-item`}
+                className="btn  btn-sm"
+              >
+                Add Item
+              </Link>
             </div>
           )}
           <Link
@@ -92,4 +98,4 @@ const RenderCollections: React.FC<RenderCollectionsProps> = ({
   );
 };
 
-export default RenderCollections;
+export default RenderCollection;

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { API_ENDPOINT } from "../../utils/constant";
 import isSuccessRes from "../../utils/apiResponse";
 import Spinner from "../common/Spinner";
-import RenderCollections from "../collection/RenderCollections";
+import RenderCollections from "../collection/RenderCollection";
 import axios from "../../utils/api";
 import keyId from "../../utils/keyId";
 import { CollectionType } from "../../utils/types";

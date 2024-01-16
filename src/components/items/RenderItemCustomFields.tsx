@@ -1,5 +1,6 @@
 import { CustomFieldType } from "../../utils/types";
 import keyId from "../../utils/keyId";
+
 const RenderItemCustomFields = ({
   item_custom_fields,
 }: {
@@ -8,44 +9,51 @@ const RenderItemCustomFields = ({
   return (
     <>
       {item_custom_fields.length > 0 ? (
-        <section className="space-y-4 font-sans antialiased">
-          <div className="relative max-h-screen overflow-x-auto">
-            <table className="w-full text-left text-sm rtl:text-right">
-              <thead className=" border-b text-xs uppercase">
-                <tr>
-                  {item_custom_fields.map((field) => (
-                    <th
-                      key={
-                        keyId() + field.field_type + field.id + field.field_name
-                      }
-                      scope="col"
-                      className="px-6 py-3"
-                    >
-                      {field?.field_name}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="">
-                  {item_custom_fields.map((field) => (
-                    <td
-                      key={keyId() + field.id + field.field_type}
-                      className="px-6 py-4"
-                    >
-                      {field?.field_value}
-                    </td>
-                  ))}
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-      ) : (
-        <p>No data found</p>
-      )}
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table className="w-full text-left text-sm text-meta-2 dark:text-meta-2 rtl:text-right">
+            <thead className="border-b border-meta-9 bg-meta-5 text-xs uppercase text-white dark:text-white">
+              <tr>
+                {item_custom_fields.map((field) => (
+                  <th
+                    key={
+                      keyId() + field.field_type + field.id + field.field_name
+                    }
+                    scope="col"
+                    className="border-r border-meta-9 bg-meta-5 px-6 py-3"
+                  >
+                    {field?.field_name}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr className=" hover:bg-body">
+                {item_custom_fields.map((field) => (
+                  <td
+                    key={keyId() + field.id + field.field_type}
+                    className=" border-b border-r border-white bg-meta-9 p-2 text-black dark:border-b dark:border-r dark:bg-form-input dark:text-whiter"
+                  >
+                    {renderFieldValue(field)}
+                  </td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      ) : null}
     </>
   );
+};
+
+const renderFieldValue = (field: CustomFieldType) => {
+  switch (field?.field_type) {
+    case "boolean":
+      return String(field?.field_value);
+    case "number":
+      return Number(field?.field_value);
+    default:
+      return String(field?.field_value);
+  }
 };
 
 export default RenderItemCustomFields;

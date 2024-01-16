@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import { MarkdownField } from "../common/MarkdownField";
+import keyId from "../../utils/keyId";
 
 const CreateCollection: React.FC = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const CreateCollection: React.FC = () => {
     e.preventDefault();
     if (addingField.field_name && addingField.field_type) {
       const newField = {
-        id: Math.floor(Math.random() * 1000 + 1).toString(),
+        id: keyId(),
         field_name: addingField.field_name,
         field_type: addingField.field_type,
       };
@@ -51,14 +52,17 @@ const CreateCollection: React.FC = () => {
     deleteItemById<CustomFieldType>(editableFields, id, setEditableFields);
   };
 
-  const handleEditField = (
-    objId: string,
-    updatedField: Partial<CustomFieldType>
-  ): void => {
-    const updated = editableFields.map((field) =>
-      field.id === objId ? { ...field, ...updatedField } : field
+  const handleInputChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>,
+    id: string
+  ) => {
+    setEditableFields((prevFields) =>
+      prevFields.map((field) =>
+        field.id === id ? { ...field, [e.target.name]: e.target.value } : field
+      )
     );
-    setEditableFields(updated);
   };
 
   const data = {
@@ -135,7 +139,7 @@ const CreateCollection: React.FC = () => {
             <AddCmFieldIntoCollection
               addingField={addingField}
               addCustomField={addCustomField}
-              handleEditField={handleEditField}
+              handleInputChange={handleInputChange}
               handleDeleteField={handleDeleteField}
               editableFields={editableFields}
               setAddingField={setAddingField}

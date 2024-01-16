@@ -35,7 +35,7 @@ const CollectionWithItemTable = () => {
 
   return (
     <>
-      <div className=" flex-1 bg-base-200">
+      <div className=" flex-1 bg-base-200 dark:bg-meta-4">
         <div className="mx-auto flex max-w-[80rem] flex-col items-center gap-8 p-8 lg:flex-row lg:gap-16 lg:p-16">
           <div className="h-[400px] w-full lg:w-1/2">
             <div className="h-full max-w-full">

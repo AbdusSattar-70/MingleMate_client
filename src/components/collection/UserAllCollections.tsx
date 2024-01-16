@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { API_ENDPOINT } from "../../utils/constant";
 import isSuccessRes from "../../utils/apiResponse";
 import Spinner from "../common/Spinner";
-import RenderCollections from "./RenderCollections";
+import RenderCollection from "./RenderCollection";
 import axios from "../../utils/api";
 import keyId from "../../utils/keyId";
 import { CollectionType } from "../../utils/types";
@@ -54,7 +54,7 @@ const UserAllCollections = ({ userId }: { userId: string }) => {
                 items_count,
                 category,
               }) => (
-                <RenderCollections
+                <RenderCollection
                   key={keyId()}
                   collection_id={collection_id}
                   user_name={user_name}

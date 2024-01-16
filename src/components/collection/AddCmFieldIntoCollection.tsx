@@ -7,15 +7,17 @@ import {
   FieldType,
   INSTRUCTION_COLLECTION_CREATION,
 } from "../../utils/constant";
-import keyId from "../../utils/keyId";
 import { FaCircleInfo } from "react-icons/fa6";
 import { Tooltip } from "../common/ToolTip";
+
 interface AddCmFieldIntoCollectionProps {
   addingField: CustomFieldType;
   editableFields: CustomFieldType[];
-  handleEditField: (
-    objId: string,
-    updatedField: Partial<CustomFieldType>
+  handleInputChange: (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>,
+    id: string
   ) => void;
   handleDeleteField: (id: string) => void;
   addCustomField: (e: React.FormEvent<HTMLFormElement>) => void;
@@ -25,7 +27,7 @@ interface AddCmFieldIntoCollectionProps {
 const AddCmFieldIntoCollection: React.FC<AddCmFieldIntoCollectionProps> = ({
   addingField,
   editableFields,
-  handleEditField,
+  handleInputChange,
   handleDeleteField,
   addCustomField,
   setAddingField,
@@ -34,35 +36,43 @@ const AddCmFieldIntoCollection: React.FC<AddCmFieldIntoCollectionProps> = ({
     <>
       <ul className="space-y-2" id="dynamicUl">
         {editableFields.map((field, i) => (
-          <div
-            key={keyId()}
+          <li
+            key={field.id}
             className="bg-slate-200 flex flex-col items-center justify-center gap-2 overflow-auto p-2 md:flex-row md:justify-between"
           >
             <h3 className="btn btn-circle text-xl font-semibold dark:bg-form-input dark:text-white">
               {i + 1}
             </h3>
-            <InputField
-              type="text"
-              id={`editableFieldName-${field.id}`}
-              className="input input-bordered dark:bg-form-input"
-              label=""
-              value={field.field_name || ""}
-              onChange={(value) =>
-                handleEditField(field.id || "", { field_name: value })
-              }
-            />
-            <SelectField
-              id={`editableFieldType-${field.id}`}
-              label=""
-              value={field.field_type || ""}
-              onChange={(value) =>
-                handleEditField(field.id || "", { field_type: value })
-              }
-              options={Object.entries(FieldType).map(([key, value]) => ({
-                key,
-                value,
-              }))}
-            />
+            <div className="form-control gap-1">
+              <label htmlFor="field_name"></label>
+              <input
+                type="text"
+                name="field_name"
+                className="input input-bordered dark:bg-form-input"
+                value={field.field_name}
+                onChange={(e) => handleInputChange(e, field.id)}
+              />
+            </div>
+            <div className="form-control gap-1">
+              <label htmlFor="field_type"></label>
+              <select
+                name="field_type"
+                value={field.field_type}
+                onChange={(e) => {
+                  handleInputChange(e, field.id);
+                }}
+                className="select select-bordered dark:bg-form-input"
+              >
+                <option value="" disabled>
+                  Select field type
+                </option>
+                {Object.entries(FieldType).map(([key, value]) => (
+                  <option key={key} value={key}>
+                    {value}
+                  </option>
+                ))}
+              </select>
+            </div>
             <button
               onClick={() => handleDeleteField(field.id || "")}
               className="btn btn-error"
@@ -72,7 +82,7 @@ const AddCmFieldIntoCollection: React.FC<AddCmFieldIntoCollectionProps> = ({
               <FaRegTrashCan />
               <p className="sr-only">Delete</p>
             </button>
-          </div>
+          </li>
         ))}
       </ul>
 

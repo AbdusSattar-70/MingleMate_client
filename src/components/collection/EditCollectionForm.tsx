@@ -11,7 +11,6 @@ import { useAuth } from "../../hooks/useAuth";
 import AddCmFieldIntoCollection from "./AddCmFieldIntoCollection";
 import { deleteItemById } from "../../utils/deleteItemById";
 import { SelectField } from "../common/SelectField";
-import { InputField } from "../common/InputField";
 import PhotoUpload from "../photoUpload/PhotoUpload";
 import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
 import { toast } from "react-toastify";
@@ -19,6 +18,7 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import axios from "../../utils/api";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { MarkdownField } from "../common/MarkdownField";
+import keyId from "../../utils/keyId";
 
 const EditCollectionForm: React.FC = () => {
   const { collection_id } = useParams();
@@ -45,9 +45,9 @@ const EditCollectionForm: React.FC = () => {
 
   const addCustomField = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    if (addingField.field_name && addingField.field_type) {
+    if (addingField) {
       const newField = {
-        id: Math.floor(Math.random() * 1000 + 1).toString(),
+        id: keyId(),
         field_name: addingField.field_name,
         field_type: addingField.field_type,
       };
@@ -61,14 +61,17 @@ const EditCollectionForm: React.FC = () => {
     deleteItemById<CustomFieldType>(editableFields, id, setEditableFields);
   };
 
-  const handleEditField = (
-    objId: string,
-    updatedField: Partial<CustomFieldType>
-  ): void => {
-    const updated = editableFields.map((field) =>
-      field.id === objId ? { ...field, ...updatedField } : field
+  const handleInputChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLSelectElement>,
+    id: string
+  ) => {
+    setEditableFields((prevFields) =>
+      prevFields.map((field) =>
+        field.id === id ? { ...field, [e.target.name]: e.target.value } : field
+      )
     );
-    setEditableFields(updated);
   };
 
   //fetch custom fields
@@ -77,7 +80,6 @@ const EditCollectionForm: React.FC = () => {
       const res = await axios.get(
         `${API_ENDPOINT.COLLECTION_CUSTOM_FIELDS}/${id}`
       );
-      console.log(res.data);
       if (isSuccessRes(res)) {
         setEditableFields(res?.data?.custom_fields);
       }
@@ -107,7 +109,7 @@ const EditCollectionForm: React.FC = () => {
       );
       if (isSuccessRes(res)) {
         toast.success(MESSAGES.SUCCESS);
-        navigate(ROUTES.MY_ALL_COLLECTIONS);
+        navigate(`${ROUTES.DIESPLAY_SINGLE_COLLECTION}/${collection_id}`);
       }
     } catch (error) {
       setErrorToast(error);
@@ -130,16 +132,18 @@ const EditCollectionForm: React.FC = () => {
           </div>
           <div className="card-body">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <InputField
-                id="title"
-                label="Collection Name"
-                type="text"
-                value={title}
-                onChange={(value) => setTitle(value)}
-                required
-                placeholder="Enter Collection Name"
-                className="input input-bordered dark:bg-form-input"
-              />
+              <div className="form-control gap-1">
+                <label htmlFor="CollectionName">Collection Name</label>
+                <input
+                  id="title"
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                  placeholder="Enter Collection Name"
+                  className="input input-bordered dark:bg-form-input"
+                />
+              </div>
 
               <SelectField
                 id="selectTopic"
@@ -166,7 +170,7 @@ const EditCollectionForm: React.FC = () => {
             <AddCmFieldIntoCollection
               addingField={addingField}
               addCustomField={addCustomField}
-              handleEditField={handleEditField}
+              handleInputChange={handleInputChange}
               handleDeleteField={handleDeleteField}
               editableFields={editableFields}
               setAddingField={setAddingField}

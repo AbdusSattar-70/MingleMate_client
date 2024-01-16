@@ -1,7 +1,7 @@
 import Spinner from "../common/Spinner";
 import axios from "../../utils/api";
 import { API_ENDPOINT } from "../../utils/constant";
-import RenderCollections from "../collection/RenderCollections";
+import RenderCollections from "../collection/RenderCollection";
 import isSuccessRes from "../../utils/apiResponse";
 import { useEffect, useState } from "react";
 import keyId from "../../utils/keyId";

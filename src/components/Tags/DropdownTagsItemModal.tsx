@@ -21,13 +21,17 @@ const DropdownTagsItemModal: React.FC<DropdownTagsItemModalProps> = ({
 
   return (
     <dialog ref={tagRef} className="modal">
-      <div>
+      <div className="max-w-90">
         <div className="mt-2.5 flex max-h-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark  sm:w-80">
-          <div className="flex items-center justify-center gap-25 border-b px-4.5 py-3">
+          <div className="flex items-center justify-between gap-40 border-b px-4.5 py-3">
             <h5 className="border-b text-sm font-medium text-bodydark2">
-              Related Items Found: {items.length}
+              Items Found: {items.length}
             </h5>
-            <p role="button" onClick={() => tagRef.current.close()}>
+            <p
+              className="cursor-pointer text-black dark:text-white"
+              role="button"
+              onClick={() => tagRef.current.close()}
+            >
               X
             </p>
           </div>
