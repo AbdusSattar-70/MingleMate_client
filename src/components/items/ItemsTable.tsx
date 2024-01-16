@@ -14,6 +14,7 @@ interface CollectionTableProps {
 
 const ItemsTable: React.FC<CollectionTableProps> = ({ items }) => {
   const { auth } = useAuth();
+
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-left text-sm text-meta-2 dark:text-meta-2 rtl:text-right">

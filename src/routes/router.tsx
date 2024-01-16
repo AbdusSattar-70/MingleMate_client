@@ -13,16 +13,17 @@ import {
   SignUp,
   GetAllItems,
   MyProfile,
+  UserProfileFromRoute,
+  MyCollections,
+  GetAllCollections,
+  UserColletionsFromRoute,
+  EditCollectionForm,
+  EditItemForm,
+  GetUserItemsAllFromRoute,
+  MyItemsAll,
+  GetSingleItemDataFromRoute,
 } from "./LazyComponents";
 import ErrorPage from "../components/errorPage/ErrorPage";
-import UserProfileFromRoute from "../components/RouteFetch/UserProfileFromRoute";
-import MyCollections from "../components/MyCorner/MyCollections";
-import GetAllCollections from "../components/home/GetAllCollections";
-import UserColletionsFromRoute from "../components/RouteFetch/UserColletionsFromRoute";
-import GetUserItemsAllFromRoute from "../components/RouteFetch/GetUserItemsAllFromRoute";
-import MyItemsAll from "../components/MyCorner/MyItemsAll";
-import GetSingleItemDataFromRoute from "../components/RouteFetch/GetSingleItemDataFromRoute";
-import EditCollectionForm from "../components/collection/EditCollectionForm";
 
 const router = createBrowserRouter([
   {
@@ -79,6 +80,13 @@ const router = createBrowserRouter([
       {
         path: `${ROUTES.CREATE_ITEM}/:id/create-item`,
         element: <CreateItem />,
+      },
+
+      {
+        path: `${ROUTES.EDIT_ITEM}/:id/edit-item`,
+        element: <EditItemForm />,
+        loader: ({ params }) =>
+          fetch(`${BASE_URL}/${API_ENDPOINT.ITEM}/${params.id}`),
       },
       {
         path: `${ROUTES.USER_ITEMS}/:user_id`,

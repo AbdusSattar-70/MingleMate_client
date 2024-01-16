@@ -41,8 +41,7 @@ export type CustomFieldType = {
   id: string;
   field_name: string;
   field_type: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  field_value?: any;
+  field_value?: string | number | boolean | Date;
 };
 
 export type CollectionType = {
