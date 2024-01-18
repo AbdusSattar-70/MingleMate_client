@@ -94,49 +94,51 @@ const SearchInput = () => {
         </div>
 
         <ul className="flex h-[20rem] w-[40rem] flex-col overflow-y-auto">
-          {searchResult.length > 0
-            ? searchResult.map(
-                ({
-                  item_id,
-                  item_author,
-                  item_name,
-                  collection_name,
-                  comments,
-                  likes,
-                  created_at,
-                  updated_at,
-                }) => (
-                  <li key={item_id}>
-                    <div
-                      role="button"
-                      className="link link-success flex cursor-pointer flex-col gap-1 border-t-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                      onClick={() => handleNavigateToItemPage(item_id)}
-                    >
-                      <p className=" text-sm text-black dark:text-white">
-                        <span className="font-semibold">
-                          {UpcaseFirstChar(item_name)}
-                        </span>
-                        <span>
-                          {" "}
-                          under {UpcaseFirstChar(collection_name)} collection by
-                        </span>
-                        <span className="font-semibold">
-                          {" "}
-                          {UpcaseFirstChar(item_author)}
-                        </span>
-                      </p>
-                      <p className="flex items-center gap-7 text-sm text-black dark:text-white">
-                        <span>Likes: {likes}</span>
-                        <span>Comments: {comments}</span>
-                      </p>
-                      <p className="text-xs">
-                        {calculateTimeElapsed(created_at, updated_at)}
-                      </p>
-                    </div>
-                  </li>
-                )
+          {searchResult.length > 0 ? (
+            searchResult.map(
+              ({
+                item_id,
+                item_author,
+                item_name,
+                collection_name,
+                comments,
+                likes,
+                created_at,
+                updated_at,
+              }) => (
+                <li key={item_id}>
+                  <div
+                    role="button"
+                    className="link link-success flex cursor-pointer flex-col gap-1 border-t-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+                    onClick={() => handleNavigateToItemPage(item_id)}
+                  >
+                    <p className=" text-sm text-black dark:text-white">
+                      <span className="font-semibold">
+                        {UpcaseFirstChar(item_name)}
+                      </span>
+                      <span>
+                        {" "}
+                        under {UpcaseFirstChar(collection_name)} collection by
+                      </span>
+                      <span className="font-semibold">
+                        {" "}
+                        {UpcaseFirstChar(item_author)}
+                      </span>
+                    </p>
+                    <p className="flex items-center gap-7 text-sm text-black dark:text-white">
+                      <span>Likes: {likes}</span>
+                      <span>Comments: {comments}</span>
+                    </p>
+                    <p className="text-xs">
+                      {calculateTimeElapsed(created_at, updated_at)}
+                    </p>
+                  </div>
+                </li>
               )
-            : null}
+            )
+          ) : (
+            <p className=" p-4">Oops! Nothing is found.</p>
+          )}
         </ul>
       </div>
     </div>

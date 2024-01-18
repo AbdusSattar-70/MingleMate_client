@@ -17,7 +17,6 @@ const EditItemForm: React.FC = () => {
   const getItemFromRoute = useLoaderData() as ItemType;
   const {
     item_name: prevItemName,
-    tags,
     item_custom_fields: prevCustomFields,
     collection_id,
     item_id,
@@ -118,7 +117,6 @@ const EditItemForm: React.FC = () => {
                 <GetAndCreateTag
                   handleTagChange={handleTagChange}
                   selectedTags={selectedTags}
-                  tags={tags}
                 />
               </div>
               <CustomFieldsForm
