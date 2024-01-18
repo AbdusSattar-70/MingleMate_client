@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CoverOne from "../../images/cover/cover-01.png";
 import dummyAvatar from "../../images/avatar.jpg";
+import { MdSwitchAccount } from "react-icons/md";
 import {
   FaFacebookF,
   FaLinkedinIn,
@@ -12,16 +13,26 @@ import { Users } from "../../utils/types";
 import { UpcaseFirstChar } from "../../utils/UpcaseFirstChar";
 import { calculateTimeElapsed } from "../../utils/formattedTime";
 import { Tooltip } from "../common/ToolTip";
-import { ROUTES } from "../../utils/constant";
+import {
+  API_ENDPOINT,
+  INITIAL_AUTH_STATE,
+  MESSAGES,
+  ROUTES,
+} from "../../utils/constant";
 import { useAuth } from "../../hooks/useAuth";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { toast } from "react-toastify";
+import isSuccessRes from "../../utils/apiResponse";
 
 const UserProfile = ({ userData }: { userData: Users }) => {
-  const { auth } = useAuth();
-
+  const { auth, setAuth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
   const {
     id: user_id,
     avatar,
     user_name,
+    email,
     role,
     profession,
     items_count,
@@ -30,6 +41,28 @@ const UserProfile = ({ userData }: { userData: Users }) => {
     updated_at,
     bio,
   } = userData;
+
+  const handleDeleteMyself = async () => {
+    try {
+      const confirmResult = window.confirm(MESSAGES.DELETE_MYSELF.CONFIRM);
+      if (confirmResult) {
+        const response = await axiosPrivate.delete(
+          API_ENDPOINT.ADMIN.DELETE_URL,
+          {
+            data: { user_emails: email },
+          }
+        );
+        if (isSuccessRes(response)) {
+          navigate(ROUTES.HOME);
+          setAuth(INITIAL_AUTH_STATE);
+          toast.success(MESSAGES.DELETE_MYSELF.SUCCESS);
+        }
+      }
+    } catch (error) {
+      toast.error(MESSAGES.DELETE_MYSELF.ERROR);
+    }
+  };
+
   return (
     <>
       <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -40,10 +73,25 @@ const UserProfile = ({ userData }: { userData: Users }) => {
             className="h-full w-full rounded-tl-sm rounded-tr-sm object-cover object-center"
           />
           {auth?.id === user_id && (
-            <div className="absolute bottom-1 right-1 z-10 xsm:bottom-4 xsm:right-4">
-              <Link to={ROUTES.PROFILE_EDIT} className="btn btn-primary">
-                Edit
-              </Link>
+            <div>
+              <div className="absolute bottom-1 right-1 z-10 xsm:bottom-4 xsm:right-4">
+                <Link
+                  to={ROUTES.PROFILE_EDIT}
+                  className="btn btn-primary btn-xs"
+                >
+                  Edit
+                </Link>
+              </div>
+              <div className="absolute bottom-1 left-1 z-10 xsm:bottom-4 xsm:left-2">
+                <div
+                  role="button"
+                  onClick={handleDeleteMyself}
+                  className="btn btn-error btn-xs"
+                >
+                  Delete
+                  <MdSwitchAccount className="3x" />
+                </div>
+              </div>
             </div>
           )}
         </div>

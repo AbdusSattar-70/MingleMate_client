@@ -1,36 +1,13 @@
-import DisplaySingleItem from "../items/DisplaySingleItem";
 import { ItemType } from "../../utils/types";
-import { useEffect, useState } from "react";
-import { API_ENDPOINT, MESSAGES } from "../../utils/constant";
-import isSuccessRes from "../../utils/apiResponse";
-import { toast } from "react-toastify";
+import { API_ENDPOINT } from "../../utils/constant";
 import Spinner from "../common/Spinner";
 import { useAuth } from "../../hooks/useAuth";
-import keyId from "../../utils/keyId";
-import axios from "../../utils/api";
+import ItemsTable from "../items/ItemsTable";
+import useFetchByPage from "../../hooks/useFetchByPage";
 const MyItemsAll = () => {
   const { auth } = useAuth();
-  const [items, setItems] = useState<ItemType[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchMyItems = async () => {
-      try {
-        const response = await axios.get(
-          `${API_ENDPOINT.USER_ITEMS}/${auth.id}`
-        );
-        if (isSuccessRes(response)) {
-          setLoading(false);
-          setItems(response.data);
-        }
-      } catch (error) {
-        toast.error(MESSAGES.TRY_AGAIN);
-        setLoading(false);
-      }
-    };
-
-    fetchMyItems();
-  }, [auth.id]);
+  const [items, loading, handleSeeMore, setItems, isMoreData] =
+    useFetchByPage<ItemType>(`${API_ENDPOINT.USER_ITEMS}/${auth.id}`);
 
   return (
     <>
@@ -38,17 +15,17 @@ const MyItemsAll = () => {
         <Spinner />
       ) : (
         <>
-          {items.length > 0 ? (
-            items.map((itemData) => (
-              <section
-                key={keyId()}
-                className="mb-10 bg-white shadow-xl drop-shadow-xl"
-              >
-                <DisplaySingleItem itemData={itemData} />
-              </section>
-            ))
-          ) : (
-            <div>No Item Data found</div>
+          <ItemsTable items={items} setItems={setItems} />
+          {isMoreData && (
+            <div className="mx-auto mb-8 h-20 w-full rounded  border border-stroke bg-gray py-4  text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary">
+              <div className="mx-auto flex max-w-[15rem] items-center justify-center gap-4">
+                <div className="card w-full flex-shrink-0 bg-base-100 shadow-2xl dark:bg-meta-4">
+                  <button onClick={handleSeeMore} className="btn btn-secondary">
+                    See More Items
+                  </button>
+                </div>
+              </div>
+            </div>
           )}
         </>
       )}
