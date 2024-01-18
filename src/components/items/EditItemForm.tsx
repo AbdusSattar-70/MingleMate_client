@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import CustomFieldsForm from "./CustomFieldsForm";
-import { CollectionType, CustomFieldType, TagOption } from "../../utils/types";
+import { CustomFieldType, ItemType, TagOption } from "../../utils/types";
 import { InputField } from "../common/InputField";
 import GetAndCreateTag from "./GetAndCreateTag";
 import { useAuth } from "../../hooks/useAuth";
@@ -13,18 +13,22 @@ import PhotoUpload from "../photoUpload/PhotoUpload";
 import Spinner from "../common/Spinner";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
-const CreateItem: React.FC = () => {
-  const { collection_id } = useParams();
-  const collection = useLoaderData() as Partial<CollectionType>;
+const EditItemForm: React.FC = () => {
+  const getItemFromRoute = useLoaderData() as ItemType;
+  const {
+    item_name: prevItemName,
+    item_custom_fields: prevCustomFields,
+    collection_id,
+    item_id,
+  } = getItemFromRoute;
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [item_name, setItem_name] = useState<string>("");
+  const [item_name, setItem_name] = useState<string>(prevItemName || "");
   const [selectedTags, setSelectedTags] = useState<TagOption[]>([]);
-  const [itemCustomFields, setItemCustomFields] = useState<CustomFieldType[]>(
-    collection.custom_fields || []
-  );
+  const [itemCustomFields, setItemCustomFields] =
+    useState<CustomFieldType[]>(prevCustomFields);
 
   const handleTagChange = (newValue: TagOption[]) => {
     setSelectedTags(newValue);
@@ -51,7 +55,7 @@ const CreateItem: React.FC = () => {
     },
   };
 
-  const CreateNewItem = async () => {
+  const editItem = async () => {
     try {
       if (!item_name) {
         toast.warn("please Add Item name");
@@ -63,7 +67,10 @@ const CreateItem: React.FC = () => {
       }
 
       setLoading(true);
-      const res = await axiosPrivate.post(API_ENDPOINT.ITEM, data);
+      const res = await axiosPrivate.patch(
+        `${API_ENDPOINT.ITEM}/${item_id}`,
+        data
+      );
 
       if (isSuccessRes(res)) {
         setLoading(false);
@@ -87,14 +94,12 @@ const CreateItem: React.FC = () => {
               <img
                 className="mx-auto w-48"
                 src={
-                  collection?.image ||
                   "https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
                 }
                 alt="collection image"
               />
               <h4 className="mb-4 mt-1 pb-1 text-xl font-semibold">
-                Add items to your <strong>{collection?.title} </strong>{" "}
-                collection.
+                Update {item_name}
               </h4>
             </div>
             <div className="card-body">
@@ -122,10 +127,10 @@ const CreateItem: React.FC = () => {
               <div className="form-control mt-6">
                 <button
                   type="submit"
-                  onClick={CreateNewItem}
+                  onClick={editItem}
                   className="btn btn-primary"
                 >
-                  submit
+                  update
                 </button>
               </div>
             </div>
@@ -136,4 +141,4 @@ const CreateItem: React.FC = () => {
   );
 };
 
-export default CreateItem;
+export default EditItemForm;

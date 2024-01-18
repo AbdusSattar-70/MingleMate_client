@@ -44,7 +44,7 @@ const SingleItemTop: React.FC<SingleItemTopProps> = ({
         </Link>
         <span>collection</span>
       </div>
-      <div className="mx-auto mt-4 overflow-x-auto rounded-md border border-stroke py-2.5  dark:bg-[#37404F]">
+      <div className="mx-auto mt-4 overflow-x-auto  dark:bg-[#37404F]">
         <RenderItemCustomFields item_custom_fields={item_custom_fields} />
       </div>
     </div>

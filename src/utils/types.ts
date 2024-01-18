@@ -40,7 +40,7 @@ export type AuthData = {
 export type CustomFieldType = {
   id: string;
   field_name: string;
-  field_type?: string;
+  field_type: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   field_value?: any;
 };

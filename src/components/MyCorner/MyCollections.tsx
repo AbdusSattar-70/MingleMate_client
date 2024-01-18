@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import UserAllCollections from "../collection/UserAllCollections";
+import UserAllCollections from "./UserAllCollections";
 import { ROUTES } from "../../utils/constant";
 import { useAuth } from "../../hooks/useAuth";
 

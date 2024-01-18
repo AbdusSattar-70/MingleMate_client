@@ -1,6 +1,6 @@
 // import { CustomFieldKey, TopicKey } from "./types";
 
-export const BASE_URL = "http://localhost:4000";
+export const BASE_URL = "https://mingle-2o7l.onrender.com";
 export const AXIOS_HEADERS = { "Content-Type": "application/json" };
 
 export const ROUTES = {
@@ -12,7 +12,7 @@ export const ROUTES = {
   USER_PROFILE: "/user-profile",
   ADMIN_DASHBOARD: "/admin/dashboard",
   CREATE_COLLECTION: "/create-collection",
-  EDIT_COLLECTION: "/edit-collection",
+  EDIT_COLLECTION: "/edit-collection/collection-id",
   DIESPLAY_SINGLE_COLLECTION: "/collection",
   MY_ALL_COLLECTIONS: "/my-all-collections",
   ALL_COLLECTIONS: "/all-collections",
@@ -60,6 +60,7 @@ export const API_ENDPOINT = {
   COMMENT: "comments",
   LIKE: "likes",
   ITEM_LIKES_COUNT: "item_likes_count",
+  SEARCH_ITEMS_FULL_TEXT: "full_text_search?search=",
   TAG: "tags",
   TAG_RELATED_ITEMS: "tag_related_items?search=",
 };
@@ -83,6 +84,13 @@ export const MESSAGES = {
   FILL_TYPE_FIELD: "please fill up field type",
   COLLECTION_FIELD: "title, topic and description is required",
   SERVER_OFFLINE: "server is offline, please try again",
+  DELETE_MYSELF: {
+    CONFIRM:
+      "Are you sure you want to delete your account? When deleted, you will lose all data on this site, and it cannot be recovered.",
+    SUCCESS:
+      "Your account has been deleted successfully. We hope to see you again!",
+    ERROR: "Sorry, there was an error. Please try again later.",
+  },
 };
 
 export const DASHBOARD_TABLE_CONST = {
@@ -135,27 +143,27 @@ export const FieldType = {
 };
 
 export const TOPICS = {
-  EDUCATION: "Education",
-  TECHNOLOGY: "Technology",
-  TRAVEL: "Travel",
-  HEALTH_AND_WELLNESS: "Health and Wellness",
-  PHOTOGRAPHY: "Photography",
-  FOOD_AND_COOKING: "Food and Cooking",
-  FITNESS: "Fitness",
-  HISTORY: "History",
-  SCIENCE: "Science",
-  FASHION: "Fashion",
-  ART_AND_CRAFTS: "Art and Crafts",
-  MUSIC: "Music",
-  SPORTS: "Sports",
-  NATURE_AND_WILDLIFE: "Nature and Wildlife",
-  DIY_PROJECTS: "DIY Projects",
-  HOME_DECOR: "Home Decor",
-  GAMING: "Gaming",
-  FINANCE_AND_INVESTMENT: "Finance and Investment",
-  MOVIES_AND_TV_SHOWS: "Movies and TV Shows",
-  GARDENING: "Gardening",
-  MOTIVATION_AND_SELF_HELP: "Motivation and Self-Help",
+  Education: "Education",
+  Technology: "Technology",
+  Travel: "Travel",
+  "Health and Wellness": "Health and Wellness",
+  Photography: "Photography",
+  "Food and Cooking": "Food and Cooking",
+  Fitness: "Fitness",
+  History: "History",
+  Science: "Science",
+  Fashion: "Fashion",
+  "Art and Crafts": "Art and Crafts",
+  Music: "Music",
+  Sports: "Sports",
+  "Nature and Wildlife": "Nature and Wildlife",
+  "DIY Projects": "DIY Projects",
+  "Home Decor": "Home Decor",
+  Gaming: "Gaming",
+  "Finance and Investment": "Finance and Investment",
+  "Movies and TV Shows": "Movies and TV Shows",
+  Gardening: "Gardening",
+  "Motivation and Self-Help": "Motivation and Self-Help",
 };
 
 export const SWITCH_CASE = {
@@ -186,3 +194,14 @@ export const INITIAL_AUTH_STATE = {
   collections_count: 0,
   profession: "",
 };
+
+export const INSTRUCTION_COLLECTION_CREATION = `
+  When creating a new collection, you have the option to enhance its
+  functionality by adding custom fields. These fields will be essential when
+  you later add items to this collection. Feel free to choose any field names
+  and specify their data types from the provided dropdown menu. For example,
+  you might add a 'Price' field with the data type 'Number' or a 'Release
+  Date' field with the data type 'Date'. You can add as many custom fields as
+  needed for your collection. Don't worry; you can always edit or modify them
+  later according to your preferences.
+`;

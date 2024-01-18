@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import useAxiosPrivate from "./useAxiosPrivate";
 import { API_ENDPOINT, INITIAL_AUTH_STATE } from "../utils/constant";
 import isSuccessRes from "../utils/apiResponse";
@@ -15,43 +15,43 @@ const useAuthentication = () => {
   const [isActive, setIsActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleTrue = useCallback(({ role, blocked }: UserProps) => {
-    if (blocked === false) {
-      setIsActive(true);
-    }
-    setIsAdmin(role === 2 && blocked === false);
-  }, []);
-
-  const handleFalse = useCallback(() => {
-    setIsAdmin(false);
-    setIsActive(false);
-    setAuth(INITIAL_AUTH_STATE);
-  }, [setAuth]);
-
-  const checkAuth = useCallback(async () => {
-    setIsLoading(true);
-
-    try {
-      const response = await axiosPrivate.get(API_ENDPOINT.CURRENT_USER);
-
-      if (!isSuccessRes(response)) {
-        handleFalse();
-      } else if (response.status !== 401) {
-        handleTrue(response.data);
-      }
-    } catch (error) {
-      console.error("Error checking authentication:", error);
-      handleFalse();
-    } finally {
-      setIsLoading(false);
-    }
-  }, [axiosPrivate, handleFalse, handleTrue]);
-
   useEffect(() => {
+    const handleTrue = ({ role, blocked }: UserProps) => {
+      if (blocked === false) {
+        setIsActive(true);
+      }
+      setIsAdmin(role === 2 && blocked === false);
+    };
+
+    const handleFalse = () => {
+      setIsAdmin(false);
+      setIsActive(false);
+      setAuth(INITIAL_AUTH_STATE);
+    };
+
+    const checkAuth = async () => {
+      setIsLoading(true);
+
+      try {
+        const response = await axiosPrivate.get(API_ENDPOINT.CURRENT_USER);
+
+        if (!isSuccessRes(response)) {
+          handleFalse();
+        } else if (response.status !== 401) {
+          handleTrue(response.data);
+        }
+      } catch (error) {
+        console.error("Error checking authentication:", error);
+        handleFalse();
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
     if (auth.authToken) {
       checkAuth();
     }
-  }, [auth.authToken, checkAuth]);
+  }, [auth.authToken, setAuth, axiosPrivate]);
 
   return { isActive, isAdmin, isLoading };
 };

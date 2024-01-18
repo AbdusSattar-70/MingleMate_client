@@ -1,29 +1,15 @@
 import { Link } from "react-router-dom";
-import { API_ENDPOINT, ROUTES } from "../../utils/constant";
-import GetAllItems from "../items/GetAllItems";
+import { ROUTES } from "../../utils/constant";
 import Footer from "./Footer";
 import GetLargestCollections from "./GetLargestCollections";
 import HomeDecorator from "./HomeDecorator";
 import keyId from "../../utils/keyId";
 import DropdownTagsItem from "../Tags/DropdownTagsItem";
-import axios from "../../utils/api";
-import isSuccessRes from "../../utils/apiResponse";
-import { useEffect, useState } from "react";
+import useGetTags from "../../hooks/useGetTags";
+import AllItemsHomePage from "./AllItemsHomePage";
 
 const Home = () => {
-  const [tags, setTags] = useState([]);
-
-  useEffect(() => {
-    const fetchAllTags = async () => {
-      const res = await axios.get(API_ENDPOINT.TAG);
-      console.log(res);
-      if (isSuccessRes(res)) {
-        setTags(res.data);
-      }
-    };
-
-    fetchAllTags();
-  }, []);
+  const tags = useGetTags();
 
   return (
     <section className="w-full">
@@ -70,7 +56,7 @@ const Home = () => {
 
       {/* Check Out the Latest Items */}
       <div className="mb-8">
-        <GetAllItems />
+        <AllItemsHomePage />
       </div>
 
       {/* show all cloud tags */}

@@ -1,17 +1,18 @@
 import CreatableSelect from "react-select/creatable";
 import { TagOption } from "../../utils/types";
+import useGetTags from "../../hooks/useGetTags";
 
 interface GetAndCreateTagProps {
-  tags: string[];
   selectedTags: TagOption[];
   handleTagChange: (value: TagOption[]) => void;
 }
 
 const GetAndCreateTag: React.FC<GetAndCreateTagProps> = ({
-  tags,
   selectedTags,
   handleTagChange,
 }) => {
+  const tags: string[] = useGetTags();
+
   const tagOptions: TagOption[] = tags.map((tag) => ({
     value: tag,
     label: tag,

@@ -2,12 +2,20 @@ import { useEffect, useState } from "react";
 import { API_ENDPOINT } from "../../utils/constant";
 import isSuccessRes from "../../utils/apiResponse";
 import Spinner from "../common/Spinner";
-import RenderCollections from "../collection/RenderCollections";
+import RenderCollections from "../collection/RenderCollection";
 import axios from "../../utils/api";
 import keyId from "../../utils/keyId";
+import { CollectionType } from "../../utils/types";
 const GetLargestCollections = () => {
-  const [collections, setCollections] = useState([]);
+  const [collections, setCollections] = useState<CollectionType[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const updateDeletedCollection = (collectionId: string) => {
+    const updated = collections.filter(
+      (collection) => collection.id !== collectionId
+    );
+    setCollections(updated);
+  };
 
   useEffect(() => {
     const fetchCollections = async () => {
@@ -36,6 +44,7 @@ const GetLargestCollections = () => {
               ({
                 id: collection_id,
                 user_name,
+                author_id,
                 title,
                 image,
                 items_count,
@@ -43,8 +52,10 @@ const GetLargestCollections = () => {
               }) => (
                 <div key={keyId()}>
                   <RenderCollections
+                    updateDeletedCollection={updateDeletedCollection}
                     collection_id={collection_id}
                     user_name={user_name}
+                    author_id={author_id}
                     title={title}
                     image={image}
                     items_count={items_count}

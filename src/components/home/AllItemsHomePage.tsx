@@ -1,10 +1,10 @@
 import { API_ENDPOINT } from "../../utils/constant";
 import Spinner from "../common/Spinner";
 import { ItemType } from "../../utils/types";
-import ItemsTable from "./ItemsTable";
+import DisplaySingleItem from "../items/DisplaySingleItem";
 import useFetchByPage from "../../hooks/useFetchByPage";
-const GetAllItems = () => {
-  const [items, loading, handleSeeMore, setItems] = useFetchByPage<ItemType>(
+const AllItemsHomePage = () => {
+  const [items, loading, handleSeeMore] = useFetchByPage<ItemType>(
     API_ENDPOINT.ITEM
   );
 
@@ -14,7 +14,13 @@ const GetAllItems = () => {
         <Spinner />
       ) : (
         <section>
-          <ItemsTable items={items} setItems={setItems} />
+          {items.length > 0
+            ? items.map((item) => (
+                <div key={item.item_id}>
+                  <DisplaySingleItem itemData={item} />
+                </div>
+              ))
+            : null}
 
           <div className="mx-auto mb-8 h-20 w-full rounded border border-stroke bg-gray py-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary">
             <div className="mx-auto flex max-w-[15rem] items-center justify-center gap-4">
@@ -39,4 +45,4 @@ const GetAllItems = () => {
   );
 };
 
-export default GetAllItems;
+export default AllItemsHomePage;

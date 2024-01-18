@@ -20,7 +20,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
           Select {label}
         </option>
         {options.map(({ key, value }) => (
-          <option key={key} value={value}>
+          <option key={key} value={key}>
             {value}
           </option>
         ))}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   API_ENDPOINT,
   COLLECT_IMG,
@@ -6,37 +6,46 @@ import {
   ROUTES,
   TOPICS,
 } from "../../utils/constant";
-import { CustomFieldType } from "../../utils/types";
+import { CollectionType, CustomFieldType } from "../../utils/types";
 import { useAuth } from "../../hooks/useAuth";
 import AddCmFieldIntoCollection from "./AddCmFieldIntoCollection";
 import { deleteItemById } from "../../utils/deleteItemById";
 import { SelectField } from "../common/SelectField";
-import { InputField } from "../common/InputField";
 import PhotoUpload from "../photoUpload/PhotoUpload";
 import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
 import { toast } from "react-toastify";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import { useNavigate } from "react-router-dom";
+import axios from "../../utils/api";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { MarkdownField } from "../common/MarkdownField";
 import keyId from "../../utils/keyId";
 
-const CreateCollection: React.FC = () => {
+const EditCollectionForm: React.FC = () => {
+  const { collection_id } = useParams();
+  const collection = useLoaderData() as CollectionType;
+  const {
+    author_id,
+    title: prevTitle,
+    description: prevDescrip,
+    category: prevTopic,
+  } = collection;
   const navigate = useNavigate();
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
-  const [title, setTitle] = useState<string>("");
-  const [topic, setTopic] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
+  const [title, setTitle] = useState<string>(prevTitle || "");
+  const [topic, setTopic] = useState<string>(prevTopic || "");
+  const [description, setDescription] = useState<string>(prevDescrip || "");
   const [addingField, setAddingField] = useState<CustomFieldType>({
     id: "",
     field_name: "",
     field_type: "",
   });
+
   const [editableFields, setEditableFields] = useState<CustomFieldType[]>([]);
 
   const addCustomField = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    if (addingField.field_name && addingField.field_type) {
+    if (addingField) {
       const newField = {
         id: keyId(),
         field_name: addingField.field_name,
@@ -65,23 +74,42 @@ const CreateCollection: React.FC = () => {
     );
   };
 
+  //fetch custom fields
+  useEffect(() => {
+    const fetchPreviosCustomFields = async (id: string) => {
+      const res = await axios.get(
+        `${API_ENDPOINT.COLLECTION_CUSTOM_FIELDS}/${id}`
+      );
+      if (isSuccessRes(res)) {
+        setEditableFields(res?.data?.custom_fields);
+      }
+    };
+
+    if (collection_id) {
+      fetchPreviosCustomFields(collection_id);
+    }
+  }, [collection_id]);
+
   const data = {
     collection: {
-      user_id: auth.id,
+      user_id: author_id,
       title,
       description,
       categories: topic,
-      custom_fields: editableFields,
       image: auth.collectImg,
+      custom_fields: editableFields,
     },
   };
 
-  const CreateNewCollection = async () => {
+  const updateCollection = async () => {
     try {
-      const res = await axiosPrivate.post(API_ENDPOINT.COLLECTION, data);
+      const res = await axiosPrivate.patch(
+        `${API_ENDPOINT.COLLECTION}/${collection_id}`,
+        data
+      );
       if (isSuccessRes(res)) {
         toast.success(MESSAGES.SUCCESS);
-        navigate(ROUTES.MY_ALL_COLLECTIONS);
+        navigate(`${ROUTES.DIESPLAY_SINGLE_COLLECTION}/${collection_id}`);
       }
     } catch (error) {
       setErrorToast(error);
@@ -99,21 +127,23 @@ const CreateCollection: React.FC = () => {
               alt="logo"
             />
             <h4 className="mb-4 mt-1 pb-1 text-xl font-semibold">
-              Create Your Own Collection!
+              Update Collection
             </h4>
           </div>
           <div className="card-body">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <InputField
-                id="title"
-                label="Collection Name"
-                type="text"
-                value={title}
-                onChange={(value) => setTitle(value)}
-                required
-                placeholder="Enter Collection Name"
-                className="input input-bordered dark:bg-form-input"
-              />
+              <div className="form-control gap-1">
+                <label htmlFor="CollectionName">Collection Name</label>
+                <input
+                  id="title"
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                  placeholder="Enter Collection Name"
+                  className="input input-bordered dark:bg-form-input"
+                />
+              </div>
 
               <SelectField
                 id="selectTopic"
@@ -136,6 +166,7 @@ const CreateCollection: React.FC = () => {
                 setValue={(value: string) => setDescription(value)}
               />
             </div>
+
             <AddCmFieldIntoCollection
               addingField={addingField}
               addCustomField={addCustomField}
@@ -148,10 +179,10 @@ const CreateCollection: React.FC = () => {
             <div className="form-control mt-6">
               <button
                 type="submit"
-                onClick={CreateNewCollection}
+                onClick={updateCollection}
                 className="btn btn-primary"
               >
-                Submit
+                Submit for update
               </button>
             </div>
           </div>
@@ -161,4 +192,4 @@ const CreateCollection: React.FC = () => {
   );
 };
 
-export default CreateCollection;
+export default EditCollectionForm;

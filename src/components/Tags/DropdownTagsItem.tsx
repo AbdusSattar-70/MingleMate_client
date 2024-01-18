@@ -25,7 +25,7 @@ const DropdownTagsItem = ({ tag }: { tag: string }) => {
       <button className="btn  btn-xs" onClick={handleFetchTagsRelatedItems}>
         <HiOutlineStatusOnline className="text-meta-5" />
         {loading ? (
-          <span className="btn btn-sm text-whiten">
+          <span className="btn btn-sm text-meta-7">
             <span className="loading loading-spinner"></span>
           </span>
         ) : (
