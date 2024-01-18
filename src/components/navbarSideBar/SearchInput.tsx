@@ -1,41 +1,49 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { API_ENDPOINT, ROUTES } from "../../utils/constant";
 import axios from "../../utils/api";
-import { useEffect, useRef, useState } from "react";
 import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UpcaseFirstChar } from "../../utils/UpcaseFirstChar";
 import { calculateTimeElapsed } from "../../utils/formattedTime";
 import { TAGRelatedItemType } from "../../utils/types";
+
 const SearchInput = () => {
+  const navigate = useNavigate();
   const [searchResult, setSearchResult] = useState<TAGRelatedItemType[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchItemsByTextSearch = async (inputValue: string) => {
       try {
+        setLoading(true);
         const response = await axios.get(
           `${API_ENDPOINT.SEARCH_ITEMS_FULL_TEXT}${inputValue}`
         );
 
         if (isSuccessRes(response)) {
           setSearchResult(response.data);
+          setLoading(false);
         }
       } catch (error) {
         setErrorToast(error);
+        setLoading(false);
         return [];
       }
     };
 
-    if (inputValue) {
-      fetchItemsByTextSearch(inputValue);
-    }
-  }, [inputValue]);
+    const debounceTimeout = setTimeout(() => {
+      if (inputValue) {
+        fetchItemsByTextSearch(inputValue);
+      }
+    }, 500);
 
-  const navigate = useNavigate();
+    return () => clearTimeout(debounceTimeout);
+  }, [inputValue]);
 
   const handleNavigateToItemPage = (item_id: string) => {
     navigate(`${ROUTES.GET_SIGNLE_ITEM}/${item_id}`);
@@ -53,6 +61,7 @@ const SearchInput = () => {
         return;
       setDropdownOpen(false);
     };
+
     document.addEventListener("click", clickHandler);
     return () => document.removeEventListener("click", clickHandler);
   });
@@ -66,10 +75,10 @@ const SearchInput = () => {
         className="relative flex items-center justify-center dark:text-white"
       >
         {/* dummy search input */}
-
         <input
+          value={""}
           placeholder="search..."
-          className="w-32 rounded-sm border-0  p-2 dark:bg-meta-4"
+          className="w-32 rounded-sm border-0 p-2 dark:bg-meta-4"
         />
       </div>
 
@@ -106,38 +115,44 @@ const SearchInput = () => {
                 created_at,
                 updated_at,
               }) => (
-                <li key={item_id}>
-                  <div
-                    role="button"
-                    className="link link-success flex cursor-pointer flex-col gap-1 border-t-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-                    onClick={() => handleNavigateToItemPage(item_id)}
-                  >
-                    <p className=" text-sm text-black dark:text-white">
-                      <span className="font-semibold">
-                        {UpcaseFirstChar(item_name)}
-                      </span>
-                      <span>
-                        {" "}
-                        under {UpcaseFirstChar(collection_name)} collection by
-                      </span>
-                      <span className="font-semibold">
-                        {" "}
-                        {UpcaseFirstChar(item_author)}
-                      </span>
-                    </p>
-                    <p className="flex items-center gap-7 text-sm text-black dark:text-white">
-                      <span>Likes: {likes}</span>
-                      <span>Comments: {comments}</span>
-                    </p>
-                    <p className="text-xs">
-                      {calculateTimeElapsed(created_at, updated_at)}
-                    </p>
-                  </div>
+                <li
+                  key={item_id}
+                  className="cursor-pointer"
+                  onClick={() => handleNavigateToItemPage(item_id)}
+                >
+                  {loading ? (
+                    <span className="btn btn-sm text-meta-7">
+                      <span className="loading loading-spinner"></span>
+                    </span>
+                  ) : (
+                    <div className="link link-success flex flex-col gap-1 border-t-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4">
+                      <p className="text-sm text-black dark:text-white">
+                        <span className="font-semibold">
+                          {UpcaseFirstChar(item_name)}
+                        </span>
+                        <span>
+                          {" "}
+                          under {UpcaseFirstChar(collection_name)} collection by
+                        </span>
+                        <span className="font-semibold">
+                          {" "}
+                          {UpcaseFirstChar(item_author)}
+                        </span>
+                      </p>
+                      <p className="flex items-center gap-7 text-sm text-black dark:text-white">
+                        <span>Likes: {likes}</span>
+                        <span>Comments: {comments}</span>
+                      </p>
+                      <p className="text-xs">
+                        {calculateTimeElapsed(created_at, updated_at)}
+                      </p>
+                    </div>
+                  )}
                 </li>
               )
             )
           ) : (
-            <p className=" p-4">Oops! Nothing is found.</p>
+            <p className="p-4">Oops! Nothing is found.</p>
           )}
         </ul>
       </div>
