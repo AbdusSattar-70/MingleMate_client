@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import CustomFieldsForm from "./CustomFieldsForm";
-import { CollectionType, CustomFieldType, TagOption } from "../../utils/types";
+import { CustomFieldType, ItemType, TagOption } from "../../utils/types";
 import { InputField } from "../common/InputField";
 import GetAndCreateTag from "./GetAndCreateTag";
 import { useAuth } from "../../hooks/useAuth";
@@ -11,44 +11,29 @@ import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
 import { toast } from "react-toastify";
 import PhotoUpload from "../photoUpload/PhotoUpload";
 import Spinner from "../common/Spinner";
-import axios from "../../utils/api";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+
 const EditItemForm: React.FC = () => {
+  const getItemFromRoute = useLoaderData() as ItemType;
+  const {
+    item_name: prevItemName,
+    tags,
+    item_custom_fields: prevCustomFields,
+    collection_id,
+    item_id,
+  } = getItemFromRoute;
   const navigate = useNavigate();
-  const { id: collection_id } = useParams();
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [item_name, setItem_name] = useState<string>("");
-  const [tags, setTags] = useState<string[]>([]);
+  const [item_name, setItem_name] = useState<string>(prevItemName || "");
   const [selectedTags, setSelectedTags] = useState<TagOption[]>([]);
-  const [collection, setCollection] = useState<CollectionType>();
-  const [itemCustomFields, setItemCustomFields] = useState<CustomFieldType[]>(
-    []
-  );
+  const [itemCustomFields, setItemCustomFields] =
+    useState<CustomFieldType[]>(prevCustomFields);
 
   const handleTagChange = (newValue: TagOption[]) => {
     setSelectedTags(newValue);
   };
-
-  useEffect(() => {
-    const fetchCollectionData = async (id: string) => {
-      setLoading(true);
-      const res = await axios.get(
-        `${API_ENDPOINT.COLLECTION_CUSTOM_FIELDS}/${id}`
-      );
-      if (isSuccessRes(res)) {
-        setLoading(false);
-        setItemCustomFields(res?.data?.custom_fields);
-        setCollection(res?.data);
-        setTags(res?.data?.tags);
-      }
-    };
-
-    if (collection_id) {
-      fetchCollectionData(collection_id);
-    }
-  }, [collection_id]);
 
   const handleCustomInput = (id: string, field_value?: any) => {
     if (itemCustomFields.length) {
@@ -71,7 +56,7 @@ const EditItemForm: React.FC = () => {
     },
   };
 
-  const CreateNewItem = async () => {
+  const editItem = async () => {
     try {
       if (!item_name) {
         toast.warn("please Add Item name");
@@ -83,7 +68,10 @@ const EditItemForm: React.FC = () => {
       }
 
       setLoading(true);
-      const res = await axiosPrivate.post(API_ENDPOINT.ITEM, data);
+      const res = await axiosPrivate.patch(
+        `${API_ENDPOINT.ITEM}/${item_id}`,
+        data
+      );
 
       if (isSuccessRes(res)) {
         setLoading(false);
@@ -107,14 +95,12 @@ const EditItemForm: React.FC = () => {
               <img
                 className="mx-auto w-48"
                 src={
-                  collection?.image ||
                   "https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
                 }
                 alt="collection image"
               />
               <h4 className="mb-4 mt-1 pb-1 text-xl font-semibold">
-                Add items to your <strong>{collection?.title} </strong>{" "}
-                collection.
+                Update {item_name}
               </h4>
             </div>
             <div className="card-body">
@@ -143,10 +129,10 @@ const EditItemForm: React.FC = () => {
               <div className="form-control mt-6">
                 <button
                   type="submit"
-                  onClick={CreateNewItem}
+                  onClick={editItem}
                   className="btn btn-primary"
                 >
-                  submit
+                  update
                 </button>
               </div>
             </div>

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import CustomFieldsForm from "./CustomFieldsForm";
 import { CollectionType, CustomFieldType, TagOption } from "../../utils/types";
 import { InputField } from "../common/InputField";
@@ -11,44 +11,24 @@ import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
 import { toast } from "react-toastify";
 import PhotoUpload from "../photoUpload/PhotoUpload";
 import Spinner from "../common/Spinner";
-import axios from "../../utils/api";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+
 const CreateItem: React.FC = () => {
+  const { collection_id } = useParams();
+  const collection = useLoaderData() as Partial<CollectionType>;
   const navigate = useNavigate();
-  const { id: collection_id } = useParams();
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
   const [loading, setLoading] = useState(false);
   const [item_name, setItem_name] = useState<string>("");
-  const [tags, setTags] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<TagOption[]>([]);
-  const [collection, setCollection] = useState<CollectionType>();
   const [itemCustomFields, setItemCustomFields] = useState<CustomFieldType[]>(
-    []
+    collection.custom_fields || []
   );
 
   const handleTagChange = (newValue: TagOption[]) => {
     setSelectedTags(newValue);
   };
-
-  useEffect(() => {
-    const fetchCollectionData = async (id: string) => {
-      setLoading(true);
-      const res = await axios.get(
-        `${API_ENDPOINT.COLLECTION_CUSTOM_FIELDS}/${id}`
-      );
-      if (isSuccessRes(res)) {
-        setLoading(false);
-        setItemCustomFields(res?.data?.custom_fields);
-        setCollection(res?.data);
-        setTags(res?.data?.tags);
-      }
-    };
-
-    if (collection_id) {
-      fetchCollectionData(collection_id);
-    }
-  }, [collection_id]);
 
   const handleCustomInput = (id: string, field_value?: any) => {
     if (itemCustomFields.length) {
@@ -132,7 +112,6 @@ const CreateItem: React.FC = () => {
                 <GetAndCreateTag
                   handleTagChange={handleTagChange}
                   selectedTags={selectedTags}
-                  tags={tags}
                 />
               </div>
               <CustomFieldsForm

@@ -17,7 +17,6 @@ interface DisplaySingleItemProps {
   itemData: ItemType;
 }
 const DisplaySingleItem: React.FC<DisplaySingleItemProps> = ({ itemData }) => {
-  console.log(itemData);
   const {
     item_id,
     comments: commentsData,

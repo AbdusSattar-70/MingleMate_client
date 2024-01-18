@@ -4,16 +4,40 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { GrUpdate } from "react-icons/gr";
 import { FcViewDetails } from "react-icons/fc";
 import { Link } from "react-router-dom";
-import { ROUTES } from "../../utils/constant";
+import { API_ENDPOINT, MESSAGES, ROUTES } from "../../utils/constant";
 import { useAuth } from "../../hooks/useAuth";
 import { canManageAll } from "../../utils/canManageAll";
-import keyId from "../../utils/keyId";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
+import { toast } from "react-toastify";
 interface CollectionTableProps {
   items: ItemType[];
+  setItems: React.Dispatch<React.SetStateAction<ItemType[]>>;
 }
 
-const ItemsTable: React.FC<CollectionTableProps> = ({ items }) => {
+const ItemsTable: React.FC<CollectionTableProps> = ({ items, setItems }) => {
   const { auth } = useAuth();
+  const axiosPrivate = useAxiosPrivate();
+
+  const updateDeletedItem = (id: string) => {
+    const updatedItems = items.filter((item: ItemType) => item.item_id !== id);
+    setItems(updatedItems);
+  };
+
+  const handleDeleteItem = async (id: string) => {
+    try {
+      const response = await axiosPrivate.delete(`${API_ENDPOINT.ITEM}/${id}`);
+
+      if (isSuccessRes(response)) {
+        toast.success(MESSAGES.SUCCESS);
+        updateDeletedItem(response.data.item_id);
+      } else {
+        toast.warn(MESSAGES.TRY_AGAIN);
+      }
+    } catch (error) {
+      setErrorToast(error);
+    }
+  };
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -68,7 +92,7 @@ const ItemsTable: React.FC<CollectionTableProps> = ({ items }) => {
           {items.map(
             ({ item_id, item_name, item_author, likes, tags, comments }) => (
               <tr
-                key={keyId()}
+                key={item_id}
                 className="border-b border-meta-9 bg-meta-4 hover:bg-body"
               >
                 <th
@@ -102,10 +126,16 @@ const ItemsTable: React.FC<CollectionTableProps> = ({ items }) => {
                     </Link>
                     {canManageAll(auth.id, auth.role, item_author) && (
                       <>
-                        <button className="btn btn-xs">
+                        <Link
+                          to={`${ROUTES.EDIT_ITEM}/${item_id}/edit-item`}
+                          className="btn btn-xs"
+                        >
                           <GrUpdate />
-                        </button>
-                        <button className="btn btn-xs">
+                        </Link>
+                        <button
+                          onClick={() => handleDeleteItem(item_id)}
+                          className="btn btn-xs"
+                        >
                           <FaRegTrashCan />
                         </button>
                       </>
