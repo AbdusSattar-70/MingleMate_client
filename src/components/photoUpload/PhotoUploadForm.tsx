@@ -2,7 +2,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { AVATAR, COLLECT_IMG } from "../../utils/constant";
 import { detectPhoto } from "../../utils/detectPhoto";
 import dummyAvatar from "../../images/avatar.jpg";
-import coverImg from "../../images/cover/cover-01.png";
+import coverImg from "../../images/cover/cover-01.webp";
 import { FaCloudUploadAlt } from "react-icons/fa";
 type PhotoUploadFormProps = {
   setFile: React.Dispatch<React.SetStateAction<File | null>>;

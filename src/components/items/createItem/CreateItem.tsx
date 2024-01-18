@@ -1,34 +1,39 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
-import { useLoaderData, useNavigate } from "react-router-dom";
-import CustomFieldsForm from "./createItem/CustomFieldsForm";
-import { CustomFieldType, ItemType, TagOption } from "../../utils/types";
-import { InputField } from "../common/InputField";
-import GetAndCreateTag from "./createItem/GetAndCreateTag";
-import { useAuth } from "../../hooks/useAuth";
-import { API_ENDPOINT, ITEM_IMG, MESSAGES, ROUTES } from "../../utils/constant";
-import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
+import React, { useState } from "react";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import CustomFieldsForm from "./CustomFieldsForm";
+import {
+  CollectionType,
+  CustomFieldType,
+  TagOption,
+} from "../../../utils/types";
+import { InputField } from "../../common/InputField";
+import GetAndCreateTag from "./GetAndCreateTag";
+import { useAuth } from "../../../hooks/useAuth";
+import {
+  API_ENDPOINT,
+  ITEM_IMG,
+  MESSAGES,
+  ROUTES,
+} from "../../../utils/constant";
+import isSuccessRes, { setErrorToast } from "../../../utils/apiResponse";
 import { toast } from "react-toastify";
-import PhotoUpload from "../photoUpload/PhotoUpload";
-import Spinner from "../common/Spinner";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import PhotoUpload from "../../photoUpload/PhotoUpload";
+import Spinner from "../../common/Spinner";
+import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 
-const EditItemForm: React.FC = () => {
-  const getItemFromRoute = useLoaderData() as ItemType;
-  const {
-    item_name: prevItemName,
-    item_custom_fields: prevCustomFields,
-    collection_id,
-    item_id,
-  } = getItemFromRoute;
+const CreateItem: React.FC = () => {
+  const { collection_id } = useParams();
+  const collection = useLoaderData() as Partial<CollectionType>;
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [item_name, setItem_name] = useState<string>(prevItemName || "");
+  const [item_name, setItem_name] = useState<string>("");
   const [selectedTags, setSelectedTags] = useState<TagOption[]>([]);
-  const [itemCustomFields, setItemCustomFields] =
-    useState<CustomFieldType[]>(prevCustomFields);
+  const [itemCustomFields, setItemCustomFields] = useState<CustomFieldType[]>(
+    collection.custom_fields || []
+  );
 
   const handleTagChange = (newValue: TagOption[]) => {
     setSelectedTags(newValue);
@@ -55,7 +60,7 @@ const EditItemForm: React.FC = () => {
     },
   };
 
-  const editItem = async () => {
+  const CreateNewItem = async () => {
     try {
       if (!item_name) {
         toast.warn("please Add Item name");
@@ -67,10 +72,7 @@ const EditItemForm: React.FC = () => {
       }
 
       setLoading(true);
-      const res = await axiosPrivate.patch(
-        `${API_ENDPOINT.ITEM}/${item_id}`,
-        data
-      );
+      const res = await axiosPrivate.post(API_ENDPOINT.ITEM, data);
 
       if (isSuccessRes(res)) {
         setLoading(false);
@@ -94,12 +96,14 @@ const EditItemForm: React.FC = () => {
               <img
                 className="mx-auto w-48"
                 src={
+                  collection?.image ||
                   "https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
                 }
                 alt="collection image"
               />
               <h4 className="mb-4 mt-1 pb-1 text-xl font-semibold">
-                Update {item_name}
+                Add items to your <strong>{collection?.title} </strong>{" "}
+                collection.
               </h4>
             </div>
             <div className="card-body">
@@ -127,10 +131,10 @@ const EditItemForm: React.FC = () => {
               <div className="form-control mt-6">
                 <button
                   type="submit"
-                  onClick={editItem}
+                  onClick={CreateNewItem}
                   className="btn btn-primary"
                 >
-                  update
+                  submit
                 </button>
               </div>
             </div>
@@ -141,4 +145,4 @@ const EditItemForm: React.FC = () => {
   );
 };
 
-export default EditItemForm;
+export default CreateItem;

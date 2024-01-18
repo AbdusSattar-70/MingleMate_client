@@ -81,7 +81,7 @@ const CreateCollection: React.FC = () => {
       const res = await axiosPrivate.post(API_ENDPOINT.COLLECTION, data);
       if (isSuccessRes(res)) {
         toast.success(MESSAGES.SUCCESS);
-        navigate(ROUTES.MY_ALL_COLLECTIONS);
+        navigate(`${ROUTES.USER_COLLECTIONS}/${auth.id}`);
       }
     } catch (error) {
       setErrorToast(error);

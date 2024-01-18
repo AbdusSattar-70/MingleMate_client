@@ -6,11 +6,13 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UpcaseFirstChar } from "../../utils/UpcaseFirstChar";
 import { calculateTimeElapsed } from "../../utils/formattedTime";
-import { TAGRelatedItemType } from "../../utils/types";
+import { SEARCH_ITEMS_FULL_TEXT_TYPE } from "../../utils/types";
 
 const SearchInput = () => {
   const navigate = useNavigate();
-  const [searchResult, setSearchResult] = useState<TAGRelatedItemType[]>([]);
+  const [searchResult, setSearchResult] = useState<
+    SEARCH_ITEMS_FULL_TEXT_TYPE[]
+  >([]);
   const [inputValue, setInputValue] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const trigger = useRef<any>(null);
@@ -77,6 +79,7 @@ const SearchInput = () => {
         {/* dummy search input */}
         <input
           value={""}
+          readOnly
           placeholder="search..."
           className="w-32 rounded-sm border-0 p-2 dark:bg-meta-4"
         />
@@ -110,10 +113,12 @@ const SearchInput = () => {
                 item_author,
                 item_name,
                 collection_name,
-                comments,
-                likes,
+                comments_count,
+                likes_count,
                 created_at,
                 updated_at,
+                collection_des,
+                comments_content,
               }) => (
                 <li
                   key={item_id}
@@ -140,8 +145,14 @@ const SearchInput = () => {
                         </span>
                       </p>
                       <p className="flex items-center gap-7 text-sm text-black dark:text-white">
-                        <span>Likes: {likes}</span>
-                        <span>Comments: {comments}</span>
+                        <span>likes_count: {likes_count}</span>
+                        <span>comments_count: {comments_count}</span>
+                      </p>
+                      <p className="text-sm text-black dark:text-white">
+                        Comments: {comments_content || null}
+                      </p>
+                      <p className="text-sm text-black dark:text-white">
+                        collection description: {collection_des || null}
                       </p>
                       <p className="text-xs">
                         {calculateTimeElapsed(created_at, updated_at)}

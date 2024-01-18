@@ -3,25 +3,22 @@ import PrivateRoute from "./PrivateRoute";
 import { API_ENDPOINT, BASE_URL, ROUTES } from "../utils/constant";
 import DefaultLayout from "../layout/DefaultLayout";
 import {
-  CreateCollection,
-  CreateItem,
-  Dashboard,
-  EditProfile,
-  CollectionWithItemTable,
   Home,
-  SignIn,
   SignUp,
-  GetAllItems,
-  MyProfile,
-  UserProfileFromRoute,
-  MyCollections,
-  CollectionsTable,
-  UserColletionsFromRoute,
+  SignIn,
+  Dashboard,
+  UserProfile,
+  EditProfile,
+  CreateCollection,
   EditCollectionForm,
+  CollectionDetails,
+  CollectionsTable,
+  UserAllColletions,
+  CreateItem,
   EditItemForm,
-  GetUserItemsAllFromRoute,
-  MyItemsAll,
-  GetSingleItemDataFromRoute,
+  UserItemsTable,
+  AllItemsTable,
+  ItemDetailsNavigation,
 } from "./LazyComponents";
 import ErrorPage from "../components/errorPage/ErrorPage";
 import { fetchData } from "./fetchDataRouter";
@@ -38,15 +35,16 @@ const router = createBrowserRouter([
       },
       {
         path: `${ROUTES.USER_PROFILE}/:id`,
-        element: <UserProfileFromRoute />,
+        element: <UserProfile />,
         loader: async ({ params }) =>
           fetchData(`${BASE_URL}/${API_ENDPOINT.USER_PROFILE}/${params.id}`),
       },
-      // collections related routes
       {
-        path: ROUTES.MY_ALL_COLLECTIONS,
-        element: <MyCollections />,
+        path: ROUTES.PROFILE_EDIT,
+        element: <EditProfile />,
       },
+
+      // collections related routes
       {
         path: ROUTES.ALL_COLLECTIONS,
         element: <CollectionsTable />,
@@ -54,12 +52,12 @@ const router = createBrowserRouter([
 
       {
         path: `${ROUTES.USER_COLLECTIONS}/:userId`,
-        element: <UserColletionsFromRoute />,
+        element: <UserAllColletions />,
       },
 
       {
         path: `${ROUTES.DIESPLAY_SINGLE_COLLECTION}/:id`,
-        element: <CollectionWithItemTable />,
+        element: <CollectionDetails />,
         loader: async ({ params }) =>
           fetchData(`${BASE_URL}/${API_ENDPOINT.COLLECTION}/${params.id}`),
       },
@@ -94,21 +92,17 @@ const router = createBrowserRouter([
       },
       {
         path: `${ROUTES.USER_ITEMS}/:user_id`,
-        element: <GetUserItemsAllFromRoute />,
-        loader: async ({ params }) =>
-          fetchData(`${BASE_URL}/${API_ENDPOINT.USER_ITEMS}/${params.user_id}`),
+        element: <UserItemsTable />,
       },
-      {
-        path: ROUTES.MY_ITEMS_ALL,
-        element: <MyItemsAll />,
-      },
+
       {
         path: ROUTES.GET_ITEMS_ALL,
-        element: <GetAllItems />,
+        element: <AllItemsTable />,
       },
+
       {
-        path: `/item/:id`,
-        element: <GetSingleItemDataFromRoute />,
+        path: `${ROUTES.GET_SIGNLE_ITEM}/:id`,
+        element: <ItemDetailsNavigation />,
         loader: async ({ params }) =>
           fetchData(`${BASE_URL}/${API_ENDPOINT.ITEM}/${params.id}`),
       },
@@ -122,14 +116,7 @@ const router = createBrowserRouter([
         path: ROUTES.SIGNIN,
         element: <SignIn />,
       },
-      {
-        path: ROUTES.MY_PROFILE,
-        element: <MyProfile />,
-      },
-      {
-        path: ROUTES.PROFILE_EDIT,
-        element: <EditProfile />,
-      },
+
       {
         path: ROUTES.ADMIN_DASHBOARD,
         element: (

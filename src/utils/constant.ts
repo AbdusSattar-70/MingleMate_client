@@ -5,25 +5,23 @@ export const AXIOS_HEADERS = { "Content-Type": "application/json" };
 
 export const ROUTES = {
   HOME: "/",
-  SIGNIN: "/sign-in",
   SIGNUP: "/sign-up",
-  MY_PROFILE: "/my-profile",
-  PROFILE_EDIT: "/profile/edit",
+  SIGNIN: "/sign-in",
   USER_PROFILE: "/user-profile",
+  PROFILE_EDIT: "/profile/edit",
   ADMIN_DASHBOARD: "/admin/dashboard",
+
   CREATE_COLLECTION: "/create-collection",
   EDIT_COLLECTION: "/edit-collection/collection-id",
-  DIESPLAY_SINGLE_COLLECTION: "/collection",
-  MY_ALL_COLLECTIONS: "/my-all-collections",
-  ALL_COLLECTIONS: "/all-collections",
-  MY_ITEMS_ALL: "/my-all-items",
-  USER_ITEMS: "/user-items/user-id",
+  DIESPLAY_SINGLE_COLLECTION: "/collection/collection-id",
   USER_COLLECTIONS: "/user-collections/user-id",
+  ALL_COLLECTIONS: "/all-collections",
+
   CREATE_ITEM: "/collection",
   EDIT_ITEM: "/edit-item",
-  GET_SIGNLE_ITEM: "/item",
-  GET_ITEMS_ALL: "/items",
-  DISPLAY_ALL_ITEMS: "/all-items",
+  GET_SIGNLE_ITEM: "/item/item-id",
+  USER_ITEMS: "/user-items/user-id",
+  GET_ITEMS_ALL: "/all-items",
 };
 
 export const PICK_THEME = {

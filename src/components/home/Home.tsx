@@ -4,7 +4,7 @@ import Footer from "./Footer";
 import GetLargestCollections from "./GetLargestCollections";
 import HomeDecorator from "./HomeDecorator";
 import keyId from "../../utils/keyId";
-import DropdownTagsItem from "../Tags/DropdownTagsItem";
+import DropdownTagsItem from "../items/itemDetails/Tags/DropdownTagsItem";
 import useGetTags from "../../hooks/useGetTags";
 import AllItemsHomePage from "./AllItemsHomePage";
 

@@ -10,12 +10,12 @@ import { canManageAll } from "../../utils/canManageAll";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
 import { toast } from "react-toastify";
-interface CollectionTableProps {
+interface ItemsTableProps {
   items: ItemType[];
   setItems: React.Dispatch<React.SetStateAction<ItemType[]>>;
 }
 
-const ItemsTable: React.FC<CollectionTableProps> = ({ items, setItems }) => {
+const ItemsTable: React.FC<ItemsTableProps> = ({ items, setItems }) => {
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
 

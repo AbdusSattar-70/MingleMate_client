@@ -42,7 +42,7 @@ const EditProfile = () => {
           ...updated,
         }));
         toast.success("Profile updated Successfully");
-        navigate(ROUTES.MY_PROFILE);
+        navigate(`${ROUTES.USER_PROFILE}/${auth.id}`);
       }
     } catch (error) {
       setErrorToast(error);
@@ -174,7 +174,10 @@ const EditProfile = () => {
                   </div>
 
                   <div className="flex justify-end gap-4.5">
-                    <Link to={ROUTES.MY_PROFILE} className="btn btn-warning">
+                    <Link
+                      to={`${ROUTES.USER_PROFILE}/${auth.id}`}
+                      className="btn btn-warning"
+                    >
                       Cancel
                     </Link>
                     <button

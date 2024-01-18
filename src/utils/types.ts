@@ -83,6 +83,19 @@ export type TAGRelatedItemType = {
   updated_at: string;
 };
 
+export type SEARCH_ITEMS_FULL_TEXT_TYPE = {
+  item_id: string;
+  item_name: string;
+  collection_name: string;
+  item_author: string;
+  likes_count: number;
+  comments_count: number;
+  collection_des: string;
+  comments_content: string;
+  created_at: string;
+  updated_at: string;
+};
+
 export type CommentType = {
   comment_id: string;
   content: string;

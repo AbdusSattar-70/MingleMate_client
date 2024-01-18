@@ -24,10 +24,9 @@ const DropdownUser = () => {
     await signOut();
     if (signOutError) {
       toast.warning(signOutError);
-    } else {
-      setAuth(INITIAL_AUTH_STATE);
-      navigate(ROUTES.SIGNIN);
     }
+    setAuth(INITIAL_AUTH_STATE);
+    navigate(ROUTES.SIGNIN);
   };
   // close on click outside
   useEffect(() => {
@@ -103,7 +102,7 @@ const DropdownUser = () => {
             <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
               <li>
                 <Link
-                  to={ROUTES.MY_PROFILE}
+                  to={`${ROUTES.USER_PROFILE}/${auth.id}`}
                   className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
                 >
                   <FaUserPen />

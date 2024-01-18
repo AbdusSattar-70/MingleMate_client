@@ -9,7 +9,7 @@ const useFetchByPage = <T,>(
   searchTerm?: string
 ): [T[], boolean, () => void, SetData<T>, boolean] => {
   const [data, setData] = useState<T[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [isMoreData, setIsMoreData] = useState(true);
   const [page, setPage] = useState(1);
   const perPageCount = 5;
@@ -21,6 +21,7 @@ const useFetchByPage = <T,>(
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
         const res = await axios.get(
           `${apiEndpoint}?search=${searchTerm}&page=${page}&per_page=${perPageCount}`
         );

@@ -1,5 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
-import CoverOne from "../../images/cover/cover-01.png";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
+import CoverOne from "../../images/cover/cover-01.webp";
 import dummyAvatar from "../../images/avatar.jpg";
 import { MdSwitchAccount } from "react-icons/md";
 import {
@@ -24,7 +24,9 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { toast } from "react-toastify";
 import isSuccessRes from "../../utils/apiResponse";
 
-const UserProfile = ({ userData }: { userData: Users }) => {
+const UserProfile = () => {
+  const userData = useLoaderData() as Users;
+
   const { auth, setAuth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
