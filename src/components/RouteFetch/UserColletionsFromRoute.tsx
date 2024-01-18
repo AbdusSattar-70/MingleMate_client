@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import UserAllCollections from "../collection/UserAllCollections";
+import UserAllCollections from "../MyCorner/UserAllCollections";
 import { ROUTES } from "../../utils/constant";
 import { useAuth } from "../../hooks/useAuth";
 

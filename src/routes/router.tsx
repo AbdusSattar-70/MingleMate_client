@@ -15,7 +15,7 @@ import {
   MyProfile,
   UserProfileFromRoute,
   MyCollections,
-  GetAllCollections,
+  CollectionsTable,
   UserColletionsFromRoute,
   EditCollectionForm,
   EditItemForm,
@@ -24,6 +24,7 @@ import {
   GetSingleItemDataFromRoute,
 } from "./LazyComponents";
 import ErrorPage from "../components/errorPage/ErrorPage";
+import { fetchData } from "./fetchDataRouter";
 
 const router = createBrowserRouter([
   {
@@ -38,8 +39,8 @@ const router = createBrowserRouter([
       {
         path: `${ROUTES.USER_PROFILE}/:id`,
         element: <UserProfileFromRoute />,
-        loader: ({ params }) =>
-          fetch(`${BASE_URL}/${API_ENDPOINT.USER_PROFILE}/${params.id}`),
+        loader: async ({ params }) =>
+          fetchData(`${BASE_URL}/${API_ENDPOINT.USER_PROFILE}/${params.id}`),
       },
       // collections related routes
       {
@@ -48,7 +49,7 @@ const router = createBrowserRouter([
       },
       {
         path: ROUTES.ALL_COLLECTIONS,
-        element: <GetAllCollections />,
+        element: <CollectionsTable />,
       },
 
       {
@@ -59,8 +60,8 @@ const router = createBrowserRouter([
       {
         path: `${ROUTES.DIESPLAY_SINGLE_COLLECTION}/:id`,
         element: <CollectionWithItemTable />,
-        loader: ({ params }) =>
-          fetch(`${BASE_URL}/${API_ENDPOINT.COLLECTION}/${params.id}`),
+        loader: async ({ params }) =>
+          fetchData(`${BASE_URL}/${API_ENDPOINT.COLLECTION}/${params.id}`),
       },
       {
         path: ROUTES.CREATE_COLLECTION,
@@ -70,29 +71,32 @@ const router = createBrowserRouter([
       {
         path: `${ROUTES.EDIT_COLLECTION}/:collection_id`,
         element: <EditCollectionForm />,
-        loader: ({ params }) =>
-          fetch(
+        loader: async ({ params }) =>
+          fetchData(
             `${BASE_URL}/${API_ENDPOINT.COLLECTION}/${params.collection_id}`
           ),
       },
 
-      // item related routes
       {
-        path: `${ROUTES.CREATE_ITEM}/:id/create-item`,
+        path: `${ROUTES.CREATE_ITEM}/:collection_id/create-item`,
         element: <CreateItem />,
+        loader: async ({ params }) =>
+          fetchData(
+            `${BASE_URL}/${API_ENDPOINT.COLLECTION_CUSTOM_FIELDS}/${params.collection_id}`
+          ),
       },
 
       {
         path: `${ROUTES.EDIT_ITEM}/:id/edit-item`,
         element: <EditItemForm />,
-        loader: ({ params }) =>
-          fetch(`${BASE_URL}/${API_ENDPOINT.ITEM}/${params.id}`),
+        loader: async ({ params }) =>
+          fetchData(`${BASE_URL}/${API_ENDPOINT.ITEM}/${params.id}`),
       },
       {
         path: `${ROUTES.USER_ITEMS}/:user_id`,
         element: <GetUserItemsAllFromRoute />,
-        loader: ({ params }) =>
-          fetch(`${BASE_URL}/${API_ENDPOINT.USER_ITEMS}/${params.user_id}`),
+        loader: async ({ params }) =>
+          fetchData(`${BASE_URL}/${API_ENDPOINT.USER_ITEMS}/${params.user_id}`),
       },
       {
         path: ROUTES.MY_ITEMS_ALL,
@@ -105,8 +109,8 @@ const router = createBrowserRouter([
       {
         path: `/item/:id`,
         element: <GetSingleItemDataFromRoute />,
-        loader: ({ params }) =>
-          fetch(`${BASE_URL}/${API_ENDPOINT.ITEM}/${params.id}`),
+        loader: async ({ params }) =>
+          fetchData(`${BASE_URL}/${API_ENDPOINT.ITEM}/${params.id}`),
       },
 
       // authentication and authorization related routes

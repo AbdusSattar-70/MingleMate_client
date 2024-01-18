@@ -1,11 +1,10 @@
 import { Link, useLoaderData } from "react-router-dom";
-import { CollectionType } from "../../utils/types";
-import { useEffect, useState } from "react";
-import { fetchItems } from "../../utils/fetchItems";
-import { ROUTES, dummyImg } from "../../utils/constant";
+import { CollectionType, ItemType } from "../../utils/types";
+import { API_ENDPOINT, ROUTES, dummyImg } from "../../utils/constant";
 import ItemsTable from "../items/ItemsTable";
 import { canManageAll } from "../../utils/canManageAll";
 import { useAuth } from "../../hooks/useAuth";
+import useFetchByPage from "../../hooks/useFetchByPage";
 
 const CollectionWithItemTable = () => {
   const collection: CollectionType = useLoaderData() as CollectionType;
@@ -21,17 +20,10 @@ const CollectionWithItemTable = () => {
     author_id,
   } = collection;
 
-  const [items, setItems] = useState([]);
+  const [items, loading, handleSeeMore, setItems] = useFetchByPage<ItemType>(
+    `${API_ENDPOINT.COLLECTION_ITEMS}/${collection_id}`
+  );
   const { auth } = useAuth();
-
-  useEffect(() => {
-    const loadItems = async () => {
-      const data = await fetchItems(collection_id);
-      setItems(data);
-    };
-
-    loadItems();
-  }, [collection_id]);
 
   return (
     <>
@@ -67,10 +59,28 @@ const CollectionWithItemTable = () => {
         </div>
       </div>
       {items.length ? (
-        <ItemsTable items={items} />
+        <ItemsTable items={items} setItems={setItems} />
       ) : (
         <div>No Items to Display</div>
       )}
+
+      <div className="mx-auto mb-8 h-20 w-full rounded border border-stroke bg-gray py-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary">
+        <div className="mx-auto flex max-w-[15rem] items-center justify-center gap-4">
+          <div className="card w-full flex-shrink-0 bg-base-100 shadow-2xl dark:bg-meta-4">
+            {items.length && (
+              <button onClick={handleSeeMore} className="btn btn-primary">
+                {loading ? (
+                  <span className="btn btn-sm text-meta-7">
+                    <span className="loading loading-spinner"></span>
+                  </span>
+                ) : (
+                  "Find More Items"
+                )}
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
     </>
   );
 };

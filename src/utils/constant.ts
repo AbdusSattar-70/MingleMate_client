@@ -60,6 +60,7 @@ export const API_ENDPOINT = {
   COMMENT: "comments",
   LIKE: "likes",
   ITEM_LIKES_COUNT: "item_likes_count",
+  SEARCH_ITEMS_FULL_TEXT: "full_text_search?search=",
   TAG: "tags",
   TAG_RELATED_ITEMS: "tag_related_items?search=",
 };
@@ -83,6 +84,13 @@ export const MESSAGES = {
   FILL_TYPE_FIELD: "please fill up field type",
   COLLECTION_FIELD: "title, topic and description is required",
   SERVER_OFFLINE: "server is offline, please try again",
+  DELETE_MYSELF: {
+    CONFIRM:
+      "Are you sure you want to delete your account? When deleted, you will lose all data on this site, and it cannot be recovered.",
+    SUCCESS:
+      "Your account has been deleted successfully. We hope to see you again!",
+    ERROR: "Sorry, there was an error. Please try again later.",
+  },
 };
 
 export const DASHBOARD_TABLE_CONST = {

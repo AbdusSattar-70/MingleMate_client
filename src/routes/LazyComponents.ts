@@ -27,8 +27,8 @@ export const UserProfileFromRoute = lazy(
 export const MyCollections = lazy(
   () => import("../components/MyCorner/MyCollections")
 );
-export const GetAllCollections = lazy(
-  () => import("../components/home/GetAllCollections")
+export const CollectionsTable = lazy(
+  () => import("../components/home/CollectionsTable")
 );
 export const UserColletionsFromRoute = lazy(
   () => import("../components/RouteFetch/UserColletionsFromRoute")
