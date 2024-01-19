@@ -59,6 +59,7 @@ export const API_ENDPOINT = {
   LIKE: "likes",
   ITEM_LIKES_COUNT: "item_likes_count",
   SEARCH_ITEMS_FULL_TEXT: "full_text_search?search=",
+  SORT_ITEMS: "sort_and_filter_items?sort_by=",
   TAG: "tags",
   TAG_RELATED_ITEMS: "tag_related_items?search=",
 };
@@ -123,6 +124,15 @@ export const FILTER_BY_USER = {
   BLOCKED: "blocked",
   GENERAL: "general",
   ACTIVE: "active",
+};
+
+export const SORT_BY_ITEMS = {
+  ASC: "asc",
+  DESC: "desc",
+  TOP_LIKED: "most_liked",
+  TOP_COMMENTED: "most_commented",
+  NO_LIKE: "no_likes",
+  NO_COMMENT: "no_comments",
 };
 
 export const FILTER_USERS = {

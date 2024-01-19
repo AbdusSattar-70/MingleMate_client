@@ -4,9 +4,16 @@ import { API_ENDPOINT, ROUTES, dummyImg } from "../../utils/constant";
 import ItemsTable from "../items/ItemsTable";
 import { canManageAll } from "../../utils/canManageAll";
 import { useAuth } from "../../hooks/useAuth";
-import useFetchByPage from "../../hooks/useFetchByPage";
+import { useEffect, useState } from "react";
+import isSuccessRes from "../../utils/apiResponse";
+import axios from "../../utils/api";
+import ItemsTableTop from "../items/ItemsTableTop";
 
 const CollectionDetails = () => {
+  const { auth } = useAuth();
+  const [userChoice, setUserChoice] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [items, setItems] = useState<ItemType[]>([]);
   const collection: CollectionType = useLoaderData() as CollectionType;
 
   const {
@@ -20,11 +27,25 @@ const CollectionDetails = () => {
     author_id,
   } = collection || {};
 
-  const [items, loading, handleSeeMore, setItems, isMoreData] =
-    useFetchByPage<ItemType>(
-      `${API_ENDPOINT.COLLECTION_ITEMS}/${collection_id}`
-    );
-  const { auth } = useAuth();
+  useEffect(() => {
+    const fetchItemsSortBy = async () => {
+      try {
+        setLoading(true);
+        const res = await axios.get(
+          `${API_ENDPOINT.COLLECTION_ITEMS}/${collection_id}?sort_by=${userChoice}`
+        );
+        if (isSuccessRes(res)) {
+          setLoading(false);
+          setItems(res.data);
+        }
+      } catch (error) {
+        setLoading(false);
+        console.error(`Error fetching data from`, error);
+      }
+    };
+
+    fetchItemsSortBy();
+  }, [userChoice, collection_id, setItems]);
 
   return (
     <>
@@ -61,24 +82,12 @@ const CollectionDetails = () => {
       </div>
       {items.length ? (
         <>
+          <ItemsTableTop
+            loading={loading}
+            userChoice={userChoice}
+            setUserChoice={setUserChoice}
+          />
           <ItemsTable items={items} setItems={setItems} />
-          <div className="mx-auto mb-8 h-20 w-full rounded border border-stroke bg-gray py-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary">
-            <div className="mx-auto flex max-w-[15rem] items-center justify-center gap-4">
-              <div className="card w-full flex-shrink-0 bg-base-100 shadow-2xl dark:bg-meta-4">
-                {isMoreData && (
-                  <button onClick={handleSeeMore} className="btn btn-primary">
-                    {loading ? (
-                      <span className="btn btn-sm text-meta-7">
-                        <span className="loading loading-spinner"></span>
-                      </span>
-                    ) : (
-                      "Find More Items"
-                    )}
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
         </>
       ) : (
         <div>No Items to Display</div>

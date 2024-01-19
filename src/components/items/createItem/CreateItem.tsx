@@ -73,11 +73,10 @@ const CreateItem: React.FC = () => {
 
       setLoading(true);
       const res = await axiosPrivate.post(API_ENDPOINT.ITEM, data);
-
       if (isSuccessRes(res)) {
         setLoading(false);
         toast.success(MESSAGES.SUCCESS);
-        navigate(`${ROUTES.GET_SIGNLE_ITEM}/${res.data.id}`);
+        navigate(`${ROUTES.GET_SIGNLE_ITEM}/${res.data.item_id}`);
       }
     } catch (error) {
       setErrorToast(error);

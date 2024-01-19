@@ -135,7 +135,11 @@ const Table: React.FC<TableProps> = ({
             )}
           </tbody>
         ) : (
-          <span>Oops! No Collection Found</span>
+          <tbody>
+            <tr>
+              <td>Oops! No Collection Found</td>
+            </tr>
+          </tbody>
         )}
       </table>
     </div>

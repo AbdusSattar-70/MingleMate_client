@@ -62,6 +62,7 @@ export type ItemType = {
   item_id: string;
   item_name: string;
   item_author: string;
+  author_id: string;
   collection_id: string;
   collection_name: string;
   item_custom_fields: CustomFieldType[];
