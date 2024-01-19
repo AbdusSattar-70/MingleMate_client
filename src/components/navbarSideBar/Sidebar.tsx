@@ -182,7 +182,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </SidebarLinkGroup>
 
               {/* <!-- Menu Item Dashboard --> */}
-              {isActive && isAdmin && (
+              {auth.authToken && isAdmin && (
                 <li>
                   <NavLink
                     to={ROUTES.ADMIN_DASHBOARD}
@@ -209,9 +209,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     return (
                       <>
                         <NavLink
-                          to={ROUTES.MY_PROFILE}
+                          to={`${ROUTES.USER_PROFILE}`}
                           className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                            (pathname === `${ROUTES.MY_PROFILE}` ||
+                            (pathname === `${ROUTES.USER_PROFILE}` ||
                               pathname.includes("my-profile")) &&
                             "bg-graydark dark:bg-meta-4"
                           }`}
@@ -250,7 +250,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
                             <li>
                               <NavLink
-                                to={ROUTES.MY_PROFILE}
+                                to={`${ROUTES.USER_PROFILE}/${auth.id}`}
                                 className={({ isActive }) =>
                                   "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
                                   (isActive && "!text-white")
@@ -274,7 +274,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             </li>
                             <li>
                               <NavLink
-                                to={ROUTES.MY_ALL_COLLECTIONS}
+                                to={`${ROUTES.USER_COLLECTIONS}/${auth.id}`}
                                 className={({ isActive }) =>
                                   "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
                                   (isActive && "!text-white")
@@ -298,7 +298,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             </li>
                             <li>
                               <NavLink
-                                to={ROUTES.MY_ITEMS_ALL}
+                                to={`${ROUTES.USER_ITEMS}/${auth.id}`}
                                 className={({ isActive }) =>
                                   "group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white " +
                                   (isActive && "!text-white")

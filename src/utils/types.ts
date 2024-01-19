@@ -62,6 +62,7 @@ export type ItemType = {
   item_id: string;
   item_name: string;
   item_author: string;
+  author_id: string;
   collection_id: string;
   collection_name: string;
   item_custom_fields: CustomFieldType[];
@@ -79,6 +80,19 @@ export type TAGRelatedItemType = {
   item_author: string;
   likes: number;
   comments: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type SEARCH_ITEMS_FULL_TEXT_TYPE = {
+  item_id: string;
+  item_name: string;
+  collection_name: string;
+  item_author: string;
+  likes_count: number;
+  comments_count: number;
+  collection_des: string;
+  comments_content: string;
   created_at: string;
   updated_at: string;
 };

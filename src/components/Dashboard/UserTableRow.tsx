@@ -1,5 +1,5 @@
 import { FcViewDetails } from "react-icons/fc";
-import { formattedTime } from "../../utils/formattedTime";
+import { calculateTimeElapsed, formattedTime } from "../../utils/formattedTime";
 import { isActive } from "../../utils/isActive";
 import { Users } from "../../utils/types";
 import UserTableCheckbox from "./UserCheckbox";
@@ -14,7 +14,7 @@ interface UserTableRowProps {
 }
 
 const UserTableRow: React.FC<UserTableRowProps> = ({
-  user: { id, email, user_name, role, blocked, created_at },
+  user: { id, email, user_name, role, blocked, created_at, updated_at },
   selectedUsers,
   handleCheckboxChange,
 }) => {
@@ -32,6 +32,9 @@ const UserTableRow: React.FC<UserTableRowProps> = ({
       </td>
       <td className="px-6 py-4 font-medium">{email}</td>
       <td className="px-6 py-4 font-medium">{formattedTime(created_at)}</td>
+      <td className="px-6 py-4 font-medium">
+        {calculateTimeElapsed(created_at, updated_at)}
+      </td>
       <td className="px-6 py-4 font-medium">
         <div className="flex items-center">
           <div

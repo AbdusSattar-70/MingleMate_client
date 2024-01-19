@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import UserTableActions from "./UserTableActions";
 import { toast } from "react-toastify";
-import keyId from "../../utils/keyId";
 import UserTableHeader from "./UserTableHeader";
 import UserTableRow from "./UserTableRow";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -136,9 +135,9 @@ const UserTable = () => {
   };
 
   return (
-    <section className="space-y-4  bg-white  dark:border-strokedark dark:bg-boxdark">
+    <section className=" bg-white  dark:border-strokedark dark:bg-boxdark">
       {users?.length ? (
-        <section className="space-y-4 font-sans antialiased">
+        <div className="space-y-4 font-sans antialiased">
           <div>
             <UserTableActions
               filterUserData={filterUserData}
@@ -146,12 +145,9 @@ const UserTable = () => {
               handleBlock={handleBlock}
               handleUnblock={handleUnblock}
               handleDelete={handleDelete}
+              selectedUsers={selectedUsers}
+              users={users}
             />
-            {selectedUsers.length > 0 && (
-              <p className="text-blue-500 text-center text-xl uppercase">
-                Selected: {selectedUsers.length}
-              </p>
-            )}
           </div>
           <div className="relative max-h-screen overflow-x-auto shadow-md sm:rounded-lg">
             <table className=" w-full text-left text-sm rtl:text-right">
@@ -162,7 +158,7 @@ const UserTable = () => {
               <tbody>
                 {users.map((user) => (
                   <UserTableRow
-                    key={keyId()}
+                    key={user.id + user.email}
                     user={user}
                     selectedUsers={selectedUsers}
                     selectAll={selectAll}
@@ -174,7 +170,7 @@ const UserTable = () => {
               </tbody>
             </table>
           </div>
-        </section>
+        </div>
       ) : (
         <p>No users to display</p>
       )}

@@ -1,14 +1,12 @@
-import { useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { API_ENDPOINT } from "../../utils/constant";
-import isSuccessRes from "../../utils/apiResponse";
 import Spinner from "../common/Spinner";
-import RenderCollections from "../collection/RenderCollection";
-import axios from "../../utils/api";
-import keyId from "../../utils/keyId";
+import CollectionCard from "../collection/CollectionCard";
 import { CollectionType } from "../../utils/types";
+import useFetchByPage from "../../hooks/useFetchByPage";
 const GetLargestCollections = () => {
-  const [collections, setCollections] = useState<CollectionType[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [collections, loading, _, setCollections] =
+    useFetchByPage<CollectionType>(API_ENDPOINT.TOP_FIVE_COLLECTIONS);
 
   const updateDeletedCollection = (collectionId: string) => {
     const updated = collections.filter(
@@ -16,22 +14,6 @@ const GetLargestCollections = () => {
     );
     setCollections(updated);
   };
-
-  useEffect(() => {
-    const fetchCollections = async () => {
-      try {
-        const response = await axios.get(API_ENDPOINT.TOP_FIVE_COLLECTIONS);
-
-        if (isSuccessRes(response)) {
-          setLoading(false);
-          setCollections(response.data);
-        }
-      } catch (error) {
-        setLoading(false);
-      }
-    };
-    fetchCollections();
-  }, []);
 
   return (
     <>
@@ -50,8 +32,8 @@ const GetLargestCollections = () => {
                 items_count,
                 category,
               }) => (
-                <div key={keyId()}>
-                  <RenderCollections
+                <div key={collection_id + author_id}>
+                  <CollectionCard
                     updateDeletedCollection={updateDeletedCollection}
                     collection_id={collection_id}
                     user_name={user_name}

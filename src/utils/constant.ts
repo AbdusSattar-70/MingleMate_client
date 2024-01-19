@@ -5,25 +5,23 @@ export const AXIOS_HEADERS = { "Content-Type": "application/json" };
 
 export const ROUTES = {
   HOME: "/",
-  SIGNIN: "/sign-in",
   SIGNUP: "/sign-up",
-  MY_PROFILE: "/my-profile",
-  PROFILE_EDIT: "/profile/edit",
+  SIGNIN: "/sign-in",
   USER_PROFILE: "/user-profile",
+  PROFILE_EDIT: "/profile/edit",
   ADMIN_DASHBOARD: "/admin/dashboard",
+
   CREATE_COLLECTION: "/create-collection",
   EDIT_COLLECTION: "/edit-collection/collection-id",
-  DIESPLAY_SINGLE_COLLECTION: "/collection",
-  MY_ALL_COLLECTIONS: "/my-all-collections",
-  ALL_COLLECTIONS: "/all-collections",
-  MY_ITEMS_ALL: "/my-all-items",
-  USER_ITEMS: "/user-items/user-id",
+  DIESPLAY_SINGLE_COLLECTION: "/collection/collection-id",
   USER_COLLECTIONS: "/user-collections/user-id",
+  ALL_COLLECTIONS: "/all-collections",
+
   CREATE_ITEM: "/collection",
   EDIT_ITEM: "/edit-item",
-  GET_SIGNLE_ITEM: "/item",
-  GET_ITEMS_ALL: "/items",
-  DISPLAY_ALL_ITEMS: "/all-items",
+  GET_SIGNLE_ITEM: "/item/item-id",
+  USER_ITEMS: "/user-items/user-id",
+  GET_ITEMS_ALL: "/all-items",
 };
 
 export const PICK_THEME = {
@@ -61,6 +59,7 @@ export const API_ENDPOINT = {
   LIKE: "likes",
   ITEM_LIKES_COUNT: "item_likes_count",
   SEARCH_ITEMS_FULL_TEXT: "full_text_search?search=",
+  SORT_ITEMS: "sort_and_filter_items?sort_by=",
   TAG: "tags",
   TAG_RELATED_ITEMS: "tag_related_items?search=",
 };
@@ -125,6 +124,15 @@ export const FILTER_BY_USER = {
   BLOCKED: "blocked",
   GENERAL: "general",
   ACTIVE: "active",
+};
+
+export const SORT_BY_ITEMS = {
+  ASC: "asc",
+  DESC: "desc",
+  TOP_LIKED: "most_liked",
+  TOP_COMMENTED: "most_commented",
+  NO_LIKE: "no_likes",
+  NO_COMMENT: "no_comments",
 };
 
 export const FILTER_USERS = {

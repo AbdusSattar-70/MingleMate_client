@@ -7,7 +7,7 @@ const SortUsersData: React.FC<SortUsersDataProps> = ({ filterUserData }) => {
   return (
     <select
       name="Filter users"
-      className="select select-bordered  w-full"
+      className="select select-bordered select-sm w-full max-w-xs dark:bg-form-strokedark"
       onChange={(e) => filterUserData(e.target.value)}
     >
       <option disabled value="">
