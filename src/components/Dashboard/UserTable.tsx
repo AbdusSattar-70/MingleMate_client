@@ -9,34 +9,19 @@ import {
   API_ENDPOINT,
   DASHBOARD_TABLE_CONST,
   FILTER_USERS,
-  INITIAL_AUTH_STATE,
-  ROUTES,
 } from "../../utils/constant";
 import useAuthentication from "../../hooks/useAuthentication";
-import { useAuth } from "../../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
 
 const UserTable = () => {
-  const { setAuth } = useAuth();
-  const navigate = useNavigate();
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const { users, getUsers, loading } = useGetUserData();
-  const { isActive, isAdmin, checkAuth } = useAuthentication();
+  const { verifyAdminStatus } = useAuthentication();
 
   useEffect(() => {
     getUsers();
   }, []);
-
-  const verifyAdmin = async () => {
-    await checkAuth();
-    console.log("isAdmin", isAdmin, "isActive", isActive);
-    if (!isAdmin || !isActive) {
-      setAuth(INITIAL_AUTH_STATE);
-      navigate(ROUTES.HOME);
-    }
-  };
 
   const filterUserData = async (value: string) => {
     const filterOptions = FILTER_USERS[value];
@@ -84,7 +69,7 @@ const UserTable = () => {
           user_emails: selectedUsers,
         });
         await getUsers();
-        await verifyAdmin();
+        await verifyAdminStatus();
         setSelectedUsers([]);
         toast.success(DASHBOARD_TABLE_CONST.BLOCK.SUCCESS);
       }
@@ -122,7 +107,7 @@ const UserTable = () => {
         user_emails: selectedUsers,
       });
       await getUsers();
-      await verifyAdmin();
+      await verifyAdminStatus();
       setSelectedUsers([]);
       toast.success(DASHBOARD_TABLE_CONST.ROLE.SUCCESS);
     } catch (error) {
@@ -146,7 +131,7 @@ const UserTable = () => {
         });
 
         await getUsers();
-        await verifyAdmin();
+        await verifyAdminStatus();
         setSelectedUsers([]);
         toast.success(DASHBOARD_TABLE_CONST.DELETE.SUCCESS);
       }

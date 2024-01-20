@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import useAxiosPrivate from "./useAxiosPrivate";
 import { API_ENDPOINT, INITIAL_AUTH_STATE, ROUTES } from "../utils/constant";
 import isSuccessRes from "../utils/apiResponse";
 import { useAuth } from "./useAuth";
 import { useNavigate } from "react-router-dom";
+import useSignOut from "./useSignOut";
 type UserProps = {
   role: number;
   blocked: boolean;
@@ -11,67 +12,58 @@ type UserProps = {
 
 const useAuthentication = () => {
   const navigate = useNavigate();
-  const { auth, setAuth } = useAuth();
+  const { signOut } = useSignOut();
+  const { setAuth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isActive, setIsActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const checkAuth = useCallback(async () => {
-    const handleTrue = ({ role, blocked }: UserProps) => {
-      if (blocked === false) {
-        setIsActive(true);
-        setAuth((prev) => {
-          return {
-            ...prev,
-            blocked,
-          };
-        });
-      }
-      setIsAdmin(role === 2);
-      setAuth((prev) => {
-        return {
-          ...prev,
-          role,
-        };
-      });
-    };
+  const handleTrue = ({ role, blocked }: UserProps) => {
+    setAuth((prev) => {
+      return {
+        ...prev,
+        role,
+        blocked,
+      };
+    });
+  };
 
-    const handleFalse = () => {
-      setIsAdmin(false);
-      setIsActive(false);
-      setAuth(INITIAL_AUTH_STATE);
-      navigate(ROUTES.HOME);
-    };
+  const handleFalse = () => {
+    setAuth(INITIAL_AUTH_STATE);
+    navigate(ROUTES.HOME);
+  };
 
+  const checkAuth = async () => {
     try {
       setIsLoading(true);
       const response = await axiosPrivate.get(API_ENDPOINT.CURRENT_USER);
 
       if (!isSuccessRes(response)) {
         handleFalse();
+        return;
       } else if (response.status !== 401) {
         handleTrue(response.data);
+        return response.data;
       }
     } catch (error) {
       console.error("Error checking authentication:", error);
       handleFalse();
+      return;
     } finally {
       setIsLoading(false);
     }
-  }, [axiosPrivate, navigate, setAuth]);
+  };
 
-  useEffect(() => {
-    if (auth.authToken) {
-      checkAuth();
+  const verifyAdminStatus = async () => {
+    const data = await checkAuth();
+    if (data.role === 1 || data.blocked === true) {
+      await signOut();
+      navigate(ROUTES.HOME);
     }
-  }, [auth.authToken, axiosPrivate, checkAuth]);
+  };
 
   return {
-    isActive,
-    isAdmin,
     isLoading,
-    checkAuth,
+    verifyAdminStatus,
   };
 };
 

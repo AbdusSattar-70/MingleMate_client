@@ -11,7 +11,7 @@ const GetAndCreateTag: React.FC<GetAndCreateTagProps> = ({
   selectedTags,
   handleTagChange,
 }) => {
-  const tags: string[] = useGetTags();
+  const { tags } = useGetTags();
 
   const tagOptions: TagOption[] = tags.map((tag) => ({
     value: tag,

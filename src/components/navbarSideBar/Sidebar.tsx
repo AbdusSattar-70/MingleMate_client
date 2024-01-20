@@ -10,7 +10,6 @@ import { BsCollectionFill } from "react-icons/bs";
 import SidebarLinkGroup from "./SidebarLinkGroup";
 import { ROUTES } from "../../utils/constant";
 import { useAuth } from "../../hooks/useAuth";
-import useAuthentication from "../../hooks/useAuthentication";
 import { BiSolidAddToQueue } from "react-icons/bi";
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -21,7 +20,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const location = useLocation();
   const { pathname } = location;
   const { auth } = useAuth();
-  const { isAdmin, isActive } = useAuthentication();
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
 
@@ -182,7 +180,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </SidebarLinkGroup>
 
               {/* <!-- Menu Item Dashboard --> */}
-              {auth.authToken && isAdmin && (
+              {auth.role === 2 && (
                 <li>
                   <NavLink
                     to={ROUTES.ADMIN_DASHBOARD}
@@ -198,7 +196,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               )}
 
               {/* <!-- Menu Item Profile --> */}
-              {isActive && auth.authToken ? (
+              {auth.authToken ? (
                 <SidebarLinkGroup
                   activeCondition={
                     pathname === "/my-profile" ||

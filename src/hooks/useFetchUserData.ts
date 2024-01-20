@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useAxiosPrivate from "./useAxiosPrivate";
 import { API_ENDPOINT } from "../utils/constant";
 import isSuccessRes, { setErrorToast } from "../utils/apiResponse";
@@ -32,10 +32,6 @@ const useGetUserData = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    getUsers();
-  }, []);
 
   return { users, getUsers, loading };
 };
