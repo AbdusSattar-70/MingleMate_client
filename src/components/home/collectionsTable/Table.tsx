@@ -6,15 +6,18 @@ import { GrUpdate } from "react-icons/gr";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { useAuth } from "../../../hooks/useAuth";
 import { CollectionType } from "../../../utils/types";
+import SmallSpinner from "../../common/SmallSpinner";
 
 interface TableProps {
   collections: CollectionType[];
   handleDeleteCollection: (id: string) => void;
+  loading: boolean;
 }
 
 const Table: React.FC<TableProps> = ({
   collections,
   handleDeleteCollection,
+  loading,
 }) => {
   const { auth } = useAuth();
 
@@ -124,7 +127,7 @@ const Table: React.FC<TableProps> = ({
                             onClick={() => handleDeleteCollection(id)}
                             className="btn btn-xs"
                           >
-                            <FaRegTrashCan />
+                            {loading ? <SmallSpinner /> : <FaRegTrashCan />}
                           </button>
                         </>
                       )}

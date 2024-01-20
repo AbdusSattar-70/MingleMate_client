@@ -19,11 +19,13 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import { MarkdownField } from "../common/MarkdownField";
 import keyId from "../../utils/keyId";
+import SmallSpinner from "../common/SmallSpinner";
 
 const CreateCollection: React.FC = () => {
   const navigate = useNavigate();
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
+  const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState<string>("");
   const [topic, setTopic] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -78,13 +80,16 @@ const CreateCollection: React.FC = () => {
 
   const CreateNewCollection = async () => {
     try {
+      setLoading(true);
       const res = await axiosPrivate.post(API_ENDPOINT.COLLECTION, data);
       if (isSuccessRes(res)) {
+        setLoading(false);
         toast.success(MESSAGES.SUCCESS);
         navigate(`${ROUTES.USER_COLLECTIONS}/${auth.id}`);
       }
     } catch (error) {
       setErrorToast(error);
+      setLoading(false);
     }
   };
 
@@ -151,7 +156,7 @@ const CreateCollection: React.FC = () => {
                 onClick={CreateNewCollection}
                 className="btn btn-primary"
               >
-                Submit
+                {loading ? <SmallSpinner /> : "Submit"}
               </button>
             </div>
           </div>

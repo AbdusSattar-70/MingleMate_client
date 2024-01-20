@@ -3,6 +3,8 @@ import { API_ENDPOINT } from "../../utils/constant";
 import ItemsTable from "../items/ItemsTable";
 import useFetchByPage from "../../hooks/useFetchByPage";
 import { useParams } from "react-router-dom";
+import Spinner from "../common/Spinner";
+import SeeMoreButton from "../common/SeeMoreButton";
 const UserItemsTable = () => {
   const { user_id } = useParams();
   const [items, loading, handleSeeMore, setItems, isMoreData] =
@@ -10,29 +12,17 @@ const UserItemsTable = () => {
 
   return (
     <>
-      {items.length > 0 ? (
+      {loading ? (
+        <Spinner />
+      ) : (
         <section>
           <ItemsTable items={items} setItems={setItems} />
-          <div className="mx-auto mb-8 h-20 w-full rounded border border-stroke bg-gray py-4 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary">
-            <div className="mx-auto flex max-w-[15rem] items-center justify-center gap-4">
-              <div className="card w-full flex-shrink-0 bg-base-100 shadow-2xl dark:bg-meta-4">
-                {isMoreData && (
-                  <button onClick={handleSeeMore} className="btn btn-primary">
-                    {loading ? (
-                      <span className="btn btn-sm text-meta-7">
-                        <span className="loading loading-spinner"></span>
-                      </span>
-                    ) : (
-                      "Find More Items"
-                    )}
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
+          <SeeMoreButton
+            isMoreData={isMoreData}
+            loading={loading}
+            handleSeeMore={handleSeeMore}
+          />
         </section>
-      ) : (
-        <p>Oops! No Items Found</p>
       )}
     </>
   );

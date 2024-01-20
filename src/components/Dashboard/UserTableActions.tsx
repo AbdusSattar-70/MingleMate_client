@@ -7,6 +7,7 @@ import { Users } from "../../utils/types";
 import { exportToCSV } from "../../utils/exportToCSV";
 import { UpcaseFirstChar } from "../../utils/UpcaseFirstChar";
 import { useAuth } from "../../hooks/useAuth";
+import SmallSpinner from "../common/SmallSpinner";
 
 interface UserTableActionProps {
   filterUserData: (value: string) => void;
@@ -16,6 +17,7 @@ interface UserTableActionProps {
   handleDelete: () => void;
   selectedUsers: string[];
   users: Users[];
+  loading: boolean;
 }
 
 const UserTableActions: React.FC<UserTableActionProps> = ({
@@ -26,6 +28,7 @@ const UserTableActions: React.FC<UserTableActionProps> = ({
   handleDelete,
   selectedUsers,
   users,
+  loading,
 }) => {
   const { auth } = useAuth();
   const blockedUsers = users?.filter((user) => user.blocked === true);
@@ -55,6 +58,7 @@ const UserTableActions: React.FC<UserTableActionProps> = ({
           Total Users: <span>{users?.length}</span>
         </p>
       </div>
+      {loading && <SmallSpinner />}
     </div>
   );
 

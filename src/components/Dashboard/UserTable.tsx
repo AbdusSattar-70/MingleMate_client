@@ -9,21 +9,39 @@ import {
   API_ENDPOINT,
   DASHBOARD_TABLE_CONST,
   FILTER_USERS,
+  INITIAL_AUTH_STATE,
+  ROUTES,
 } from "../../utils/constant";
+import useAuthentication from "../../hooks/useAuthentication";
+import { useAuth } from "../../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const UserTable = () => {
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
   const axiosPrivate = useAxiosPrivate();
-  const { users, getUsers } = useGetUserData();
+  const { users, getUsers, loading } = useGetUserData();
+  const { isActive, isAdmin, checkAuth } = useAuthentication();
+
   useEffect(() => {
     getUsers();
   }, []);
 
-  const filterUserData = (value: string) => {
+  const verifyAdmin = async () => {
+    await checkAuth();
+    console.log("isAdmin", isAdmin, "isActive", isActive);
+    if (!isAdmin || !isActive) {
+      setAuth(INITIAL_AUTH_STATE);
+      navigate(ROUTES.HOME);
+    }
+  };
+
+  const filterUserData = async (value: string) => {
     const filterOptions = FILTER_USERS[value];
     if (filterOptions) {
-      getUsers(filterOptions);
+      await getUsers(filterOptions);
     }
   };
 
@@ -65,7 +83,8 @@ const UserTable = () => {
         await axiosPrivate.patch(API_ENDPOINT.ADMIN.BLOCK_URL, {
           user_emails: selectedUsers,
         });
-        getUsers();
+        await getUsers();
+        await verifyAdmin();
         setSelectedUsers([]);
         toast.success(DASHBOARD_TABLE_CONST.BLOCK.SUCCESS);
       }
@@ -84,7 +103,7 @@ const UserTable = () => {
       await axiosPrivate.patch(API_ENDPOINT.ADMIN.UNBLOCK_URL, {
         user_emails: selectedUsers,
       });
-      getUsers();
+      await getUsers();
       setSelectedUsers([]);
       toast.success(DASHBOARD_TABLE_CONST.UNBLOCK.SUCCESS);
     } catch (error) {
@@ -102,7 +121,8 @@ const UserTable = () => {
       await axiosPrivate.patch(API_ENDPOINT.ADMIN.ROLE_TOGGLE_URL, {
         user_emails: selectedUsers,
       });
-      getUsers();
+      await getUsers();
+      await verifyAdmin();
       setSelectedUsers([]);
       toast.success(DASHBOARD_TABLE_CONST.ROLE.SUCCESS);
     } catch (error) {
@@ -125,7 +145,8 @@ const UserTable = () => {
           data: { user_emails: selectedUsers },
         });
 
-        getUsers();
+        await getUsers();
+        await verifyAdmin();
         setSelectedUsers([]);
         toast.success(DASHBOARD_TABLE_CONST.DELETE.SUCCESS);
       }
@@ -136,29 +157,31 @@ const UserTable = () => {
 
   return (
     <section className=" bg-white  dark:border-strokedark dark:bg-boxdark">
-      {users?.length ? (
-        <div className="space-y-4 font-sans antialiased">
-          <div>
-            <UserTableActions
-              filterUserData={filterUserData}
-              handleRoleToggle={handleRoleToggle}
-              handleBlock={handleBlock}
-              handleUnblock={handleUnblock}
-              handleDelete={handleDelete}
-              selectedUsers={selectedUsers}
-              users={users}
+      <div className="space-y-4 font-sans antialiased">
+        <div>
+          <UserTableActions
+            filterUserData={filterUserData}
+            handleRoleToggle={handleRoleToggle}
+            handleBlock={handleBlock}
+            handleUnblock={handleUnblock}
+            handleDelete={handleDelete}
+            selectedUsers={selectedUsers}
+            users={users}
+            loading={loading}
+          />
+        </div>
+        <div className="relative max-h-screen overflow-x-auto shadow-md sm:rounded-lg">
+          <table className=" w-full text-left text-sm rtl:text-right">
+            <UserTableHeader
+              selectAll={selectAll}
+              handleCheckboxChange={handleCheckboxChange}
             />
-          </div>
-          <div className="relative max-h-screen overflow-x-auto shadow-md sm:rounded-lg">
-            <table className=" w-full text-left text-sm rtl:text-right">
-              <UserTableHeader
-                selectAll={selectAll}
-                handleCheckboxChange={handleCheckboxChange}
-              />
-              <tbody>
-                {users.map((user) => (
+
+            <tbody>
+              {users?.length > 0 ? (
+                users?.map((user) => (
                   <UserTableRow
-                    key={user.id + user.email}
+                    key={user.email}
                     user={user}
                     selectedUsers={selectedUsers}
                     selectAll={selectAll}
@@ -166,14 +189,16 @@ const UserTable = () => {
                       handleCheckboxChange(user.email)
                     }
                   />
-                ))}
-              </tbody>
-            </table>
-          </div>
+                ))
+              ) : (
+                <tr>
+                  <td>No User to Display</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
-      ) : (
-        <p>No users to display</p>
-      )}
+      </div>
     </section>
   );
 };

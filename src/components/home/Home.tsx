@@ -1,15 +1,15 @@
 import { Link } from "react-router-dom";
 import { ROUTES } from "../../utils/constant";
-import Footer from "./Footer";
 import GetLargestCollections from "./GetLargestCollections";
 import HomeDecorator from "./HomeDecorator";
 import keyId from "../../utils/keyId";
 import DropdownTagsItem from "../items/itemDetails/Tags/DropdownTagsItem";
 import useGetTags from "../../hooks/useGetTags";
 import AllItemsHomePage from "./AllItemsHomePage";
+import SmallSpinner from "../common/SmallSpinner";
 
 const Home = () => {
-  const tags = useGetTags();
+  const { tags, loading } = useGetTags();
 
   return (
     <section className="w-full">
@@ -62,11 +62,11 @@ const Home = () => {
       {/* show all cloud tags */}
       <div className="mb-5.5 mt-4.5 h-auto">
         <h6 className="mb-4 p-1 text-3xl font-semibold">
-          Quik search items with Tags:
+          Quik search items with Tags:{loading && <SmallSpinner />}
         </h6>
         <div className="flex flex-wrap gap-4">
           {tags?.length > 0
-            ? tags.map((tag) => (
+            ? tags.map((tag: string) => (
                 <ul key={keyId() + tag}>
                   <DropdownTagsItem tag={tag} />
                 </ul>
@@ -74,8 +74,6 @@ const Home = () => {
             : null}
         </div>
       </div>
-      {/* Stay Connected */}
-      <Footer />
     </section>
   );
 };

@@ -5,6 +5,7 @@ import { FaGears } from "react-icons/fa6";
 import { UpcaseFirstChar } from "../../utils/UpcaseFirstChar";
 import { useAuth } from "../../hooks/useAuth";
 import { SORT_BY_ITEMS } from "../../utils/constant";
+import SmallSpinner from "../common/SmallSpinner";
 
 interface ItemsTableTopProps {
   setUserChoice: React.Dispatch<React.SetStateAction<string>>;
@@ -36,53 +37,44 @@ const ItemsTableTop: React.FC<ItemsTableTopProps> = ({
             </p>
           </div>
         </div>
-        {loading ? (
-          <span className="btn btn-sm text-meta-7">
-            <span className="loading loading-spinner"></span>
-          </span>
-        ) : (
-          <div className="rounded-sm border border-stroke bg-white px-7.5 py-6 shadow-default dark:bg-boxdark">
-            <h4 className="mb-2 flex items-center justify-start gap-1 text-xl">
-              <span>
-                <FaGears />
-              </span>
-              Filter or Sort By:
-            </h4>
 
-            <div className="flex flex-wrap items-center justify-start gap-3  text-sm"></div>
+        <div className="rounded-sm border border-stroke bg-white px-7.5 py-6 shadow-default dark:bg-boxdark">
+          <h4 className="mb-2 flex items-center justify-start gap-1 text-xl">
+            <span>
+              <FaGears />
+            </span>
+            Filter or Sort By: {loading && <SmallSpinner />}
+          </h4>
 
-            <div className="mt-4 flex items-end justify-between">
-              <select
-                name="Filter Items"
-                value={userChoice}
-                className="select select-bordered select-sm w-full max-w-xs dark:bg-form-strokedark"
-                onChange={(e) => setUserChoice(e.target.value)}
-              >
-                <option disabled value="">
-                  Sort or Filter Items
-                </option>
-                <option value={SORT_BY_ITEMS.ASC}>
-                  Sort By Acending Order
-                </option>
-                <option value={SORT_BY_ITEMS.DESC}>
-                  Sort By Decending Order
-                </option>
-                <option value={SORT_BY_ITEMS.TOP_COMMENTED}>
-                  Sort By Top Commented
-                </option>
-                <option value={SORT_BY_ITEMS.NO_COMMENT}>
-                  Sort By without Comment
-                </option>
-                <option value={SORT_BY_ITEMS.TOP_LIKED}>
-                  Sort By Top Liked
-                </option>
-                <option value={SORT_BY_ITEMS.NO_LIKE}>
-                  Sort By without Like
-                </option>
-              </select>
-            </div>
+          <div className="flex flex-wrap items-center justify-start gap-3  text-sm"></div>
+
+          <div className="mt-4 flex items-end justify-between">
+            <select
+              name="Filter Items"
+              value={userChoice}
+              className="select select-bordered select-sm w-full max-w-xs dark:bg-form-strokedark"
+              onChange={(e) => setUserChoice(e.target.value)}
+            >
+              <option disabled value="">
+                Sort or Filter Items
+              </option>
+              <option value={SORT_BY_ITEMS.ASC}>Sort By Acending Order</option>
+              <option value={SORT_BY_ITEMS.DESC}>
+                Sort By Decending Order
+              </option>
+              <option value={SORT_BY_ITEMS.TOP_COMMENTED}>
+                Sort By Top Commented
+              </option>
+              <option value={SORT_BY_ITEMS.NO_COMMENT}>
+                Sort By without Comment
+              </option>
+              <option value={SORT_BY_ITEMS.TOP_LIKED}>Sort By Top Liked</option>
+              <option value={SORT_BY_ITEMS.NO_LIKE}>
+                Sort By without Like
+              </option>
+            </select>
           </div>
-        )}
+        </div>
       </section>
     </>
   );

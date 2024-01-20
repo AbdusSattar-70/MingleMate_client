@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 import PhotoUpload from "../photoUpload/PhotoUpload";
 import Spinner from "../common/Spinner";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import SmallSpinner from "../common/SmallSpinner";
 
 const EditItemForm: React.FC = () => {
   const getItemFromRoute = useLoaderData() as ItemType;
@@ -130,7 +131,7 @@ const EditItemForm: React.FC = () => {
                   onClick={editItem}
                   className="btn btn-primary"
                 >
-                  update
+                  {loading ? <SmallSpinner /> : "Update"}
                 </button>
               </div>
             </div>
