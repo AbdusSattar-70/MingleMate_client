@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { CommentType } from "../../../../utils/types";
 import DummyAvatar from "../../../../images/avatar.jpg";
 import { Link } from "react-router-dom";
-import { ROUTES } from "../../../../utils/constant";
+import { API_ENDPOINT, MESSAGES, ROUTES } from "../../../../utils/constant";
 import { calculateTimeElapsed } from "../../../../utils/formattedTime";
 import { useAuth } from "../../../../hooks/useAuth";
+import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
+import isSuccessRes, { setErrorToast } from "../../../../utils/apiResponse";
+import { toast } from "react-toastify";
 
 interface RenderCommentProps {
   comment: CommentType;
@@ -29,6 +32,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
   } = comment;
   const [isEditing, setEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(content);
+  const axiosPrivate = useAxiosPrivate();
 
   const isAuthor = auth?.id === commenter_id;
 
@@ -36,9 +40,25 @@ const RenderComment: React.FC<RenderCommentProps> = ({
     setEditing(true);
   };
 
-  const handleSaveEdit = () => {
-    onEdit(comment_id, editedContent);
-    setEditing(false);
+  const handleSaveEdit = async () => {
+    try {
+      const res = await axiosPrivate.patch(
+        `${API_ENDPOINT.COMMENT}/${comment_id}`,
+        {
+          comment: {
+            id: comment_id,
+            content: editedContent,
+          },
+        }
+      );
+      if (isSuccessRes(res)) {
+        onEdit(comment_id, editedContent);
+        setEditing(false);
+        toast.success(MESSAGES.SUCCESS);
+      }
+    } catch (error) {
+      setErrorToast(error);
+    }
   };
 
   const handleCancelEdit = () => {
@@ -46,8 +66,18 @@ const RenderComment: React.FC<RenderCommentProps> = ({
     setEditedContent(content);
   };
 
-  const handleDeleteClick = () => {
-    onDelete(comment_id);
+  const handleDeleteClick = async () => {
+    try {
+      const res = await axiosPrivate.delete(
+        `${API_ENDPOINT.COMMENT}/${comment_id}`
+      );
+      if (isSuccessRes(res)) {
+        onDelete(comment_id);
+        toast.success(MESSAGES.SUCCESS);
+      }
+    } catch (error) {
+      setErrorToast(error);
+    }
   };
 
   return (
