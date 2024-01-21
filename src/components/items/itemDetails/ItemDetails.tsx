@@ -13,6 +13,7 @@ import { useAuth } from "../../../hooks/useAuth";
 import ItemDetailsTop from "./ItemDetailsTop";
 import { FaRegCommentDots } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import SmallSpinner from "../../common/SmallSpinner";
 interface ItemDetailsProps {
   itemData: ItemType;
 }
@@ -127,9 +128,7 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ itemData }) => {
               <div className="flex items-center justify-end gap-1 px-4 font-semibold text-black  dark:text-white">
                 <span>
                   {loading ? (
-                    <button className="btn btn-square">
-                      <span className="loading loading-spinner"></span>
-                    </button>
+                    <SmallSpinner />
                   ) : (
                     <div
                       onClick={postLikeHandlar}

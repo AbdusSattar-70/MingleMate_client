@@ -91,69 +91,75 @@ const ItemsTable: React.FC<ItemsTableProps> = ({ items, setItems }) => {
             </tr>
           </thead>
           <tbody>
-            {items.map(
-              ({
-                item_id,
-                item_name,
-                item_author,
-                author_id,
-                likes,
-                tags,
-                comments,
-              }) => (
-                <tr
-                  key={item_id}
-                  className="border-b border-meta-9 bg-meta-4 hover:bg-body"
-                >
-                  <th
-                    scope="row"
-                    className="whitespace-nowrap border-r border-meta-9 bg-form-input px-6 py-4 font-medium"
+            {items?.length > 0 ? (
+              items.map(
+                ({
+                  item_id,
+                  item_name,
+                  item_author,
+                  author_id,
+                  likes,
+                  tags,
+                  comments,
+                }) => (
+                  <tr
+                    key={item_id}
+                    className="border-b border-meta-9 bg-meta-4 hover:bg-body"
                   >
-                    {item_id}
-                  </th>
-                  <td className="border-r border-meta-9 bg-form-input px-6 py-4">
-                    {item_name}
-                  </td>
-                  <td className="border-r border-meta-9 bg-form-input px-6 py-4">
-                    {item_author}
-                  </td>
-                  <td className="border-r border-meta-9 bg-form-input px-6 py-4">
-                    {likes.length}
-                  </td>
-                  <td className="border-r border-meta-9 bg-form-input px-6 py-4">
-                    {comments.length}
-                  </td>
-                  <td className="border-r border-meta-9 bg-form-input px-6 py-4">
-                    {tags?.join(", ")}
-                  </td>
-                  <td className="border-r border-meta-9 bg-form-input px-6 py-4">
-                    <div className="flex gap-2 text-sm">
-                      <Link
-                        to={`${ROUTES.GET_SIGNLE_ITEM}/${item_id}`}
-                        className="btn btn-xs"
-                      >
-                        <FcViewDetails />
-                      </Link>
-                      {canManageAll(auth.id, auth.role, author_id) && (
-                        <>
-                          <Link
-                            to={`${ROUTES.EDIT_ITEM}/${item_id}/edit-item`}
-                            className="btn btn-xs"
-                          >
-                            <GrUpdate />
-                          </Link>
-                          <button
-                            onClick={() => handleDeleteItem(item_id)}
-                            className="btn btn-xs"
-                          >
-                            <FaRegTrashCan />
-                          </button>
-                        </>
-                      )}
-                    </div>
-                  </td>
-                </tr>
+                    <th
+                      scope="row"
+                      className="whitespace-nowrap border-r border-meta-9 bg-form-input px-6 py-4 font-medium"
+                    >
+                      {item_id}
+                    </th>
+                    <td className="border-r border-meta-9 bg-form-input px-6 py-4">
+                      {item_name}
+                    </td>
+                    <td className="border-r border-meta-9 bg-form-input px-6 py-4">
+                      {item_author}
+                    </td>
+                    <td className="border-r border-meta-9 bg-form-input px-6 py-4">
+                      {likes.length}
+                    </td>
+                    <td className="border-r border-meta-9 bg-form-input px-6 py-4">
+                      {comments.length}
+                    </td>
+                    <td className="border-r border-meta-9 bg-form-input px-6 py-4">
+                      {tags?.join(", ")}
+                    </td>
+                    <td className="border-r border-meta-9 bg-form-input px-6 py-4">
+                      <div className="flex gap-2 text-sm">
+                        <Link
+                          to={`${ROUTES.GET_SIGNLE_ITEM}/${item_id}`}
+                          className="btn btn-xs"
+                        >
+                          <FcViewDetails />
+                        </Link>
+                        {canManageAll(auth.id, auth.role, author_id) && (
+                          <>
+                            <Link
+                              to={`${ROUTES.EDIT_ITEM}/${item_id}/edit-item`}
+                              className="btn btn-xs"
+                            >
+                              <GrUpdate />
+                            </Link>
+                            <button
+                              onClick={() => handleDeleteItem(item_id)}
+                              className="btn btn-xs"
+                            >
+                              <FaRegTrashCan />
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                )
               )
+            ) : (
+              <td className="w-full border-r border-meta-9 bg-form-input px-6 py-4">
+                No data found
+              </td>
             )}
           </tbody>
         </table>

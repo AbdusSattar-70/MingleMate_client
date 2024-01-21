@@ -1,6 +1,9 @@
 import { FcViewDetails } from "react-icons/fc";
 import { calculateTimeElapsed, formattedTime } from "../../utils/formattedTime";
-import { isActive } from "../../utils/isActive";
+import {
+  defineUserRole,
+  defineUserStatus,
+} from "../../utils/userStatusAndRole";
 import { Users } from "../../utils/types";
 import UserTableCheckbox from "./UserCheckbox";
 import { Link } from "react-router-dom";
@@ -27,9 +30,7 @@ const UserTableRow: React.FC<UserTableRowProps> = ({
       />
       <td className="px-6 py-4 font-medium">{id}</td>
       <td className="px-6 py-4 font-medium">{user_name}</td>
-      <td className="px-6 py-4 font-medium">
-        {role === 1 ? "General" : "Admin"}
-      </td>
+      <td className="px-6 py-4 font-medium">{defineUserRole(role)}</td>
       <td className="px-6 py-4 font-medium">{email}</td>
       <td className="px-6 py-4 font-medium">{formattedTime(created_at)}</td>
       <td className="px-6 py-4 font-medium">
@@ -39,12 +40,12 @@ const UserTableRow: React.FC<UserTableRowProps> = ({
         <div className="flex items-center">
           <div
             className={`${
-              isActive(blocked) === ACTIVE_USER
+              defineUserStatus(blocked) === ACTIVE_USER
                 ? "me-2 h-2.5 w-2.5 rounded-full bg-meta-5"
                 : "me-2 h-2.5 w-2.5 rounded-full bg-danger"
             }`}
           ></div>
-          {isActive(blocked)}
+          {defineUserStatus(blocked)}
         </div>
       </td>
       <td className="px-6 py-4 font-medium">

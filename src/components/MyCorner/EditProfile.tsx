@@ -11,11 +11,13 @@ import { FaRegUser } from "react-icons/fa6";
 import { FcViewDetails } from "react-icons/fc";
 import { GrUpdate } from "react-icons/gr";
 import { MdWorkHistory } from "react-icons/md";
+import SmallSpinner from "../common/SmallSpinner";
 
 const EditProfile = () => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const { auth, setAuth } = useAuth();
+  const [loading, setLoading] = useState(false);
   const [user_name, setUserName] = useState(auth.user_name || "");
   const [bio, setBio] = useState(auth.bio || "");
   const [profession, setProfession] = useState(auth.profession || "");
@@ -30,6 +32,7 @@ const EditProfile = () => {
 
   const handleSubmit = async () => {
     try {
+      setLoading(true);
       const res = await axiosPrivate.patch(
         `${API_ENDPOINT.UPDATE_DELETE_USER}/${auth.id}`,
         userInputData
@@ -41,11 +44,13 @@ const EditProfile = () => {
           ...prev,
           ...updated,
         }));
+        setLoading(false);
         toast.success("Profile updated Successfully");
         navigate(`${ROUTES.USER_PROFILE}/${auth.id}`);
       }
     } catch (error) {
       setErrorToast(error);
+      setLoading(false);
     }
   };
 
@@ -185,7 +190,7 @@ const EditProfile = () => {
                       className="btn btn-primary"
                       type="button"
                     >
-                      Update
+                      {loading ? <SmallSpinner /> : "Update"}
                     </button>
                   </div>
                 </form>

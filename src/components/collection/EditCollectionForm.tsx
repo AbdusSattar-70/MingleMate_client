@@ -19,6 +19,7 @@ import axios from "../../utils/api";
 import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { MarkdownField } from "../common/MarkdownField";
 import keyId from "../../utils/keyId";
+import SmallSpinner from "../common/SmallSpinner";
 
 const EditCollectionForm: React.FC = () => {
   const { collection_id } = useParams();
@@ -32,6 +33,7 @@ const EditCollectionForm: React.FC = () => {
   const navigate = useNavigate();
   const { auth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
+  const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState<string>(prevTitle || "");
   const [topic, setTopic] = useState<string>(prevTopic || "");
   const [description, setDescription] = useState<string>(prevDescrip || "");
@@ -77,11 +79,13 @@ const EditCollectionForm: React.FC = () => {
   //fetch custom fields
   useEffect(() => {
     const fetchPreviosCustomFields = async (id: string) => {
+      setLoading(true);
       const res = await axios.get(
         `${API_ENDPOINT.COLLECTION_CUSTOM_FIELDS}/${id}`
       );
       if (isSuccessRes(res)) {
         setEditableFields(res?.data?.custom_fields);
+        setLoading(false);
       }
     };
 
@@ -103,16 +107,19 @@ const EditCollectionForm: React.FC = () => {
 
   const updateCollection = async () => {
     try {
+      setLoading(true);
       const res = await axiosPrivate.patch(
         `${API_ENDPOINT.COLLECTION}/${collection_id}`,
         data
       );
       if (isSuccessRes(res)) {
+        setLoading(false);
         toast.success(MESSAGES.SUCCESS);
         navigate(`${ROUTES.DIESPLAY_SINGLE_COLLECTION}/${collection_id}`);
       }
     } catch (error) {
       setErrorToast(error);
+      setLoading(false);
     }
   };
 
@@ -166,15 +173,21 @@ const EditCollectionForm: React.FC = () => {
                 setValue={(value: string) => setDescription(value)}
               />
             </div>
+            <>
+              {loading ? (
+                <SmallSpinner />
+              ) : (
+                <AddCmFieldIntoCollection
+                  addingField={addingField}
+                  addCustomField={addCustomField}
+                  handleInputChange={handleInputChange}
+                  handleDeleteField={handleDeleteField}
+                  editableFields={editableFields}
+                  setAddingField={setAddingField}
+                />
+              )}
+            </>
 
-            <AddCmFieldIntoCollection
-              addingField={addingField}
-              addCustomField={addCustomField}
-              handleInputChange={handleInputChange}
-              handleDeleteField={handleDeleteField}
-              editableFields={editableFields}
-              setAddingField={setAddingField}
-            />
             <PhotoUpload usage={COLLECT_IMG} />
             <div className="form-control mt-6">
               <button
@@ -182,7 +195,7 @@ const EditCollectionForm: React.FC = () => {
                 onClick={updateCollection}
                 className="btn btn-primary"
               >
-                Submit for update
+                {loading ? <SmallSpinner /> : "Submit for update"}
               </button>
             </div>
           </div>

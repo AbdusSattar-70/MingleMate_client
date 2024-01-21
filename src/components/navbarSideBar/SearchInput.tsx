@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { UpcaseFirstChar } from "../../utils/UpcaseFirstChar";
 import { calculateTimeElapsed } from "../../utils/formattedTime";
 import { SEARCH_ITEMS_FULL_TEXT_TYPE } from "../../utils/types";
+import SmallSpinner from "../common/SmallSpinner";
 
 const SearchInput = () => {
   const navigate = useNavigate();
@@ -42,7 +43,7 @@ const SearchInput = () => {
       if (inputValue) {
         fetchItemsByTextSearch(inputValue);
       }
-    }, 500);
+    }, 100);
 
     return () => clearTimeout(debounceTimeout);
   }, [inputValue]);
@@ -125,45 +126,45 @@ const SearchInput = () => {
                   className="cursor-pointer"
                   onClick={() => handleNavigateToItemPage(item_id)}
                 >
-                  {loading ? (
-                    <span className="btn btn-sm text-meta-7">
-                      <span className="loading loading-spinner"></span>
-                    </span>
-                  ) : (
-                    <div className="link link-success flex flex-col gap-1 border-t-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4">
-                      <p className="text-sm text-black dark:text-white">
-                        <span className="font-semibold">
-                          {UpcaseFirstChar(item_name)}
-                        </span>
-                        <span>
-                          {" "}
-                          under {UpcaseFirstChar(collection_name)} collection by
-                        </span>
-                        <span className="font-semibold">
-                          {" "}
-                          {UpcaseFirstChar(item_author)}
-                        </span>
-                      </p>
-                      <p className="flex items-center gap-7 text-sm text-black dark:text-white">
-                        <span>likes_count: {likes_count}</span>
-                        <span>comments_count: {comments_count}</span>
-                      </p>
-                      <p className="text-sm text-black dark:text-white">
-                        Comments: {comments_content || null}
-                      </p>
-                      <p className="text-sm text-black dark:text-white">
-                        collection description: {collection_des || null}
-                      </p>
-                      <p className="text-xs">
-                        {calculateTimeElapsed(created_at, updated_at)}
-                      </p>
-                    </div>
-                  )}
+                  <div className="link link-success flex flex-col gap-1 border-t-2 border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4">
+                    <p className="text-sm text-black dark:text-white">
+                      <span className="font-semibold">
+                        {UpcaseFirstChar(item_name)}
+                      </span>
+                      <span>
+                        {" "}
+                        under {UpcaseFirstChar(collection_name)} collection by
+                      </span>
+                      <span className="font-semibold">
+                        {" "}
+                        {UpcaseFirstChar(item_author)}
+                      </span>
+                    </p>
+                    <p className="flex items-center gap-7 text-sm text-black dark:text-white">
+                      <span>likes_count: {likes_count}</span>
+                      <span>comments_count: {comments_count}</span>
+                    </p>
+                    <p className="text-sm text-black dark:text-white">
+                      Comments: {comments_content || null}
+                    </p>
+                    <p className="text-sm text-black dark:text-white">
+                      collection description: {collection_des || null}
+                    </p>
+                    <p className="text-xs">
+                      {calculateTimeElapsed(created_at, updated_at)}
+                    </p>
+                  </div>
                 </li>
               )
             )
           ) : (
-            <p className="p-4">Oops! Nothing is found.</p>
+            <>
+              {loading ? (
+                <SmallSpinner />
+              ) : (
+                <p className="p-4">Oops! Nothing is found.</p>
+              )}
+            </>
           )}
         </ul>
       </div>

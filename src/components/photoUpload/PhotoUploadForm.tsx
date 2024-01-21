@@ -4,15 +4,18 @@ import { detectPhoto } from "../../utils/detectPhoto";
 import dummyAvatar from "../../images/avatar.jpg";
 import coverImg from "../../images/cover/cover-01.webp";
 import { FaCloudUploadAlt } from "react-icons/fa";
+import SmallSpinner from "../common/SmallSpinner";
 type PhotoUploadFormProps = {
   setFile: React.Dispatch<React.SetStateAction<File | null>>;
   usage: string;
+  loading: boolean;
   handleDrop: (e: React.DragEvent<HTMLDivElement>) => void;
 };
 
 const PhotoUploadForm: React.FC<PhotoUploadFormProps> = ({
   setFile,
   usage,
+  loading,
   handleDrop,
 }) => {
   const { auth } = useAuth();
@@ -56,15 +59,22 @@ const PhotoUploadForm: React.FC<PhotoUploadFormProps> = ({
           className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
         />
         <div className="flex flex-col items-center justify-center space-y-3">
-          <span className="flex h-25 w-25 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
-            <FaCloudUploadAlt className="text-6xl text-meta-5" />
-          </span>
-          <p>
-            <span className="text-primary">Click to upload</span> or drag and
-            drop
-          </p>
-          <p className="mt-1.5">JPEG, WEBP, PNG, JPG </p>
-          <p>(max, 800 X 800px)</p>
+          {loading ? (
+            <SmallSpinner />
+          ) : (
+            <>
+              {" "}
+              <span className="flex h-25 w-25 items-center justify-center rounded-full border border-stroke bg-white dark:border-strokedark dark:bg-boxdark">
+                <FaCloudUploadAlt className="text-6xl text-meta-5" />
+              </span>
+              <p>
+                <span className="text-primary">Click to upload</span> or drag
+                and drop
+              </p>
+              <p className="mt-1.5">JPEG, WEBP, PNG, JPG </p>
+              <p>(max, 800 X 800px)</p>
+            </>
+          )}
         </div>
       </div>
     </form>

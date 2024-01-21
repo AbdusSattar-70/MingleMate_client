@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import isSuccessRes from "../../utils/apiResponse";
 import axios from "../../utils/api";
 import ItemsTableTop from "../items/ItemsTableTop";
+import { UpcaseFirstChar } from "../../utils/UpcaseFirstChar";
 
 const CollectionDetails = () => {
   const { auth } = useAuth();
@@ -60,12 +61,14 @@ const CollectionDetails = () => {
               />
             </div>
           </div>
-          <div className="w-full lg:w-1/2">
-            <h1 className="text-xl font-bold sm:text-5xl lg:text-6xl">
-              {title} by <span>{user_name}</span>
+          <div className="w-full space-y-2 lg:w-1/2">
+            <h1 className="text-xl font-bold sm:text-3xl lg:text-4xl">
+              {UpcaseFirstChar(title)} by{" "}
+              <span>{UpcaseFirstChar(user_name)}</span>
             </h1>
             <p className="py-6">
-              {description || "Collection description goes here"}
+              {UpcaseFirstChar(description) ||
+                "Collection description goes here"}
             </p>
             <p>Items: {items_count}</p>
             <p>Category: {category}</p>
@@ -80,18 +83,12 @@ const CollectionDetails = () => {
           </div>
         </div>
       </div>
-      {items.length ? (
-        <>
-          <ItemsTableTop
-            loading={loading}
-            userChoice={userChoice}
-            setUserChoice={setUserChoice}
-          />
-          <ItemsTable items={items} setItems={setItems} />
-        </>
-      ) : (
-        <div>No Items to Display</div>
-      )}
+      <ItemsTableTop
+        loading={loading}
+        userChoice={userChoice}
+        setUserChoice={setUserChoice}
+      />
+      <ItemsTable items={items} setItems={setItems} />
     </>
   );
 };

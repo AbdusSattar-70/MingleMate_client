@@ -6,7 +6,6 @@ import { detectPhoto } from "../../utils/detectPhoto";
 import { COLLECT_IMG, ITEM_IMG } from "../../utils/constant";
 import ProgressBar from "./ProgressBar";
 import PhotoUploadForm from "./PhotoUploadForm";
-import Spinner from "../common/Spinner";
 
 const PhotoUpload = ({ usage }: { usage: string }) => {
   const { setAuth } = useAuth();
@@ -70,24 +69,21 @@ const PhotoUpload = ({ usage }: { usage: string }) => {
     <div className="col-span-5 xl:col-span-2 ">
       <ProgressBar uploadProgress={uploadProgress} />
 
-      {loading ? (
-        <Spinner />
-      ) : (
-        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-          <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
-            <h3 className="font-medium text-black dark:text-white">
-              Upload Image
-            </h3>
-          </div>
-          <div className="p-7">
-            <PhotoUploadForm
-              handleDrop={handleDrop}
-              setFile={setFile}
-              usage={usage}
-            />
-          </div>
+      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+        <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
+          <h3 className="font-medium text-black dark:text-white">
+            Upload Image
+          </h3>
         </div>
-      )}
+        <div className="p-7">
+          <PhotoUploadForm
+            loading={loading}
+            handleDrop={handleDrop}
+            setFile={setFile}
+            usage={usage}
+          />
+        </div>
+      </div>
     </div>
   );
 };

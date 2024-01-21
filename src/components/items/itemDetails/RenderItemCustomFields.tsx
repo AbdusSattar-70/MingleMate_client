@@ -5,7 +5,6 @@ const RenderItemCustomFields = ({
 }: {
   item_custom_fields: CustomFieldType[];
 }) => {
-  console.log(item_custom_fields);
   return (
     <>
       {item_custom_fields.length > 0 ? (

@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import useAuthentication from "../../hooks/useAuthentication";
 import useSignOut from "../../hooks/useSignOut";
 import { useAuth } from "../../hooks/useAuth";
 import dummyAvatar from "../../images/avatar.jpg";
@@ -16,7 +15,6 @@ const DropdownUser = () => {
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
   const navigate = useNavigate();
-  const { isActive } = useAuthentication();
   const { signOut, signOutError } = useSignOut();
   const { setAuth, auth } = useAuth();
 
@@ -26,7 +24,7 @@ const DropdownUser = () => {
       toast.warning(signOutError);
     }
     setAuth(INITIAL_AUTH_STATE);
-    navigate(ROUTES.SIGNIN);
+    navigate(ROUTES.HOME);
   };
   // close on click outside
   useEffect(() => {
@@ -46,7 +44,7 @@ const DropdownUser = () => {
 
   return (
     <>
-      {isActive && auth.authToken ? (
+      {auth.authToken ? (
         <div className="relative">
           <Link
             ref={trigger}
