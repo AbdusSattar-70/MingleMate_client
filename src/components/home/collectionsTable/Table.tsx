@@ -118,7 +118,7 @@ const Table: React.FC<TableProps> = ({
                       {canManageAll(auth.id, auth.role, author_id) && (
                         <>
                           <Link
-                            to={`${ROUTES.EDIT_COLLECTION}/${id}/edit-collection`}
+                            to={`${ROUTES.EDIT_COLLECTION}/${id}`}
                             className="btn btn-xs"
                           >
                             <GrUpdate />
