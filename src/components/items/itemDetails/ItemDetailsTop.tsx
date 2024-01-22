@@ -31,7 +31,7 @@ const ItemDetailsTop: React.FC<ItemDetailsTopProps> = ({
       />
       <div className="mb-4 mt-1 pb-1 text-xl font-semibold">
         <h1 className="text-xl font-bold sm:text-3xl lg:text-4xl">
-          {UpcaseFirstChar(item_name)} <span>by</span>{" "}
+          {UpcaseFirstChar(item_name)} <span>added by</span>{" "}
           <span className=" font-bold ">{UpcaseFirstChar(item_author)}</span>
         </h1>
         <span>under</span>
