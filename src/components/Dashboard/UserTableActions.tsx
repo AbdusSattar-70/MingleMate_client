@@ -1,3 +1,4 @@
+import React from "react";
 import { FaRegTrashCan, FaLockOpen, FaLock, FaGears } from "react-icons/fa6";
 import { GrUpdate, GrCheckboxSelected, GrUserAdmin } from "react-icons/gr";
 import { LiaSortAmountDownSolid } from "react-icons/lia";
@@ -8,10 +9,12 @@ import { exportToCSV } from "../../utils/exportToCSV";
 import { UpcaseFirstChar } from "../../utils/UpcaseFirstChar";
 import { useAuth } from "../../hooks/useAuth";
 import SmallSpinner from "../common/SmallSpinner";
+import { Tooltip } from "../common/ToolTip";
 
 interface UserTableActionProps {
   filterUserData: (value: string) => void;
-  handleRoleToggle: () => void;
+  handleAsignAdmin: () => void;
+  handleRemoveAdminRole: () => void;
   handleBlock: () => void;
   handleUnblock: () => void;
   handleDelete: () => void;
@@ -22,7 +25,8 @@ interface UserTableActionProps {
 
 const UserTableActions: React.FC<UserTableActionProps> = ({
   filterUserData,
-  handleRoleToggle,
+  handleAsignAdmin,
+  handleRemoveAdminRole,
   handleBlock,
   handleUnblock,
   handleDelete,
@@ -91,50 +95,70 @@ const UserTableActions: React.FC<UserTableActionProps> = ({
           </h4>
 
           <div className="flex flex-wrap items-center justify-start gap-3  text-sm">
-            <button
-              onClick={handleDelete}
-              className="btn btn-primary btn-sm"
-              type="button"
-              aria-label="Delete Users"
-            >
-              <FaRegTrashCan />
-              <p className="sr-only">Delete</p>
-            </button>
+            <Tooltip html={<p>Destructive! Delete User/Users</p>}>
+              <button
+                onClick={handleDelete}
+                className="btn btn-primary btn-sm"
+                type="button"
+                aria-label="Delete Users"
+              >
+                <FaRegTrashCan />
+                <p className="sr-only">Delete</p>
+              </button>
+            </Tooltip>
+            <Tooltip html={<p>Destructive! Block User/Users</p>}>
+              <button
+                className="btn btn-primary btn-sm"
+                type="button"
+                onClick={handleBlock}
+                aria-label="Block Users"
+              >
+                <FaLock />
+              </button>
+            </Tooltip>
+            <Tooltip html={<p>Unblock User/Users</p>}>
+              <button
+                onClick={handleUnblock}
+                className="btn btn-primary btn-sm"
+                type="button"
+                aria-label="Unblock Users"
+              >
+                <FaLockOpen />
+                <p className="sr-only">Unblock</p>
+              </button>
+            </Tooltip>
+            <Tooltip html={<p>Authorized as an Admin to User/Users</p>}>
+              <button
+                onClick={handleAsignAdmin}
+                className="btn btn-primary btn-sm"
+                type="button"
+                aria-label="Authorized as an Admin"
+              >
+                <GrUpdate /> Admin
+              </button>
+            </Tooltip>
 
-            <button
-              className="btn btn-primary btn-sm"
-              type="button"
-              onClick={handleBlock}
-              aria-label="Block Users"
-            >
-              <FaLock />
-            </button>
-            <button
-              onClick={handleUnblock}
-              className="btn btn-primary btn-sm"
-              type="button"
-              aria-label="Unblock Users"
-            >
-              <FaLockOpen />
-              <p className="sr-only">Unblock</p>
-            </button>
-            <button
-              onClick={handleRoleToggle}
-              className="btn btn-primary btn-sm"
-              type="button"
-              aria-label=" Update User Role"
-            >
-              <GrUpdate /> Role
-            </button>
-            <button
-              onClick={() => exportToCSV(users)}
-              className="btn btn-primary btn-sm"
-              type="button"
-              aria-label="Export to CSV"
-            >
-              <TiExport />
-              CSV
-            </button>
+            <Tooltip html={<p>Remove Admin Role from User/Users</p>}>
+              <button
+                onClick={handleRemoveAdminRole}
+                className="btn btn-primary btn-sm"
+                type="button"
+                aria-label="Revoke Admin Role"
+              >
+                <GrUpdate /> Regular
+              </button>
+            </Tooltip>
+            <Tooltip html={<p>Export User/Users Data as CSV format</p>}>
+              <button
+                onClick={() => exportToCSV(users)}
+                className="btn btn-primary btn-sm"
+                type="button"
+                aria-label="Export to CSV"
+              >
+                <TiExport />
+                CSV
+              </button>
+            </Tooltip>
           </div>
 
           <div className="mt-4 flex items-end justify-between">

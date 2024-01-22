@@ -1,6 +1,6 @@
 // import { CustomFieldKey, TopicKey } from "./types";
 
-export const BASE_URL = "https://mingle-2o7l.onrender.com";
+export const BASE_URL = "http://localhost:4000";
 export const AXIOS_HEADERS = { "Content-Type": "application/json" };
 
 export const ROUTES = {
@@ -46,7 +46,8 @@ export const API_ENDPOINT = {
     BLOCK_URL: "admin/users/block",
     UNBLOCK_URL: "admin/users/unblock",
     DELETE_URL: "admin/users/delete",
-    ROLE_TOGGLE_URL: "admin/users/role_toggle",
+    ASIGN_ADMIN_ROLE: "admin/users/assign_admin_role_multiple",
+    REMOVE_ADMIN_ROLE: "admin/users/remove_from_admin_multiple",
   },
   USER_COLLECTIONS: "user_collections",
   TOP_FIVE_COLLECTIONS: "top_five_collections",
@@ -92,6 +93,9 @@ export const MESSAGES = {
   },
 };
 
+export const DELETE_CONFIRMATION =
+  "Are you sure you want to delete it? When deleted, it cannot be recovered.";
+
 export const DASHBOARD_TABLE_CONST = {
   ALL_USER: "all",
   BLOCK: {
@@ -107,7 +111,8 @@ export const DASHBOARD_TABLE_CONST = {
   },
   DELETE: {
     SELECT_USER: "Please select at least one user to delete.",
-    CONFIRM: "Are you sure you want to delete selected users?",
+    CONFIRM:
+      "Are you sure you want to delete selected users? When deleted, it cannot be recovered.",
     SUCCESS: "Users deleted successfully.",
     ERROR: "Error deleting users. Please try again.",
   },
@@ -146,7 +151,7 @@ export const FieldType = {
   string: "Single line text",
   text: "Multi-line text or description type",
   number: "Number",
-  boolean: "True/False",
+  boolean: "True/False Or Yes/No",
   date: "Date",
 };
 

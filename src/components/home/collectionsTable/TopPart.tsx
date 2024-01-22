@@ -5,18 +5,11 @@ import { ROUTES } from "../../../utils/constant";
 import { useAuth } from "../../../hooks/useAuth";
 
 interface TopPartProps {
-  handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleRefresh: () => void;
-  searchCount: number;
+  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   searchTerm: string;
 }
 
-const TopPart: React.FC<TopPartProps> = ({
-  handleSearch,
-  handleRefresh,
-  searchCount,
-  searchTerm,
-}) => {
+const TopPart: React.FC<TopPartProps> = ({ setSearchTerm, searchTerm }) => {
   const { auth } = useAuth();
   const navigate = useNavigate();
 
@@ -52,15 +45,11 @@ const TopPart: React.FC<TopPartProps> = ({
               type="search"
               placeholder="search by user collection or category name"
               value={searchTerm}
-              onChange={handleSearch}
+              onChange={(e) => setSearchTerm(e.target.value)}
               className="input input-bordered dark:bg-form-input"
               required
             />
           </div>
-          <button onClick={handleRefresh} className="btn btn-secondary">
-            Refresh
-          </button>
-          <span className="text-sm text-meta-7">{searchCount} Results</span>
         </div>
       </div>
     </div>

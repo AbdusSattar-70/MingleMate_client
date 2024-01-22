@@ -4,12 +4,18 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { GrUpdate } from "react-icons/gr";
 import { FcViewDetails } from "react-icons/fc";
 import { Link } from "react-router-dom";
-import { API_ENDPOINT, MESSAGES, ROUTES } from "../../utils/constant";
+import {
+  API_ENDPOINT,
+  DELETE_CONFIRMATION,
+  MESSAGES,
+  ROUTES,
+} from "../../utils/constant";
 import { useAuth } from "../../hooks/useAuth";
 import { canManageAll } from "../../utils/canManageAll";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
 import { toast } from "react-toastify";
+import { Tooltip } from "../common/ToolTip";
 
 interface ItemsTableProps {
   items: ItemType[];
@@ -27,13 +33,18 @@ const ItemsTable: React.FC<ItemsTableProps> = ({ items, setItems }) => {
 
   const handleDeleteItem = async (id: string) => {
     try {
-      const response = await axiosPrivate.delete(`${API_ENDPOINT.ITEM}/${id}`);
+      const confirmResult = window.confirm(DELETE_CONFIRMATION);
+      if (confirmResult) {
+        const response = await axiosPrivate.delete(
+          `${API_ENDPOINT.ITEM}/${id}`
+        );
 
-      if (isSuccessRes(response)) {
-        toast.success(MESSAGES.SUCCESS);
-        updateDeletedItem(response.data.item_id);
-      } else {
-        toast.warn(MESSAGES.TRY_AGAIN);
+        if (isSuccessRes(response)) {
+          toast.success(MESSAGES.SUCCESS);
+          updateDeletedItem(response.data.item_id);
+        } else {
+          toast.warn(MESSAGES.TRY_AGAIN);
+        }
       }
     } catch (error) {
       setErrorToast(error);
@@ -129,26 +140,33 @@ const ItemsTable: React.FC<ItemsTableProps> = ({ items, setItems }) => {
                     </td>
                     <td className="border-r border-meta-9 bg-form-input px-6 py-4">
                       <div className="flex gap-2 text-sm">
-                        <Link
-                          to={`${ROUTES.GET_SIGNLE_ITEM}/${item_id}`}
-                          className="btn btn-xs"
-                        >
-                          <FcViewDetails />
-                        </Link>
+                        <Tooltip html={<p>See Details</p>}>
+                          <Link
+                            to={`${ROUTES.GET_SIGNLE_ITEM}/${item_id}`}
+                            className="btn btn-xs"
+                          >
+                            <FcViewDetails />
+                          </Link>
+                        </Tooltip>
                         {canManageAll(auth.id, auth.role, author_id) && (
                           <>
-                            <Link
-                              to={`${ROUTES.EDIT_ITEM}/${item_id}/edit-item`}
-                              className="btn btn-xs"
-                            >
-                              <GrUpdate />
-                            </Link>
-                            <button
-                              onClick={() => handleDeleteItem(item_id)}
-                              className="btn btn-xs"
-                            >
-                              <FaRegTrashCan />
-                            </button>
+                            <Tooltip html={<p>Edit or Update</p>}>
+                              <Link
+                                to={`${ROUTES.EDIT_ITEM}/${item_id}/edit-item`}
+                                className="btn btn-xs"
+                              >
+                                <GrUpdate />
+                              </Link>
+                            </Tooltip>
+
+                            <Tooltip html={<p>Destructive! Delete!</p>}>
+                              <button
+                                onClick={() => handleDeleteItem(item_id)}
+                                className="btn btn-xs"
+                              >
+                                <FaRegTrashCan />
+                              </button>
+                            </Tooltip>
                           </>
                         )}
                       </div>
