@@ -20,7 +20,7 @@ const GetLargestCollections = () => {
       {loading ? (
         <Spinner />
       ) : (
-        <section className="grid grid-cols-1 gap-4 pb-8 sm:grid-cols-2 lg:grid-cols-3">
+        <section className="grid grid-cols-1 gap-4 pb-8 xsm:grid-cols-2 sm:grid-cols-3">
           {collections.length ? (
             collections.map(
               (
@@ -37,9 +37,7 @@ const GetLargestCollections = () => {
               ) => (
                 <div
                   key={collection_id + author_id}
-                  className={`${
-                    index === 0 ? "sm:col-span-2" : "sm:col-span-1"
-                  } lg:col-span-1`}
+                  className={`${index === 0 ? "col-span-2" : "col-span-1"}`}
                 >
                   <CollectionCard
                     updateDeletedCollection={updateDeletedCollection}
