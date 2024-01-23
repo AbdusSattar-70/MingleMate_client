@@ -52,7 +52,7 @@ const CreateItem: React.FC = () => {
   const data = {
     item: {
       item_name,
-      ItemImg: auth.ItemImg,
+      item_image: auth.ItemImg,
       collection_id,
       user_id: auth.id,
       custom_fields: itemCustomFields,

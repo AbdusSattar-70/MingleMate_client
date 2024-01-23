@@ -22,16 +22,27 @@ const EditItemForm: React.FC = () => {
     item_custom_fields: prevCustomFields,
     collection_id,
     item_id,
+    tags,
+    item_image,
   } = getItemFromRoute;
+  const tagOptions: TagOption[] = tags.map((tag) => ({
+    value: tag,
+    label: tag,
+  }));
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [img, setImg] = useState<string | undefined>(item_image);
   const [item_name, setItem_name] = useState<string>(prevItemName || "");
-  const [selectedTags, setSelectedTags] = useState<TagOption[]>([]);
+  const [selectedTags, setSelectedTags] = useState<TagOption[]>(tagOptions);
   const [itemCustomFields, setItemCustomFields] = useState<CustomFieldType[]>(
     []
   );
+
+  useEffect(() => {
+    setImg(auth.ItemImg);
+  }, [auth.ItemImg]);
 
   useEffect(() => {
     const fetchCollectionCurrentFields = async () => {
@@ -67,7 +78,7 @@ const EditItemForm: React.FC = () => {
   const data = {
     item: {
       item_name,
-      ItemImg: auth.ItemImg,
+      item_image: img,
       collection_id,
       user_id: auth.id,
       custom_fields: itemCustomFields,
@@ -118,7 +129,9 @@ const EditItemForm: React.FC = () => {
               <img
                 className="mx-auto w-48"
                 src={
-                  "https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
+                  item_image
+                    ? item_image
+                    : "https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
                 }
                 alt="collection image"
               />

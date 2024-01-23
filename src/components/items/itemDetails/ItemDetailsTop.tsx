@@ -6,7 +6,7 @@ import RenderItemCustomFields from "./RenderItemCustomFields";
 import { CustomFieldType } from "../../../utils/types";
 
 interface ItemDetailsTopProps {
-  image?: string;
+  item_image?: string;
   item_name: string;
   item_author: string;
   collection_id: string;
@@ -16,7 +16,7 @@ interface ItemDetailsTopProps {
 
 const ItemDetailsTop: React.FC<ItemDetailsTopProps> = ({
   item_name,
-  image,
+  item_image,
   item_author,
   collection_id,
   collection_name,
@@ -25,7 +25,7 @@ const ItemDetailsTop: React.FC<ItemDetailsTopProps> = ({
   return (
     <div className="text-center">
       <img
-        src={image ? image : dummyImg}
+        src={item_image ? item_image : dummyImg}
         className="h-full w-full rounded-lg object-cover shadow-2xl"
         alt="item Image"
       />
