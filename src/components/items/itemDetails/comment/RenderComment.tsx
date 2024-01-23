@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import { CommentType } from "../../../../utils/types";
 import DummyAvatar from "../../../../images/avatar.jpg";
 import { Link } from "react-router-dom";
-import { API_ENDPOINT, MESSAGES, ROUTES } from "../../../../utils/constant";
+import {
+  API_ENDPOINT,
+  DELETE_CONFIRMATION,
+  MESSAGES,
+  ROUTES,
+} from "../../../../utils/constant";
 import { calculateTimeElapsed } from "../../../../utils/formattedTime";
 import { useAuth } from "../../../../hooks/useAuth";
 import useAxiosPrivate from "../../../../hooks/useAxiosPrivate";
@@ -33,12 +38,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
   const [isEditing, setEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(content);
   const axiosPrivate = useAxiosPrivate();
-
   const isAuthor = auth?.id === commenter_id;
-
-  const handleEditClick = () => {
-    setEditing(true);
-  };
 
   const handleSaveEdit = async () => {
     try {
@@ -68,12 +68,15 @@ const RenderComment: React.FC<RenderCommentProps> = ({
 
   const handleDeleteClick = async () => {
     try {
-      const res = await axiosPrivate.delete(
-        `${API_ENDPOINT.COMMENT}/${comment_id}`
-      );
-      if (isSuccessRes(res)) {
-        onDelete(comment_id);
-        toast.success(MESSAGES.SUCCESS);
+      const confirmResult = window.confirm(DELETE_CONFIRMATION);
+      if (confirmResult) {
+        const res = await axiosPrivate.delete(
+          `${API_ENDPOINT.COMMENT}/${comment_id}`
+        );
+        if (isSuccessRes(res)) {
+          onDelete(comment_id);
+          toast.success(MESSAGES.SUCCESS);
+        }
       }
     } catch (error) {
       setErrorToast(error);
@@ -124,7 +127,7 @@ const RenderComment: React.FC<RenderCommentProps> = ({
                   <button
                     className="btn btn-xs"
                     type="button"
-                    onClick={handleEditClick}
+                    onClick={() => setEditing(true)}
                   >
                     Edit
                   </button>

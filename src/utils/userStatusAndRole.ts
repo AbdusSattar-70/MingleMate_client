@@ -3,5 +3,5 @@ export const defineUserStatus = (blocked: boolean) => {
 };
 
 export const defineUserRole = (role: number) => {
-  return role === 1 ? "General" : "Admin";
+  return role === 1 ? "Reqular" : "Admin";
 };

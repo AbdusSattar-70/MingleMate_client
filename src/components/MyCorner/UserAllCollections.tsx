@@ -6,6 +6,7 @@ import useFetchByPage from "../../hooks/useFetchByPage";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { UpcaseFirstChar } from "../../utils/UpcaseFirstChar";
+import SeeMoreButton from "../common/SeeMoreButton";
 
 const UserAllCollections = () => {
   const { userId } = useParams();
@@ -86,19 +87,11 @@ const UserAllCollections = () => {
               <div className="text-center">No collection to Display</div>
             )}
           </section>
-          <div className="mx-auto mb-8 h-20 w-full rounded  border border-stroke bg-gray py-4  text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary">
-            <div className="mx-auto flex max-w-[15rem] items-center justify-center gap-4">
-              <div className="card w-full flex-shrink-0 bg-base-100 shadow-2xl dark:bg-meta-4">
-                {isMoreData ? (
-                  <button onClick={handleSeeMore} className="btn btn-secondary">
-                    See More Collection
-                  </button>
-                ) : (
-                  <p className="btn btn-secondary">No More Data</p>
-                )}
-              </div>
-            </div>
-          </div>
+          <SeeMoreButton
+            isMoreData={isMoreData}
+            handleSeeMore={handleSeeMore}
+            loading={loading}
+          />
         </>
       )}
     </>
