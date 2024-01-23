@@ -26,7 +26,7 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ itemData }) => {
     collection_name,
     collection_id,
     item_name,
-    image,
+    item_image,
     item_author,
     tags,
   } = itemData;
@@ -96,7 +96,7 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({ itemData }) => {
             collection_name={collection_name}
             collection_id={collection_id}
             item_name={item_name}
-            image={image}
+            item_image={item_image}
             item_author={item_author}
           />
           <div className="card-body">

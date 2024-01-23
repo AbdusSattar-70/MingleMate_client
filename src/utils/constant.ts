@@ -1,5 +1,3 @@
-// import { CustomFieldKey, TopicKey } from "./types";
-
 export const BASE_URL = "https://mingle-2o7l.onrender.com";
 export const AXIOS_HEADERS = { "Content-Type": "application/json" };
 
