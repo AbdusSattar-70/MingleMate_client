@@ -61,26 +61,35 @@ const UserAllCollections = () => {
           <section className="grid grid-cols-1 gap-4 pb-8 sm:grid-cols-2 lg:grid-cols-3">
             {collections.length ? (
               collections.map(
-                ({
-                  id: collection_id,
-                  user_name,
-                  author_id,
-                  title,
-                  image,
-                  items_count,
-                  category,
-                }) => (
-                  <CollectionCard
-                    key={collection_id}
-                    collection_id={collection_id}
-                    user_name={user_name}
-                    author_id={author_id}
-                    title={title}
-                    image={image}
-                    items_count={items_count}
-                    category={category}
-                    updateDeletedCollection={updateDeletedCollection}
-                  />
+                (
+                  {
+                    id: collection_id,
+                    user_name,
+                    author_id,
+                    title,
+                    image,
+                    items_count,
+                    category,
+                  },
+                  index
+                ) => (
+                  <div
+                    key={collection_id + author_id}
+                    className={`${
+                      index === 0 ? "sm:col-span-2" : "sm:col-span-1"
+                    } lg:col-span-1`}
+                  >
+                    <CollectionCard
+                      updateDeletedCollection={updateDeletedCollection}
+                      collection_id={collection_id}
+                      user_name={user_name}
+                      author_id={author_id}
+                      title={title}
+                      image={image}
+                      items_count={items_count}
+                      category={category}
+                    />
+                  </div>
                 )
               )
             ) : (
