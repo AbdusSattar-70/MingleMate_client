@@ -7,6 +7,7 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { useAuth } from "../../../hooks/useAuth";
 import { CollectionType } from "../../../utils/types";
 import SmallSpinner from "../../common/SmallSpinner";
+import { Tooltip } from "../../common/ToolTip";
 
 interface TableProps {
   collections: CollectionType[];
@@ -109,26 +110,32 @@ const Table: React.FC<TableProps> = ({
                   </td>
                   <td className="border-r border-meta-9 bg-form-input px-6 py-4">
                     <div className="flex gap-2 text-sm">
-                      <Link
-                        to={`${ROUTES.DIESPLAY_SINGLE_COLLECTION}/${id}`}
-                        className="btn btn-xs"
-                      >
-                        <FcViewDetails />
-                      </Link>
+                      <Tooltip html={<p>See Details</p>}>
+                        <Link
+                          to={`${ROUTES.DIESPLAY_SINGLE_COLLECTION}/${id}`}
+                          className="btn btn-xs"
+                        >
+                          <FcViewDetails />
+                        </Link>
+                      </Tooltip>
                       {canManageAll(auth.id, auth.role, author_id) && (
                         <>
-                          <Link
-                            to={`${ROUTES.EDIT_COLLECTION}/${id}`}
-                            className="btn btn-xs"
-                          >
-                            <GrUpdate />
-                          </Link>
-                          <button
-                            onClick={() => handleDeleteCollection(id)}
-                            className="btn btn-xs"
-                          >
-                            {loading ? <SmallSpinner /> : <FaRegTrashCan />}
-                          </button>
+                          <Tooltip html={<p>Edit or Update</p>}>
+                            <Link
+                              to={`${ROUTES.EDIT_COLLECTION}/${id}`}
+                              className="btn btn-xs"
+                            >
+                              <GrUpdate />
+                            </Link>
+                          </Tooltip>
+                          <Tooltip html={<p>Destructive! Delete!</p>}>
+                            <button
+                              onClick={() => handleDeleteCollection(id)}
+                              className="btn btn-xs"
+                            >
+                              {loading ? <SmallSpinner /> : <FaRegTrashCan />}
+                            </button>
+                          </Tooltip>
                         </>
                       )}
                     </div>

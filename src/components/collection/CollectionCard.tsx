@@ -1,11 +1,17 @@
 import { Link } from "react-router-dom";
 import dummyImg from "../../images/cards/cards-03.webp";
-import { API_ENDPOINT, MESSAGES, ROUTES } from "../../utils/constant";
+import {
+  API_ENDPOINT,
+  DELETE_CONFIRMATION,
+  MESSAGES,
+  ROUTES,
+} from "../../utils/constant";
 import isSuccessRes, { setErrorToast } from "../../utils/apiResponse";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
 import { canManageAll } from "../../utils/canManageAll";
+import { UpcaseFirstChar } from "../../utils/UpcaseFirstChar";
 
 interface CollectionCardProps {
   collection_id: string;
@@ -32,15 +38,18 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
 
   const handleDeleteCollection = async (id: string) => {
     try {
-      const response = await axiosPrivate.delete(
-        `${API_ENDPOINT.COLLECTION}/${id}`
-      );
+      const confirmResult = window.confirm(DELETE_CONFIRMATION);
+      if (confirmResult) {
+        const response = await axiosPrivate.delete(
+          `${API_ENDPOINT.COLLECTION}/${id}`
+        );
 
-      if (isSuccessRes(response)) {
-        updateDeletedCollection(response.data.data.id);
-        toast.success(MESSAGES.SUCCESS);
-      } else {
-        toast.warn(MESSAGES.TRY_AGAIN);
+        if (isSuccessRes(response)) {
+          updateDeletedCollection(id);
+          toast.success(MESSAGES.SUCCESS);
+        } else {
+          toast.warn(MESSAGES.TRY_AGAIN);
+        }
       }
     } catch (error) {
       setErrorToast(error);
@@ -58,11 +67,11 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
           />
         </figure>
         <div className="card-body">
-          <h2 className="card-title">{title.split(" ")[0]}</h2>
-          <p>items_count: {items_count}</p>
+          <h2 className="card-title">{UpcaseFirstChar(title.split(" ")[0])}</h2>
+          <p>Available Items: {items_count}</p>
           <p>Category: {category}</p>
 
-          <p>Created by: {user_name.split(" ")[0]}</p>
+          <p>Created by: {UpcaseFirstChar(user_name.split(" ")[0])}</p>
           {canManageAll(auth.id, auth.role, author_id) && (
             <div className="flex gap-4">
               <button

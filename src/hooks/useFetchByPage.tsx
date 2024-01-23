@@ -5,8 +5,7 @@ import isSuccessRes from "../utils/apiResponse";
 type SetData<T> = Dispatch<SetStateAction<T[]>>;
 
 const useFetchByPage = <T,>(
-  apiEndpoint: string,
-  searchTerm?: string
+  apiEndpoint: string
 ): [T[], boolean, () => void, SetData<T>, boolean] => {
   const [data, setData] = useState<T[]>([]);
   const [loading, setLoading] = useState(false);
@@ -23,24 +22,21 @@ const useFetchByPage = <T,>(
       try {
         setLoading(true);
         const res = await axios.get(
-          `${apiEndpoint}?search=${searchTerm}&page=${page}&per_page=${perPageCount}`
+          `${apiEndpoint}?page=${page}&per_page=${perPageCount}`
         );
 
         if (isSuccessRes(res)) {
           setLoading(false);
           setData((prev) => (page === 1 ? res.data : [...prev, ...res.data]));
-          if (!res.data.length) {
-            setIsMoreData(false);
-          }
+          !res.data.length && setIsMoreData(false);
         }
       } catch (error) {
         setLoading(false);
-        console.error(`Error fetching data from ${apiEndpoint}:`, error);
       }
     };
 
     fetchData();
-  }, [apiEndpoint, page, perPageCount, searchTerm]);
+  }, [apiEndpoint, page, perPageCount]);
 
   return [data, loading, handleSeeMore, setData, isMoreData];
 };

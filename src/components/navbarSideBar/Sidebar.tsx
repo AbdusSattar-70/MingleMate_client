@@ -63,8 +63,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
       {/* <!-- SIDEBAR HEADER --> */}
       <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
         <NavLink to={ROUTES.HOME}>
-          <h1 className="text-2xl font-semibold text-neutral-300">
-            MingleMate
+          <h1 className="mb-4 ml-4 font-light text-bodydark1">
+            <span className="text-3xl font-bold text-meta-5">M</span>ingle
+            <span className="font-semibold text-meta-1">M</span>
+            ate
           </h1>
         </NavLink>
 

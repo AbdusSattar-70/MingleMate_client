@@ -96,14 +96,33 @@ const UserTable = () => {
     }
   };
 
-  const handleRoleToggle = async () => {
+  const handleAsignAdmin = async () => {
     try {
       if (selectedUsers.length === 0) {
         toast.error(DASHBOARD_TABLE_CONST.ROLE.SELECT_USER);
         return;
       }
 
-      await axiosPrivate.patch(API_ENDPOINT.ADMIN.ROLE_TOGGLE_URL, {
+      await axiosPrivate.patch(API_ENDPOINT.ADMIN.ASIGN_ADMIN_ROLE, {
+        user_emails: selectedUsers,
+      });
+      await getUsers();
+      await verifyAdminStatus();
+      setSelectedUsers([]);
+      toast.success(DASHBOARD_TABLE_CONST.ROLE.SUCCESS);
+    } catch (error) {
+      toast.error(DASHBOARD_TABLE_CONST.ROLE.ERROR);
+    }
+  };
+
+  const handleRemoveAdminRole = async () => {
+    try {
+      if (selectedUsers.length === 0) {
+        toast.error(DASHBOARD_TABLE_CONST.ROLE.SELECT_USER);
+        return;
+      }
+
+      await axiosPrivate.patch(API_ENDPOINT.ADMIN.REMOVE_ADMIN_ROLE, {
         user_emails: selectedUsers,
       });
       await getUsers();
@@ -146,7 +165,8 @@ const UserTable = () => {
         <div>
           <UserTableActions
             filterUserData={filterUserData}
-            handleRoleToggle={handleRoleToggle}
+            handleAsignAdmin={handleAsignAdmin}
+            handleRemoveAdminRole={handleRemoveAdminRole}
             handleBlock={handleBlock}
             handleUnblock={handleUnblock}
             handleDelete={handleDelete}

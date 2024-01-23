@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import CustomFieldsForm from "./createItem/CustomFieldsForm";
 import { CustomFieldType, ItemType, TagOption } from "../../utils/types";
@@ -13,7 +13,8 @@ import PhotoUpload from "../photoUpload/PhotoUpload";
 import Spinner from "../common/Spinner";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import SmallSpinner from "../common/SmallSpinner";
-
+import axios from "../../utils/api";
+import { updateItemCustomFields } from "../../utils/updateItemFields";
 const EditItemForm: React.FC = () => {
   const getItemFromRoute = useLoaderData() as ItemType;
   const {
@@ -28,12 +29,30 @@ const EditItemForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [item_name, setItem_name] = useState<string>(prevItemName || "");
   const [selectedTags, setSelectedTags] = useState<TagOption[]>([]);
-  const [itemCustomFields, setItemCustomFields] =
-    useState<CustomFieldType[]>(prevCustomFields);
+  const [itemCustomFields, setItemCustomFields] = useState<CustomFieldType[]>(
+    []
+  );
 
-  const handleTagChange = (newValue: TagOption[]) => {
-    setSelectedTags(newValue);
-  };
+  useEffect(() => {
+    const fetchCollectionCurrentFields = async () => {
+      try {
+        const res = await axios.get(
+          `${API_ENDPOINT.COLLECTION_CUSTOM_FIELDS}/${collection_id}`
+        );
+        if (isSuccessRes(res)) {
+          const upicf = updateItemCustomFields(
+            prevCustomFields,
+            res.data.custom_fields
+          );
+          setItemCustomFields(upicf);
+        }
+      } catch (error) {
+        console.error("Error fetching", error);
+      }
+    };
+
+    fetchCollectionCurrentFields();
+  }, []);
 
   const handleCustomInput = (id: string, field_value?: any) => {
     if (itemCustomFields.length) {
@@ -76,12 +95,16 @@ const EditItemForm: React.FC = () => {
       if (isSuccessRes(res)) {
         setLoading(false);
         toast.success(MESSAGES.SUCCESS);
-        navigate(`${ROUTES.GET_SIGNLE_ITEM}/${res.data.id}`);
+        navigate(`${ROUTES.GET_SIGNLE_ITEM}/${res.data.item_id}`);
       }
     } catch (error) {
       setErrorToast(error);
       setLoading(false);
     }
+  };
+
+  const handleTagChange = (newValue: TagOption[]) => {
+    setSelectedTags(newValue);
   };
 
   return (
