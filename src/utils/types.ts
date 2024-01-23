@@ -70,7 +70,7 @@ export type ItemType = {
   likes: LikeType[];
   comments: CommentType[];
   comments_count: number;
-  image?: string;
+  item_image?: string;
 };
 
 export type TAGRelatedItemType = {
