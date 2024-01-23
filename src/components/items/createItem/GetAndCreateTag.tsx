@@ -20,7 +20,7 @@ const GetAndCreateTag: React.FC<GetAndCreateTagProps> = ({
 
   return (
     <div className="flex flex-col gap-1">
-      <label htmlFor="section-tags">Choose Tags</label>
+      <label htmlFor="section-tags">Choose or Create Tags</label>
       <CreatableSelect
         styles={{
           placeholder: (base) => ({
