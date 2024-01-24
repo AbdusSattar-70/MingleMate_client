@@ -23,7 +23,7 @@ const HomeDecorator = () => {
       <div className="hero-overlay bg-opacity-60"></div>
       <div className="hero-content text-center text-neutral-content">
         <div className="max-w-md">
-          <h1 className="mb-4 p-4 font-light text-bodydark1">
+          <h1 className="font-light text-bodydark1">
             <span className="text-3xl font-bold text-meta-5">M</span>ingle
             <span className="font-semibold text-meta-1">M</span>
             ate
