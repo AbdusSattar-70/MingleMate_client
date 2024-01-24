@@ -2,14 +2,13 @@ import React from "react";
 import { FaRegTrashCan, FaLockOpen, FaLock, FaGears } from "react-icons/fa6";
 import { GrUpdate, GrCheckboxSelected, GrUserAdmin } from "react-icons/gr";
 import { LiaSortAmountDownSolid } from "react-icons/lia";
-import { TiExport } from "react-icons/ti";
 import SortUsersData from "./SortUsersData";
 import { Users } from "../../utils/types";
-import { exportToCSV } from "../../utils/exportToCSV";
 import { UpcaseFirstChar } from "../../utils/UpcaseFirstChar";
 import { useAuth } from "../../hooks/useAuth";
 import SmallSpinner from "../common/SmallSpinner";
 import { Tooltip } from "../common/ToolTip";
+import UsersCSVBtn from "./UsersCSV";
 
 interface UserTableActionProps {
   filterUserData: (value: string) => void;
@@ -149,15 +148,7 @@ const UserTableActions: React.FC<UserTableActionProps> = ({
               </button>
             </Tooltip>
             <Tooltip html={<p>Export User/Users Data as CSV format</p>}>
-              <button
-                onClick={() => exportToCSV(users)}
-                className="btn btn-primary btn-sm"
-                type="button"
-                aria-label="Export to CSV"
-              >
-                <TiExport />
-                CSV
-              </button>
+              <UsersCSVBtn users={users} />
             </Tooltip>
           </div>
 

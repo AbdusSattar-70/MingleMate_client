@@ -81,7 +81,11 @@ const CollectionsTable = () => {
 
   return (
     <>
-      <TopPart setSearchTerm={setSearchTerm} searchTerm={searchTerm} />
+      <TopPart
+        setSearchTerm={setSearchTerm}
+        searchTerm={searchTerm}
+        collections={collections}
+      />
       <Table
         collections={collections}
         loading={loading}

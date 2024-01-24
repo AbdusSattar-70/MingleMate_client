@@ -3,13 +3,20 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "../../../utils/constant";
 import { useAuth } from "../../../hooks/useAuth";
+import CollectionsCSVBtn from "./CollectionsCSVBtn";
+import { CollectionType } from "../../../utils/types";
 
 interface TopPartProps {
   setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
   searchTerm: string;
+  collections: CollectionType[];
 }
 
-const TopPart: React.FC<TopPartProps> = ({ setSearchTerm, searchTerm }) => {
+const TopPart: React.FC<TopPartProps> = ({
+  setSearchTerm,
+  searchTerm,
+  collections,
+}) => {
   const { auth } = useAuth();
   const navigate = useNavigate();
 
@@ -37,6 +44,7 @@ const TopPart: React.FC<TopPartProps> = ({ setSearchTerm, searchTerm }) => {
           <button onClick={handleNavigate} className="btn btn-primary">
             Create a New Collection
           </button>
+          <CollectionsCSVBtn collections={collections} />
           <div className="form-control">
             <label className="label sr-only">
               <span className="label-text">search</span>
