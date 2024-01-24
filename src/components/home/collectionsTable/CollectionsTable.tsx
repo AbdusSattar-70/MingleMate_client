@@ -49,7 +49,11 @@ const CollectionsTable = () => {
       }
     };
 
-    fetchAllCollections();
+    const debounceTimeout = setTimeout(() => {
+      fetchAllCollections();
+    }, 1000);
+
+    return () => clearTimeout(debounceTimeout);
   }, [page, searchTerm, paginateUri, searchUri]);
 
   const updateDeletedCollection = (collectionId: string) => {
