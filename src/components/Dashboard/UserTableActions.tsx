@@ -2,14 +2,13 @@ import React from "react";
 import { FaRegTrashCan, FaLockOpen, FaLock, FaGears } from "react-icons/fa6";
 import { GrUpdate, GrCheckboxSelected, GrUserAdmin } from "react-icons/gr";
 import { LiaSortAmountDownSolid } from "react-icons/lia";
-import { TiExport } from "react-icons/ti";
 import SortUsersData from "./SortUsersData";
 import { Users } from "../../utils/types";
-import CsvDownloader from "react-csv-downloader";
 import { UpcaseFirstChar } from "../../utils/UpcaseFirstChar";
 import { useAuth } from "../../hooks/useAuth";
 import SmallSpinner from "../common/SmallSpinner";
 import { Tooltip } from "../common/ToolTip";
+import UsersCSVBtn from "./UsersCSV";
 
 interface UserTableActionProps {
   filterUserData: (value: string) => void;
@@ -34,20 +33,6 @@ const UserTableActions: React.FC<UserTableActionProps> = ({
   users,
   loading,
 }) => {
-  const csvData = users.map((user) => ({
-    id: user.id,
-    user_name: user.user_name,
-    email: user.email,
-    created_at: user.created_at,
-    updated_at: user.updated_at,
-    blocked: user.blocked.toString(),
-    role: user.role.toString(),
-    bio: user.bio,
-    items_count: user.items_count.toString(),
-    collections_count: user.collections_count.toString(),
-    profession: user.profession,
-  }));
-
   const { auth } = useAuth();
   const blockedUsers = users?.filter((user) => user.blocked === true);
   const adminUsers = users?.filter(
@@ -163,21 +148,7 @@ const UserTableActions: React.FC<UserTableActionProps> = ({
               </button>
             </Tooltip>
             <Tooltip html={<p>Export User/Users Data as CSV format</p>}>
-              <CsvDownloader
-                filename="users_data"
-                separator=","
-                wrapColumnChar={`"`}
-                datas={csvData}
-              >
-                <button
-                  className="btn btn-primary btn-sm"
-                  type="button"
-                  aria-label="export Users"
-                >
-                  <TiExport />
-                  CSV
-                </button>
-              </CsvDownloader>
+              <UsersCSVBtn users={users} />
             </Tooltip>
           </div>
 
