@@ -299,6 +299,7 @@ You can deploy this project using:
 
 ## 🔭 Future Features <a name="future-features"></a>
 
+- **Full app test with jest**
 - **Improve web accessibility feature for all users**
 - **Add Multilingual feature**
 
