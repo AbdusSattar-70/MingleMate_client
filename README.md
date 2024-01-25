@@ -1,5 +1,12 @@
 <a name="readme-top"></a>
+### Admin Login: 
 
+```bash
+Email: sattar@gmail.com 
+password: 000000
+```
+
+# Server: https://github.com/AbdusSattar-70/MingleMate
 <div align="center">
  <h3><b>MingleMate Client</b>.</h3>
 </div>
@@ -292,6 +299,7 @@ You can deploy this project using:
 
 ## 🔭 Future Features <a name="future-features"></a>
 
+- **Full app test with jest**
 - **Improve web accessibility feature for all users**
 - **Add Multilingual feature**
 

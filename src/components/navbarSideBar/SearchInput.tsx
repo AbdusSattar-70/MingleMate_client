@@ -43,7 +43,7 @@ const SearchInput = () => {
       if (inputValue) {
         fetchItemsByTextSearch(inputValue);
       }
-    }, 100);
+    }, 1000);
 
     return () => clearTimeout(debounceTimeout);
   }, [inputValue]);
@@ -106,7 +106,7 @@ const SearchInput = () => {
           </h5>
         </div>
 
-        <ul className="flex h-[20rem] w-[40rem] flex-col overflow-y-auto">
+        <ul className="flex h-auto w-[40rem] flex-col overflow-y-auto">
           {searchResult.length > 0 ? (
             searchResult.map(
               ({
@@ -158,13 +158,7 @@ const SearchInput = () => {
               )
             )
           ) : (
-            <>
-              {loading ? (
-                <SmallSpinner />
-              ) : (
-                <p className="p-4">Oops! Nothing is found.</p>
-              )}
-            </>
+            <>{loading && <SmallSpinner />}</>
           )}
         </ul>
       </div>
