@@ -30,6 +30,7 @@ const SearchInput = () => {
 
         if (isSuccessRes(response)) {
           setSearchResult(response.data);
+          !inputValue && setSearchResult([]);
           setLoading(false);
         }
       } catch (error) {
