@@ -39,7 +39,7 @@ const CollectionsCSVBtn: React.FC<CollectionsCSVBtnProps> = ({
       datas={csvData}
     >
       <button
-        className="btn btn-primary btn-sm"
+        className="btn btn-primary"
         type="button"
         aria-label="export Collections"
       >
