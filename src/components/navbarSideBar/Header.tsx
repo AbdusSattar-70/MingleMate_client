@@ -4,6 +4,7 @@ import DropdownUser from "./DropdownUser";
 import { RiEnglishInput } from "react-icons/ri";
 import bnIcon from "../../images/bn.png";
 import SearchInput from "./SearchInput";
+import { Tooltip } from "../common/ToolTip";
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
@@ -63,19 +64,21 @@ const Header = (props: {
           <div className="flex items-center gap-3  2xsm:gap-7">
             <ul className="flex items-center gap-2 2xsm:gap-4">
               <DarkModeSwitcher />
-              <label className="swap swap-rotate hover:text-meta-5">
-                <input
-                  type="checkbox"
-                  className="theme-controller"
-                  value="synthwave"
-                />
-                <RiEnglishInput className="swap-on h-5 w-5 fill-current" />
-                <img
-                  src={bnIcon}
-                  alt="bangla icon"
-                  className="swap-off h-5 w-5 fill-current"
-                />
-              </label>
+              <Tooltip html={<p>Under Construction</p>}>
+                <label className="swap swap-rotate hover:text-meta-5">
+                  <input
+                    type="checkbox"
+                    className="theme-controller"
+                    value="synthwave"
+                  />
+                  <RiEnglishInput className="swap-on h-5 w-5 fill-current" />
+                  <img
+                    src={bnIcon}
+                    alt="bangla icon"
+                    className="swap-off h-5 w-5 fill-current"
+                  />
+                </label>
+              </Tooltip>
             </ul>
             <DropdownUser />
           </div>
