@@ -1,4 +1,4 @@
-export const BASE_URL = "https://mingle-2o7l.onrender.com";
+export const BASE_URL = "https://minglemate-i8ye.onrender.com";
 export const AXIOS_HEADERS = { "Content-Type": "application/json" };
 
 export const ROUTES = {
